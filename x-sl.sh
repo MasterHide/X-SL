@@ -108,7 +108,7 @@ else
 fi
 
 # Declare Variables
-log_folder="${XUI_LOG_FOLDER:=/var/log}"
+log_folder="${XSL_LOG_FOLDER:=/var/log}"
 iplimit_log_path="${log_folder}/3xipl.log"
 iplimit_banned_log_path="${log_folder}/3xipl-banned.log"
 
@@ -143,7 +143,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -162,15 +162,15 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)
     if [[ $? == 0 ]]; then
-        LOGI "Update is complete, Panel has automatically restarted "
+        LOGI "X-SL Update is complete, Panel has automatically restarted "
         before_show_menu
     fi
 }
 
 update_menu() {
-    echo -e "${yellow}Updating Menu${plain}"
+    echo -e "${yellow}Updating Interface${plain}"
     confirm "This function will update the menu to the latest changes." "y"
     if [[ $? != 0 ]]; then
         LOGE "Cancelled"
@@ -180,9 +180,9 @@ update_menu() {
         return 0
     fi
 
-    wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/MHSanaei/3x-ui/main/x-ui.sh
-    chmod +x /usr/local/x-ui/x-ui.sh
-    chmod +x /usr/bin/x-ui
+    wget --no-check-certificate -O /usr/bin/x-sl https://raw.githubusercontent.com/MHSanaei/3x-ui/main/x-ui.sh
+    chmod +x /usr/local/x-sl/x-sl.sh
+    chmod +x /usr/bin/x-sl
 
     if [[ $? == 0 ]]; then
         echo -e "${green}Update successful. The panel has automatically restarted.${plain}"
@@ -194,7 +194,7 @@ update_menu() {
 }
 
 legacy_version() {
-    echo "Enter the panel version (like 2.4.0):"
+    echo "Enter the panel version (like 1.0.0):"
     read tag_version
 
     if [ -z "$tag_version" ]; then
@@ -202,9 +202,9 @@ legacy_version() {
         exit 1
     fi
     # Use the entered panel version in the download link
-    install_command="bash <(curl -Ls "https://raw.githubusercontent.com/mhsanaei/3x-ui/v$tag_version/install.sh") v$tag_version"
+    install_command="bash <(curl -Ls "https://raw.githubusercontent.com/MasterHide/X-SL/v$tag_version/install.sh") v$tag_version"
 
-    echo "Downloading and installing panel version $tag_version..."
+    echo "Downloading and installing x-sl version $tag_version..."
     eval $install_command
 }
 
@@ -222,18 +222,18 @@ uninstall() {
         fi
         return 0
     fi
-    systemctl stop x-ui
-    systemctl disable x-ui
-    rm /etc/systemd/system/x-ui.service -f
+    systemctl stop x-sl
+    systemctl disable x-sl
+    rm /etc/systemd/system/x-sl.service -f
     systemctl daemon-reload
     systemctl reset-failed
-    rm /etc/x-ui/ -rf
-    rm /usr/local/x-ui/ -rf
+    rm /etc/x-sl/ -rf
+    rm /usr/local/x-sl/ -rf
 
     echo ""
     echo -e "Uninstalled Successfully.\n"
     echo "If you need to install this panel again, you can use below command:"
-    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)${plain}"
+    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)${plain}"
     echo ""
     # Trap the SIGTERM signal
     trap delete_script SIGTERM
@@ -252,12 +252,12 @@ reset_user() {
     [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
     read -rp "Please set the login password [default is a random password]: " config_password
     [[ -z $config_password ]] && config_password=$(date +%s%N | md5sum | cut -c 1-8)
-    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} >/dev/null 2>&1
-    /usr/local/x-ui/x-ui setting -remove_secret >/dev/null 2>&1
+    /usr/local/x-sl/x-sl setting -username ${config_account} -password ${config_password} >/dev/null 2>&1
+    /usr/local/x-sl/x-sl setting -remove_secret >/dev/null 2>&1
     echo -e "Panel login username has been reset to: ${green} ${config_account} ${plain}"
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
     echo -e "${yellow} Panel login secret token disabled ${plain}"
-    echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
+    echo -e "${green} Please use the new login username and password to access the X-SL panel. Also remember them! ${plain}"
     confirm_restart
 }
 
@@ -279,10 +279,10 @@ reset_webbasepath() {
     config_webBasePath=$(gen_random_string 10)
 
     # Apply the new web base path setting
-    /usr/local/x-ui/x-ui setting -webBasePath "${config_webBasePath}" >/dev/null 2>&1
+    /usr/local/x-sl/x-sl setting -webBasePath "${config_webBasePath}" >/dev/null 2>&1
     
     echo -e "Web base path has been reset to: ${green}${config_webBasePath}${plain}"
-    echo -e "${green}Please use the new web base path to access the panel.${plain}"
+    echo -e "${green}Please use the new web base path to access the x-sl panel.${plain}"
     restart
 }
 
@@ -294,13 +294,13 @@ reset_config() {
         fi
         return 0
     fi
-    /usr/local/x-ui/x-ui setting -reset
+    /usr/local/x-sl/x-sl setting -reset
     echo -e "All panel settings have been reset to default."
     restart
 }
 
 check_config() {
-    local info=$(/usr/local/x-ui/x-ui setting -show true)
+    local info=$(/usr/local/x-sl/x-sl setting -show true)
     if [[ $? != 0 ]]; then
         LOGE "get current settings error, please check logs"
         show_menu
@@ -310,7 +310,7 @@ check_config() {
 
     local existing_webBasePath=$(echo "$info" | grep -Eo 'webBasePath: .+' | awk '{print $2}')
     local existing_port=$(echo "$info" | grep -Eo 'port: .+' | awk '{print $2}')
-    local existing_cert=$(/usr/local/x-ui/x-ui setting -getCert true | grep -Eo 'cert: .+' | awk '{print $2}')
+    local existing_cert=$(/usr/local/x-sl/x-sl setting -getCert true | grep -Eo 'cert: .+' | awk '{print $2}')
     local server_ip=$(curl -s https://api.ipify.org)
 
     if [[ -n "$existing_cert" ]]; then
@@ -332,7 +332,7 @@ set_port() {
         LOGD "Cancelled"
         before_show_menu
     else
-        /usr/local/x-ui/x-ui setting -port ${port}
+        /usr/local/x-sl/x-sl setting -port ${port}
         echo -e "The port is set, Please restart the panel now, and use the new port ${green}${port}${plain} to access web panel"
         confirm_restart
     fi
@@ -344,11 +344,11 @@ start() {
         echo ""
         LOGI "Panel is running, No need to start again, If you need to restart, please select restart"
     else
-        systemctl start x-ui
+        systemctl start x-sl
         sleep 2
         check_status
         if [[ $? == 0 ]]; then
-            LOGI "x-ui Started Successfully"
+            LOGI "x-sl Started Successfully"
         else
             LOGE "panel Failed to start, Probably because it takes longer than two seconds to start, Please check the log information later"
         fi
@@ -365,11 +365,11 @@ stop() {
         echo ""
         LOGI "Panel stopped, No need to stop again!"
     else
-        systemctl stop x-ui
+        systemctl stop x-sl
         sleep 2
         check_status
         if [[ $? == 1 ]]; then
-            LOGI "x-ui and xray stopped successfully"
+            LOGI "x-sl and xray-core stopped successfully"
         else
             LOGE "Panel stop failed, Probably because the stop time exceeds two seconds, Please check the log information later"
         fi
@@ -381,11 +381,11 @@ stop() {
 }
 
 restart() {
-    systemctl restart x-ui
+    systemctl restart x-sl
     sleep 2
     check_status
     if [[ $? == 0 ]]; then
-        LOGI "x-ui and xray Restarted successfully"
+        LOGI "x-sl and xray-core Restarted successfully"
     else
         LOGE "Panel restart failed, Probably because it takes longer than two seconds to start, Please check the log information later"
     fi
@@ -395,18 +395,18 @@ restart() {
 }
 
 status() {
-    systemctl status x-ui -l
+    systemctl status x-sl -l
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
 }
 
 enable() {
-    systemctl enable x-ui
+    systemctl enable x-sl
     if [[ $? == 0 ]]; then
-        LOGI "x-ui Set to boot automatically on startup successfully"
+        LOGI "x-sl Set to boot automatically on startup successfully"
     else
-        LOGE "x-ui Failed to set Autostart"
+        LOGE "x-sl Failed to set Autostart"
     fi
 
     if [[ $# == 0 ]]; then
@@ -415,11 +415,11 @@ enable() {
 }
 
 disable() {
-    systemctl disable x-ui
+    systemctl disable x-sl
     if [[ $? == 0 ]]; then
-        LOGI "x-ui Autostart Cancelled successfully"
+        LOGI "x-sl Autostart Cancelled successfully"
     else
-        LOGE "x-ui Failed to cancel autostart"
+        LOGE "x-sl Failed to cancel autostart"
     fi
 
     if [[ $# == 0 ]]; then
@@ -438,7 +438,7 @@ show_log() {
         show_menu
         ;;
     1)
-        journalctl -u x-ui -e --no-pager -f -p debug
+        journalctl -u x-sl -e --no-pager -f -p debug
         if [[ $# == 0 ]]; then
         before_show_menu
         fi
@@ -575,24 +575,24 @@ enable_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/MHSanaei/3x-ui/raw/main/x-ui.sh
+    wget -O /usr/bin/x-sl -N --no-check-certificate https://raw.githubusercontent.com/MasterHide/X-SL/main/x-sl.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "Failed to download script, Please check whether the machine can connect Github"
         before_show_menu
     else
-        chmod +x /usr/bin/x-ui
-        LOGI "Upgrade script succeeded, Please rerun the script" 
+        chmod +x /usr/bin/x-sl
+        LOGI "Upgrade x-sl script succeeded, Please rerun the script" 
         before_show_menu
     fi
 }
 
 # 0: running, 1: not running, 2: not installed
 check_status() {
-    if [[ ! -f /etc/systemd/system/x-ui.service ]]; then
+    if [[ ! -f /etc/systemd/system/x-sl.service ]]; then
         return 2
     fi
-    temp=$(systemctl status x-ui | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+    temp=$(systemctl status x-sl | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
     if [[ "${temp}" == "running" ]]; then
         return 0
     else
@@ -601,7 +601,7 @@ check_status() {
 }
 
 check_enabled() {
-    temp=$(systemctl is-enabled x-ui)
+    temp=$(systemctl is-enabled x-sl)
     if [[ "${temp}" == "enabled" ]]; then
         return 0
     else
@@ -641,11 +641,11 @@ show_status() {
     check_status
     case $? in
     0)
-        echo -e "Panel state: ${green}Running${plain}"
+        echo -e "Panel state: ${green}Working${plain}"
         show_enable_status
         ;;
     1)
-        echo -e "Panel state: ${yellow}Not Running${plain}"
+        echo -e "Panel state: ${yellow}Not Working${plain}"
         show_enable_status
         ;;
     2)
@@ -881,14 +881,14 @@ update_geo() {
     echo -e "${green}\t0.${plain} Back to Main Menu"
     read -p "Choose an option: " choice
 
-    cd /usr/local/x-ui/bin
+    cd /usr/local/x-sl/bin
 
     case "$choice" in
     0)
         show_menu
         ;;
     1)
-        systemctl stop x-ui
+        systemctl stop x-sl
         rm -f geoip.dat geosite.dat
         wget -N https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
         wget -N https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -896,7 +896,7 @@ update_geo() {
         restart
         ;;
     2)
-        systemctl stop x-ui
+        systemctl stop x-sl
         rm -f geoip_IR.dat geosite_IR.dat
         wget -O geoip_IR.dat -N https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geoip.dat
         wget -O geosite_IR.dat -N https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geosite.dat
@@ -904,7 +904,7 @@ update_geo() {
         restart
         ;;
     3)
-        systemctl stop x-ui
+        systemctl stop x-sl
         rm -f geoip_RU.dat geosite_RU.dat
         wget -O geoip_RU.dat -N https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/geoip.dat
         wget -O geosite_RU.dat -N https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -942,7 +942,7 @@ install_acme() {
 }
 
 ssl_cert_issue_main() {
-    echo -e "${green}\t1.${plain} Get SSL"
+    echo -e "${green}\t1.${plain} Enable SSL"
     echo -e "${green}\t2.${plain} Revoke"
     echo -e "${green}\t3.${plain} Force Renew"
     echo -e "${green}\t4.${plain} Show Existing Domains"
@@ -1049,8 +1049,8 @@ ssl_cert_issue_main() {
 }
 
 ssl_cert_issue() {
-    local existing_webBasePath=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
-    local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+    local existing_webBasePath=$(/usr/local/x-sl/x-sl setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+    local existing_port=$(/usr/local/x-sl/x-sl setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
     # check for acme.sh first
     if ! command -v ~/.acme.sh/acme.sh &>/dev/null; then
         echo "acme.sh could not be found. we will install it"
@@ -1165,11 +1165,11 @@ ssl_cert_issue() {
         local webKeyFile="/root/cert/${domain}/privkey.pem"
 
         if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-            /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+            /usr/local/x-sl/x-sl cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
             LOGI "Panel paths set for domain: $domain"
             LOGI "  - Certificate File: $webCertFile"
             LOGI "  - Private Key File: $webKeyFile"
-            echo -e "${green}Access URL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
+            echo -e "${green}Access URL X-SL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
             restart
         else
             LOGE "Error: Certificate or private key file not found for domain: $domain."
@@ -1180,8 +1180,8 @@ ssl_cert_issue() {
 }
 
 ssl_cert_issue_CF() {
-    local existing_webBasePath=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
-    local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+    local existing_webBasePath=$(/usr/local/x-sl/x-sl setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+    local existing_port=$(/usr/local/x-sl/x-sl setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
     LOGI "****** Instructions for Use ******"
     LOGI "Follow the steps below to complete the process:"
     LOGI "1. Cloudflare Registered E-mail."
@@ -1219,7 +1219,7 @@ ssl_cert_issue_CF() {
         # Set up Cloudflare API details
         CF_GlobalKey=""
         CF_AccountEmail=""
-        LOGD "Please set the API key:"
+        LOGD "Please set the Cloudflare API key:"
         read -p "Input your key here: " CF_GlobalKey
         LOGD "Your API key is: ${CF_GlobalKey}"
 
@@ -1282,11 +1282,11 @@ ssl_cert_issue_CF() {
             local webKeyFile="${certPath}/${CF_Domain}/privkey.pem"
 
             if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-                /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+                /usr/local/x-sl/x-sl cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
                 LOGI "Panel paths set for domain: $CF_Domain"
                 LOGI "  - Certificate File: $webCertFile"
                 LOGI "  - Private Key File: $webKeyFile"
-                echo -e "${green}Access URL: https://${CF_Domain}:${existing_port}${existing_webBasePath}${plain}"
+                echo -e "${green}Access URL X-SL: https://${CF_Domain}:${existing_port}${existing_webBasePath}${plain}"
                 restart
             else
                 LOGE "Error: Certificate or private key file not found for domain: $CF_Domain."
@@ -1690,7 +1690,7 @@ SSH_port_forwarding() {
             config_listenIP="127.0.0.1"
             [[ "$listen_choice" == "2" ]] && read -p "Enter custom IP to listen on: " config_listenIP
 
-            /usr/local/x-ui/x-ui setting -listenIP "${config_listenIP}" >/dev/null 2>&1
+            /usr/local/x-sl/x-sl setting -listenIP "${config_listenIP}" >/dev/null 2>&1
             echo -e "${green}listen IP has been set to ${config_listenIP}.${plain}"
             echo -e "\n${green}SSH Port Forwarding Configuration:${plain}"
             echo -e "Standard SSH command:"
@@ -1722,62 +1722,92 @@ SSH_port_forwarding() {
 
 show_usage() {
     echo -e "┌───────────────────────────────────────────────────────┐
-│  ${blue}x-ui control menu usages (subcommands):${plain}              │
+│  ${blue}x-sl control menu usages (subcommands):${plain}              │
 │                                                       │
-│  ${blue}x-ui${plain}              - Admin Management Script          │
-│  ${blue}x-ui start${plain}        - Start                            │
-│  ${blue}x-ui stop${plain}         - Stop                             │
-│  ${blue}x-ui restart${plain}      - Restart                          │
-│  ${blue}x-ui status${plain}       - Current Status                   │
-│  ${blue}x-ui settings${plain}     - Current Settings                 │
-│  ${blue}x-ui enable${plain}       - Enable Autostart on OS Startup   │
-│  ${blue}x-ui disable${plain}      - Disable Autostart on OS Startup  │
-│  ${blue}x-ui log${plain}          - Check logs                       │
-│  ${blue}x-ui banlog${plain}       - Check Fail2ban ban logs          │
-│  ${blue}x-ui update${plain}       - Update                           │
-│  ${blue}x-ui legacy${plain}       - legacy version                   │
-│  ${blue}x-ui install${plain}      - Install                          │
-│  ${blue}x-ui uninstall${plain}    - Uninstall                        │
+│  ${blue}x-sl ${plain}             - Admin Management Script          │
+│  ${blue}x-sl start${plain}        - Start                            │
+│  ${blue}x-sl stop${plain}         - Stop                             │
+│  ${blue}x-sl restart${plain}      - Restart                          │
+│  ${blue}x-sl status${plain}       - Current Status                   │
+│  ${blue}x-sl settings${plain}     - Current Settings                 │
+│  ${blue}x-sl enable${plain}       - Enable Autostart on OS Startup   │
+│  ${blue}x-sl disable${plain}      - Disable Autostart on OS Startup  │
+│  ${blue}x-sl log${plain}          - Check logs                       │
+│  ${blue}x-sl banlog${plain}       - Check Fail2ban ban logs          │
+│  ${blue}x-sl update${plain}       - Update                           │
+│  ${blue}x-sl legacy${plain}       - legacy version                   │
+│  ${blue}x-sl install${plain}      - Install                          │
+│  ${blue}x-sl uninstall${plain}    - Uninstall                        │
 └───────────────────────────────────────────────────────┘"
 }
 
 show_menu() {
+    clear
+    # Animated text effect for the title
+    text="X-SL PANEL MANAGEMENT SCRIPT"
+    green="\033[0;32m"
+    blue="\033[0;34m"
+    red="\033[0;31m"
+    yellow="\033[0;33m"
+    purple="\033[0;35m"
+    cyan="\033[0;36m"
+    plain="\033[0m"
+
+    # Loop through each character and print it with a slight delay
+    echo -e "${green}"
+    for ((i=0; i<${#text}; i++)); do
+        echo -n "${text:$i:1}"
+        sleep 0.1  # Adjust the delay for the speed of the animation
+    done
+    echo -e "${plain}"
+    sleep 0.5  # Add a short pause after the animation
+
+    # Menu with different colors for each section
     echo -e "
-╔────────────────────────────────────────────────╗
-│   ${green}3X-UI Panel Management Script${plain}                │
-│   ${green}0.${plain} Exit Script                               │
-│────────────────────────────────────────────────│
-│   ${green}1.${plain} Install                                   │
-│   ${green}2.${plain} Update                                    │
-│   ${green}3.${plain} Update Menu                               │
-│   ${green}4.${plain} Legacy Version                            │
-│   ${green}5.${plain} Uninstall                                 │
-│────────────────────────────────────────────────│
-│   ${green}6.${plain} Reset Username & Password & Secret Token  │
-│   ${green}7.${plain} Reset Web Base Path                       │
-│   ${green}8.${plain} Reset Settings                            │
-│   ${green}9.${plain} Change Port                               │
-│  ${green}10.${plain} View Current Settings                     │
-│────────────────────────────────────────────────│
-│  ${green}11.${plain} Start                                     │
-│  ${green}12.${plain} Stop                                      │
-│  ${green}13.${plain} Restart                                   │
-│  ${green}14.${plain} Check Status                              │
-│  ${green}15.${plain} Logs Management                           │
-│────────────────────────────────────────────────│
-│  ${green}16.${plain} Enable Autostart                          │
-│  ${green}17.${plain} Disable Autostart                         │
-│────────────────────────────────────────────────│
-│  ${green}18.${plain} SSL Certificate Management                │
-│  ${green}19.${plain} Cloudflare SSL Certificate                │
-│  ${green}20.${plain} IP Limit Management                       │
-│  ${green}21.${plain} Firewall Management                       │
-│  ${green}22.${plain} SSH Port Forwarding Management            │
-│────────────────────────────────────────────────│
-│  ${green}23.${plain} Enable BBR                                │
-│  ${green}24.${plain} Update Geo Files                          │
-│  ${green}25.${plain} Speedtest by Ookla                        │
-╚────────────────────────────────────────────────╝
+╭───────────────────────────────────────────────────────────────╮
+       ${green}X-SL PANEL MANAGEMENT SCRIPT${plain}
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${red}0.${plain} Exit Script
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${blue}1.${plain} Install X-SL  
+    ${blue}2.${plain} Update X-SL
+    ${blue}3.${plain} Update Interface
+    ${blue}4.${plain} Legacy Version
+    ${blue}5.${plain} Uninstall X-SL
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${yellow}6.${plain} Reset Username,Password, & Secret Token
+    ${yellow}7.${plain} Reset Panel Web Base Path
+    ${yellow}8.${plain} Reset Settings
+    ${yellow}9.${plain} Change Port
+    ${yellow}10.${plain} View Current Panel Info
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${purple}11.${plain} Start
+    ${purple}12.${plain} Stop 
+    ${purple}13.${plain} Restart
+    ${purple}14.${plain} Check Status
+    ${purple}15.${plain} Logs Management
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${cyan}16.${plain} Enable Autostart
+    ${cyan}17.${plain} Disable Autostart
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${green}18.${plain} SSL Certificate Management - [important]
+    ${green}19.${plain} Cloudflare SSL Certificate
+    ${green}20.${plain} IP Limit Management
+    ${green}21.${plain} Firewall Management 
+    ${green}22.${plain} SSH Port Forwarding Management
+╰───────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────╮
+    ${red}23.${plain} Enable BBR 
+    ${red}24.${plain} Update Geo Files 
+    ${red}25.${plain} Speedtest by Ookla 
+╰───────────────────────────────────────────────────────────────╯
+╰───────────────────────────────────────────────────────────────╯
 "
     show_status
     echo && read -p "Please enter your selection [0-25]: " num

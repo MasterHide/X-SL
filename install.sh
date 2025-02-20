@@ -161,15 +161,15 @@ config_after_install() {
                 echo -e "${yellow}Generated random port: ${config_port}${plain}"
             fi
 
-            /usr/local/x-ui/x-ui setting -username "${config_username}" -password "${config_password}" -port "${config_port}" -webBasePath "${config_webBasePath}"
+            /usr/local/x-sl/x-sl setting -username "${config_username}" -password "${config_password}" -port "${config_port}" -webBasePath "${config_webBasePath}"
             echo -e "This is a fresh installation, generating random login info for security concerns:"
-            echo -e "###############################################"
+            echo -e "╭───────────────────────────────────────────────────────────────────────────────────────╮"
             echo -e "${green}Username: ${config_username}${plain}"
             echo -e "${green}Password: ${config_password}${plain}"
             echo -e "${green}Port: ${config_port}${plain}"
             echo -e "${green}WebBasePath: ${config_webBasePath}${plain}"
             echo -e "${green}Access URL: http://${server_ip}:${config_port}/${config_webBasePath}${plain}"
-            echo -e "###############################################"
+            echo -e "╰───────────────────────────────────────────────────────────────────────────────────────╯"
             echo -e "${yellow}If you forgot your login info, you can type 'x-sl settings' to check${plain}"
         else
             local config_webBasePath=$(gen_random_string 15)
@@ -184,12 +184,12 @@ config_after_install() {
             local config_password=$(gen_random_string 10)
 
             echo -e "${yellow}Default credentials detected. Security update required...${plain}"
-            /usr/local/x-ui/x-ui setting -username "${config_username}" -password "${config_password}"
+            /usr/local/x-sl/x-sl setting -username "${config_username}" -password "${config_password}"
             echo -e "Generated new random login credentials:"
-            echo -e "###############################################"
+            echo -e "╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮"
             echo -e "${green}Username: ${config_username}${plain}"
             echo -e "${green}Password: ${config_password}${plain}"
-            echo -e "###############################################"
+            echo -e "╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯"
             echo -e "${yellow}If you forgot your login info, you can type 'x-sl settings' to check${plain}"
         else
             echo -e "${green}Username, Password, and WebBasePath are properly set. Exiting...${plain}"

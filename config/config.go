@@ -43,11 +43,11 @@ func GetLogLevel() LogLevel {
 }
 
 func IsDebug() bool {
-	return os.Getenv("XUI_DEBUG") == "true"
+	return os.Getenv("XSL_DEBUG") == "true"
 }
 
 func GetBinFolderPath() string {
-	binFolderPath := os.Getenv("XUI_BIN_FOLDER")
+	binFolderPath := os.Getenv("XSL_BIN_FOLDER")
 	if binFolderPath == "" {
 		binFolderPath = "bin"
 	}
@@ -55,9 +55,9 @@ func GetBinFolderPath() string {
 }
 
 func GetDBFolderPath() string {
-	dbFolderPath := os.Getenv("XUI_DB_FOLDER")
+	dbFolderPath := os.Getenv("XSL_DB_FOLDER")
 	if dbFolderPath == "" {
-		dbFolderPath = "/etc/x-ui"
+		dbFolderPath = "/etc/x-sl"
 	}
 	return dbFolderPath
 }
@@ -67,7 +67,7 @@ func GetDBPath() string {
 }
 
 func GetLogFolder() string {
-	logFolderPath := os.Getenv("XUI_LOG_FOLDER")
+	logFolderPath := os.Getenv("XSL_LOG_FOLDER")
 	if logFolderPath == "" {
 		logFolderPath = "/var/log"
 	}

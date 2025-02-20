@@ -203,17 +203,17 @@ install_x-sl() {
     cd /usr/local/
 
     if [ $# == 0 ]; then
-        tag_version=$(curl -Ls "https://api.github.com/repos/MasterHide/X-SL/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-        if [[ ! -n "$tag_version" ]]; then
-            echo -e "${red}Failed to fetch X-SL version, it may be due to GitHub API restrictions, please try it later${plain}"
-            exit 1
-        fi
-        echo -e "Got x-sl latest version: ${tag_version}, beginning the installation..."
-        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/${tag_version}/x-ui-linux-$(arch).tar.gz
-        if [[ $? -ne 0 ]]; then
-            echo -e "${red}Downloading x-sl failed, please be sure that your server can access GitHub ${plain}"
-            exit 1
-        fi
+    tag_version=$(curl -Ls "https://api.github.com/repos/MasterHide/X-SL/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ ! -n "$tag_version" ]]; then
+        echo -e "${red}Failed to fetch X-SL version, it may be due to GitHub API restrictions, please try it later${plain}"
+        exit 1
+    fi
+    echo -e "Got X-SL latest version: ${tag_version}, beginning the installation..."
+    wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz
+    if [[ $? -ne 0 ]]; then
+        echo -e "${red}Downloading X-SL failed, please be sure that your server can access GitHub ${plain}"
+        exit 1
+    fi
     else
         tag_version=$1
         tag_version_numeric=${tag_version#v}

@@ -209,7 +209,7 @@ install_x-sl() {
             exit 1
         fi
         echo -e "Got x-sl latest version: ${tag_version}, beginning the installation..."
-        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz
+        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/download/${tag_version}/Source code$(arch).tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}Downloading x-sl failed, please be sure that your server can access GitHub ${plain}"
             exit 1
@@ -224,8 +224,8 @@ install_x-sl() {
             exit 1
         fi
 
-        url="https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz"
-        echo -e "Beginning to install x-ui $1"
+        url="https://github.com/MasterHide/X-SL/releases/download/${tag_version}/Source code$(arch).tar.gz"
+        echo -e "Beginning to install x-sl $1"
         wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}Download x-sl $1 failed, please check if the version exists ${plain}"

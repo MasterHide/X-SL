@@ -12,9 +12,9 @@ import (
 	"syscall"
 	"time"
 
-	"x-ui/config"
-	"x-ui/logger"
-	"x-ui/util/common"
+	"x-sl/config"
+	"x-sl/logger"
+	"x-sl/util/common"
 )
 
 func GetBinaryName() string {
@@ -189,7 +189,7 @@ func (p *process) refreshVersion() {
 
 func (p *process) Start() (err error) {
 	if p.IsRunning() {
-		return errors.New("xray is already running")
+		return errors.New("xray is already working")
 	}
 
 	defer func() {
@@ -237,7 +237,7 @@ func (p *process) Start() (err error) {
 
 func (p *process) Stop() error {
 	if !p.IsRunning() {
-		return errors.New("xray is not running")
+		return errors.New("xray is not working")
 	}
 	return p.cmd.Process.Signal(syscall.SIGTERM)
 }

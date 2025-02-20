@@ -201,48 +201,6 @@ config_after_install() {
 
 install_x-sl() {
     cd /usr/local/
-
-    if [ $# == 0 ]; then
-    tag_version=$(curl -Ls "https://api.github.com/repos/MasterHide/X-SL/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [[ ! -n "$tag_version" ]]; then
-        echo -e "${red}Failed to fetch X-SL version, it may be due to GitHub API restrictions, please try it later${plain}"
-        exit 1
-    fi
-    echo -e "Got X-SL latest version: ${tag_version}, beginning the installation..."
-    wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz
-    if [[ $? -ne 0 ]]; then
-        echo -e "${red}Downloading X-SL failed, please be sure that your server can access GitHub ${plain}"
-        exit 1
-    fi
-    else
-        tag_version=$1
-        tag_version_numeric=${tag_version#v}
-        min_version="2.3.5"
-
-        if [[ "$(printf '%s\n' "$min_version" "$tag_version_numeric" | sort -V | head -n1)" != "$min_version" ]]; then
-            echo -e "${red}Please use a newer version (at least v1.0.0). Exiting installation.${plain}"
-            exit 1
-        fi
-
-        url="https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz"
-        echo -e "Beginning to install x-ui $1"
-        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz ${url}
-        if [[ $? -ne 0 ]]; then
-            echo -e "${red}Download x-sl $1 failed, please check if the version exists ${plain}"
-            exit 1
-        fi
-    fi
-
-    if [[ -e /usr/local/x-sl/ ]]; then
-        systemctl stop x-sl
-        rm /usr/local/x-sl/ -rf
-    fi
-
-    tar zxvf x-sl-linux-$(arch).tar.gz
-    rm x-sl-linux-$(arch).tar.gz -f
-    cd x-sl
-    chmod +x x-sl
-
     # Check the system's architecture and rename the file accordingly
     if [[ $(arch) == "armv5" || $(arch) == "armv6" || $(arch) == "armv7" ]]; then
         mv bin/xray-linux-$(arch) bin/xray-linux-arm

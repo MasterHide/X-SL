@@ -2,12 +2,12 @@
 version: "3"
 
 services:
-  3x-ui:
+  x-sl:
     image: ghcr.io/mhsanaei/3x-ui:latest
-    container_name: 3x-ui
+    container_name: x-sl
     hostname: yourhostname
     volumes:
-      - $PWD/db/:/etc/x-ui/
+      - $PWD/db/:/etc/x-sl/
       - $PWD/cert/:/root/cert/
     environment:
       XRAY_VMESS_AEAD_FORCED: "false"

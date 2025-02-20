@@ -13,4 +13,4 @@ bin/
 dist/
 release/
 /release.sh
-/x-ui
+/x-sl

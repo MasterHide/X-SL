@@ -17,7 +17,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Version (please complete the following information):**
- - 3X-UI Version : [e.g. 2.3.5]
+ - X-SL Version : [e.g. 1.0.0]
  - Xray Version : [e.g. 1.8.13]
 
 **Additional context**

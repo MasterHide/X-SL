@@ -1746,39 +1746,8 @@ show_usage() {
     local install="📥"
     local uninstall="📤"
 
-    # Menu content
-    local menu_content=(
-        "${blue}x-ui control menu usages (subcommands):${plain}"
-        " "
-        "${cyan}x-ui${plain}              - Admin Management Script"
-        "${green}x-ui start${plain}        - Start ${rocket}"
-        "${red}x-ui stop${plain}         - Stop ${stop}"
-        "${yellow}x-ui restart${plain}      - Restart ${refresh}"
-        "${purple}x-ui status${plain}       - Current Status ${status}"
-        "${cyan}x-ui settings${plain}     - Current Settings ${settings}"
-        "${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}"
-        "${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}"
-        "${yellow}x-ui log${plain}          - Check logs ${log}"
-        "${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}"
-        "${cyan}x-ui update${plain}       - Update ${update}"
-        "${green}x-ui legacy${plain}       - Legacy version ${legacy}"
-        "${red}x-ui install${plain}      - Install ${install}"
-        "${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}"
-    )
-
-    # Calculate the maximum line length
-    local max_length=0
-    for line in "${menu_content[@]}"; do
-        # Remove ANSI color codes before calculating length
-        local plain_line=$(echo -e "$line" | sed 's/\x1b\[[0-9;]*m//g')
-        local line_length=${#plain_line}
-        if ((line_length > max_length)); then
-            max_length=$line_length
-        fi
-    done
-
-    # Add padding (4 characters for borders and spacing)
-    local box_width=$((max_length + 4))
+    # Box width (increase this to make the box bigger)
+    local box_width=80
 
     # Function to pad text to fit the box width
     pad_text() {
@@ -1798,9 +1767,22 @@ show_usage() {
     done
     echo -e "┐"
 
-    for line in "${menu_content[@]}"; do
-        pad_text "$line"
-    done
+    pad_text "${blue}x-ui control menu usages (subcommands):${plain}"
+    pad_text " "
+    pad_text "${cyan}x-ui${plain}              - Admin Management Script"
+    pad_text "${green}x-ui start${plain}        - Start ${rocket}"
+    pad_text "${red}x-ui stop${plain}         - Stop ${stop}"
+    pad_text "${yellow}x-ui restart${plain}      - Restart ${refresh}"
+    pad_text "${purple}x-ui status${plain}       - Current Status ${status}"
+    pad_text "${cyan}x-ui settings${plain}     - Current Settings ${settings}"
+    pad_text "${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}"
+    pad_text "${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}"
+    pad_text "${yellow}x-ui log${plain}          - Check logs ${log}"
+    pad_text "${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}"
+    pad_text "${cyan}x-ui update${plain}       - Update ${update}"
+    pad_text "${green}x-ui legacy${plain}       - Legacy version ${legacy}"
+    pad_text "${red}x-ui install${plain}      - Install ${install}"
+    pad_text "${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}"
 
     echo -ne "└"
     for ((i = 0; i < box_width - 2; i++)); do

@@ -15,11 +15,11 @@ COPY . .
 
 ENV CGO_ENABLED=1
 ENV CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
-RUN go build -ldflags "-w -s" -o build/x-sl main.go
+RUN go build -ldflags "-w -s" -o build/x-ui main.go
 RUN ./DockerInit.sh "$TARGETARCH"
 
 # ========================================================
-# Stage: Final Image of X-SL
+# Stage: Final Image of 3x-ui
 # ========================================================
 FROM alpine
 ENV TZ=Asia/Tehran
@@ -33,7 +33,7 @@ RUN apk add --no-cache --update \
 
 COPY --from=builder /app/build/ /app/
 COPY --from=builder /app/DockerEntrypoint.sh /app/
-COPY --from=builder /app/x-ui.sh /usr/bin/x-sl
+COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
 
 
 # Configure fail2ban
@@ -45,10 +45,10 @@ RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
 
 RUN chmod +x \
   /app/DockerEntrypoint.sh \
-  /app/x-sl \
-  /usr/bin/x-sl
+  /app/x-ui \
+  /usr/bin/x-ui
 
-ENV X_SL_ENABLE_FAIL2BAN="true"
-VOLUME [ "/etc/x-sl" ]
-CMD [ "./x-sl" ]
+ENV X_UI_ENABLE_FAIL2BAN="true"
+VOLUME [ "/etc/x-ui" ]
+CMD [ "./x-ui" ]
 ENTRYPOINT [ "/app/DockerEntrypoint.sh" ]

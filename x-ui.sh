@@ -1746,48 +1746,69 @@ show_usage() {
     local install="📥"
     local uninstall="📤"
 
-    # Spinner animation (cross-terminal compatible)
-    spinner() {
-        local spinchars="/-\|"
-        while :; do
-            for ((i = 0; i < ${#spinchars}; i++)); do
-                echo -ne "\r${spinchars:$i:1} Loading..."
-                sleep 0.1
-            done
-        done
+    # Menu content
+    local menu_content=(
+        "${blue}x-ui control menu usages (subcommands):${plain}"
+        " "
+        "${cyan}x-ui${plain}              - Admin Management Script"
+        "${green}x-ui start${plain}        - Start ${rocket}"
+        "${red}x-ui stop${plain}         - Stop ${stop}"
+        "${yellow}x-ui restart${plain}      - Restart ${refresh}"
+        "${purple}x-ui status${plain}       - Current Status ${status}"
+        "${cyan}x-ui settings${plain}     - Current Settings ${settings}"
+        "${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}"
+        "${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}"
+        "${yellow}x-ui log${plain}          - Check logs ${log}"
+        "${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}"
+        "${cyan}x-ui update${plain}       - Update ${update}"
+        "${green}x-ui legacy${plain}       - Legacy version ${legacy}"
+        "${red}x-ui install${plain}      - Install ${install}"
+        "${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}"
+    )
+
+    # Calculate the maximum line length
+    local max_length=0
+    for line in "${menu_content[@]}"; do
+        # Remove ANSI color codes before calculating length
+        local plain_line=$(echo -e "$line" | sed 's/\x1b\[[0-9;]*m//g')
+        local line_length=${#plain_line}
+        if ((line_length > max_length)); then
+            max_length=$line_length
+        fi
+    done
+
+    # Add padding (4 characters for borders and spacing)
+    local box_width=$((max_length + 4))
+
+    # Function to pad text to fit the box width
+    pad_text() {
+        local text="$1"
+        local total_length=$((box_width - 4)) # Account for borders and padding
+        local text_length=$(echo -e "$text" | sed 's/\x1b\[[0-9;]*m//g' | wc -m)
+        local padding_length=$((total_length - text_length))
+        local padding_left=$((padding_length / 2))
+        local padding_right=$((padding_length - padding_left))
+        printf "│ %-${total_length}s │\n" "$text"
     }
 
-    # Start spinner in the background
-    spinner &
-    local spinner_pid=$!
-    sleep 2 # Simulate loading time
-    kill $spinner_pid >/dev/null 2>&1
-    wait $spinner_pid 2>/dev/null # Ensure the spinner stops completely
-    echo -ne "\r\033[K" # Clear the spinner line
-
     # Display the menu
-    echo -e "┌──────────────────────────────────────────────────────────────────────────────────┐"
-    echo -e "│             ${blue}x-ui control menu usages (subcommands):${plain}              │"
-    echo -e "│                                                                                  │"
-    echo -e "│  ${cyan}x-ui${plain}              - Admin Management Script                      │"
-    echo -e "│  ${green}x-ui start${plain}        - Start ${rocket}                             │"
-    echo -e "│  ${red}x-ui stop${plain}         - Stop ${stop}                                  │"
-    echo -e "│  ${yellow}x-ui restart${plain}      - Restart ${refresh}                         │"
-    echo -e "│  ${purple}x-ui status${plain}       - Current Status ${status}                   │"
-    echo -e "│  ${cyan}x-ui settings${plain}     - Current Settings ${settings}                 │"
-    echo -e "│  ${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}    │"
-    echo -e "│  ${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}    │"
-    echo -e "│  ${yellow}x-ui log${plain}          - Check logs ${log}                          │"
-    echo -e "│  ${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}          │"
-    echo -e "│  ${cyan}x-ui update${plain}       - Update ${update}                             │"
-    echo -e "│  ${green}x-ui legacy${plain}       - Legacy version ${legacy}                    │"
-    echo -e "│  ${red}x-ui install${plain}      - Install ${install}                            │"
-    echo -e "│  ${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}                     │"
-    echo -e "└──────────────────────────────────────────────────────────────────────────────────┘"
+    echo -ne "┌"
+    for ((i = 0; i < box_width - 2; i++)); do
+        echo -ne "─"
+    done
+    echo -e "┐"
+
+    for line in "${menu_content[@]}"; do
+        pad_text "$line"
+    done
+
+    echo -ne "└"
+    for ((i = 0; i < box_width - 2; i++)); do
+        echo -ne "─"
+    done
+    echo -e "┘"
 }
 
-# Call the function
-show_usage
 
 show_menu() {
     clear

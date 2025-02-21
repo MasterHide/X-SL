@@ -3,8 +3,8 @@ package model
 import (
 	"fmt"
 
-	"x-sl/util/json_util"
-	"x-sl/xray"
+	"x-ui/util/json_util"
+	"x-ui/xray"
 )
 
 type Protocol string

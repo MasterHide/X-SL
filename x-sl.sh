@@ -1,4 +1,4 @@
-#!/bin/bash x-sl x-sl
+#!/bin/bash
 
 red='\033[0;31m'
 green='\033[0;32m'

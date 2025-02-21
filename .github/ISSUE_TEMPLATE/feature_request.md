@@ -1,20 +1,32 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
+name: 🚀 Feature Request
+about: Suggest an idea to improve X-SL
+title: "[Feature] <Short Description>"
 labels: enhancement
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+📌 **Is Your Feature Request Related to a Problem? Please Describe.**  
+┌──────────────────────────────────────────────────────────┐  
+│ A clear and concise description of the issue.           │  
+│ Example: "I'm always frustrated when [...]"             │  
+└──────────────────────────────────────────────────────────┘  
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+💡 **Describe the Solution You'd Like**  
+┌──────────────────────────────────────────────────────────┐  
+│ A clear and concise description of what you want to      │  
+│ happen.                                                  │  
+└──────────────────────────────────────────────────────────┘  
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+🔄 **Describe Alternatives You've Considered**  
+┌──────────────────────────────────────────────────────────┐  
+│ If applicable, provide alternative solutions or features │  
+│ you've thought about.                                    │  
+└──────────────────────────────────────────────────────────┘  
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+🖼️ **Additional Context**  
+┌──────────────────────────────────────────────────────────┐  
+│ Include any other relevant details, screenshots, or      │  
+│ mockups to support your request.                         │  
+└──────────────────────────────────────────────────────────┘  

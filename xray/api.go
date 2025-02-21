@@ -1,3 +1,4 @@
+
 package xray
 
 import (
@@ -7,8 +8,8 @@ import (
 	"regexp"
 	"time"
 
-	"x-sl/logger"
-	"x-sl/util/common"
+	"x-ui/logger"
+	"x-ui/util/common"
 
 	"github.com/xtls/xray-core/app/proxyman/command"
 	statsService "github.com/xtls/xray-core/app/stats/command"

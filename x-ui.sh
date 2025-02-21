@@ -1802,7 +1802,7 @@ show_menu() {
     echo -e "${green}"
     for ((i=0; i<${#text}; i++)); do
         echo -n "${text:$i:1}"
-        sleep 0.02  # Reduced delay for faster animation
+        sleep 0.05  # Reduced delay for faster animation
     done
     echo -e "${plain}"
     sleep 0.2  # Short pause after the animation
@@ -1855,7 +1855,9 @@ show_menu() {
     echo -e "${red}24.${plain} Update Geo Files ${settings}"
     echo -e "${red}25.${plain} Speedtest by Ookla ${speed}"
     echo -e "${blue}──────────────────────────────────────────────${plain}"
-    }
+}
+
+
     
     show_status
     echo && read -p "Please enter your selection [0-25]: " num

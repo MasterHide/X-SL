@@ -8,9 +8,9 @@ import (
 	"os"
 	"path"
 
-	"x-sl/config"
-	"x-sl/database/model"
-	"x-sl/xray"
+	"x-ui/config"
+	"x-ui/database/model"
+	"x-ui/xray"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

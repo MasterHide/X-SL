@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"x-sl/logger"
+	"x-ui/logger"
 )
 
 func NewLogWriter() *LogWriter {

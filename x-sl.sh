@@ -143,7 +143,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -162,7 +162,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh
     if [[ $? == 0 ]]; then
         LOGI "X-SL Update is complete, Panel has automatically restarted "
         before_show_menu
@@ -233,7 +233,7 @@ uninstall() {
     echo ""
     echo -e "Uninstalled Successfully.\n"
     echo "If you need to install this panel again, you can use below command:"
-    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh)${plain}"
+    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/MasterHide/X-SL/main/install.sh${plain}"
     echo ""
     # Trap the SIGTERM signal
     trap delete_script SIGTERM

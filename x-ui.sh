@@ -1746,49 +1746,43 @@ show_usage() {
     local install="📥"
     local uninstall="📤"
 
-    # Box width (increase this to make the box bigger)
-    local box_width=80
-
-    # Function to pad text to fit the box width
-    pad_text() {
-        local text="$1"
-        local total_length=$((box_width - 4)) # Account for borders and padding
-        local text_length=$(echo -e "$text" | sed 's/\x1b\[[0-9;]*m//g' | wc -m)
-        local padding_length=$((total_length - text_length))
-        local padding_left=$((padding_length / 2))
-        local padding_right=$((padding_length - padding_left))
-        printf "│ %-${total_length}s │\n" "$text"
+    # Spinner animation (cross-terminal compatible)
+    spinner() {
+        local spinchars="/-\|"
+        while :; do
+            for ((i = 0; i < ${#spinchars}; i++)); do
+                echo -ne "\r${spinchars:$i:1} Loading..."
+                sleep 0.1
+            done
+        done
     }
 
+    # Start spinner in the background
+    spinner &
+    local spinner_pid=$!
+    sleep 2 # Simulate loading time
+    kill $spinner_pid >/dev/null 2>&1
+    echo -ne "\r\033[K" # Clear the spinner line
+
     # Display the menu
-    echo -ne "┌"
-    for ((i = 0; i < box_width - 2; i++)); do
-        echo -ne "─"
-    done
-    echo -e "┐"
-
-    pad_text "${blue}x-ui control menu usages (subcommands):${plain}"
-    pad_text " "
-    pad_text "${cyan}x-ui${plain}              - Admin Management Script"
-    pad_text "${green}x-ui start${plain}        - Start ${rocket}"
-    pad_text "${red}x-ui stop${plain}         - Stop ${stop}"
-    pad_text "${yellow}x-ui restart${plain}      - Restart ${refresh}"
-    pad_text "${purple}x-ui status${plain}       - Current Status ${status}"
-    pad_text "${cyan}x-ui settings${plain}     - Current Settings ${settings}"
-    pad_text "${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}"
-    pad_text "${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}"
-    pad_text "${yellow}x-ui log${plain}          - Check logs ${log}"
-    pad_text "${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}"
-    pad_text "${cyan}x-ui update${plain}       - Update ${update}"
-    pad_text "${green}x-ui legacy${plain}       - Legacy version ${legacy}"
-    pad_text "${red}x-ui install${plain}      - Install ${install}"
-    pad_text "${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}"
-
-    echo -ne "└"
-    for ((i = 0; i < box_width - 2; i++)); do
-        echo -ne "─"
-    done
-    echo -e "┘"
+    echo -e "┌───────────────────────────────────────────────────────────────────────┐"
+    echo -e "│        ${blue}x-ui control menu usages (subcommands):${plain}  "
+    echo -e "│                                                                  "
+    echo -e "│  ${cyan}x-ui${plain}              - Admin Management Script"
+    echo -e "│  ${green}x-ui start${plain}        - Start ${rocket}         "
+    echo -e "│  ${red}x-ui stop${plain}         - Stop ${stop}               "
+    echo -e "│  ${yellow}x-ui restart${plain}      - Restart ${refresh}              "
+    echo -e "│  ${purple}x-ui status${plain}       - Current Status ${status}             "
+    echo -e "│  ${cyan}x-ui settings${plain}     - Current Settings ${settings}           "
+    echo -e "│  ${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}  "
+    echo -e "│  ${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable} "
+    echo -e "│  ${yellow}x-ui log${plain}          - Check logs ${log}                     "
+    echo -e "│  ${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}      "
+    echo -e "│  ${cyan}x-ui update${plain}       - Update ${update}                        "
+    echo -e "│  ${green}x-ui legacy${plain}       - Legacy version ${legacy}         "
+    echo -e "│  ${red}x-ui install${plain}      - Install ${install}               "
+    echo -e "│  ${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}          "
+    echo -e "└───────────────────────────────────────────────────────────────────────┘"
 }
 
 

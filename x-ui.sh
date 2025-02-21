@@ -1855,6 +1855,7 @@ show_menu() {
     echo -e "${red}24.${plain} Update Geo Files ${settings}"
     echo -e "${red}25.${plain} Speedtest by Ookla ${speed}"
     echo -e "${blue}──────────────────────────────────────────────${plain}"
+    }
 "
     show_status
     echo && read -p "Please enter your selection [0-25]: " num

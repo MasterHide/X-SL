@@ -1,27 +1,31 @@
 #!/bin/bash
 
+# Color codes
 red='\033[0;31m'
 green='\033[0;32m'
 blue='\033[0;34m'
 yellow='\033[0;33m'
 plain='\033[0m'
 
-cur_dir=$(pwd)
+# Configurable paths
+INSTALL_DIR="${INSTALL_DIR:-/usr/local/x-sl}"
+BIN_DIR="${BIN_DIR:-/usr/bin}"
+LOG_FILE="/var/log/x-sl-install.log"
 
 # Logging functions
 LOGE() {
-    echo -e "${red}[ERROR] $* ${plain}"
+    echo -e "${red}[ERROR] $* ${plain}" | tee -a "$LOG_FILE"
 }
 
 LOGI() {
-    echo -e "${green}[INFO] $* ${plain}"
+    echo -e "${green}[INFO] $* ${plain}" | tee -a "$LOG_FILE"
 }
 
-log_file="/var/log/x-sl-install.log"
-touch $log_file
+# Ensure script is run as root
+[[ $EUID -ne 0 ]] && LOGE "Fatal error: Please run this script with root privileges." && exit 1
 
-# check root
-[[ $EUID -ne 0 ]] && LOGE "Fatal error: Please run this script with root privilege \n" && exit 1
+# Create log file
+touch "$LOG_FILE" || { LOGE "Failed to create log file: $LOG_FILE"; exit 1; }
 
 # Check OS and set release variable
 if [[ -f /etc/os-release ]]; then
@@ -31,11 +35,12 @@ elif [[ -f /usr/lib/os-release ]]; then
     source /usr/lib/os-release
     release=$ID
 else
-    LOGE "Failed to check the system OS, please contact the author!"
+    LOGE "Failed to check the system OS. Please contact the author!"
     exit 1
 fi
 LOGI "The OS release is: $release"
 
+# Function to detect CPU architecture
 arch() {
     case "$(uname -m)" in
     x86_64 | x64 | amd64) echo 'amd64' ;;
@@ -49,118 +54,48 @@ arch() {
     esac
 }
 
-LOGI "arch: $(arch)"
+LOGI "Detected architecture: $(arch)"
 
-os_version=""
-os_version=$(grep "^VERSION_ID" /etc/os-release | cut -d '=' -f2 | tr -d '"' | tr -d '.')
-
-if [[ "${release}" == "arch" ]]; then
-    LOGI "Your OS is Arch Linux"
-elif [[ "${release}" == "parch" ]]; then
-    LOGI "Your OS is Parch Linux"
-elif [[ "${release}" == "manjaro" ]]; then
-    LOGI "Your OS is Manjaro"
-elif [[ "${release}" == "armbian" ]]; then
-    LOGI "Your OS is Armbian"
-elif [[ "${release}" == "alpine" ]]; then
-    LOGI "Your OS is Alpine Linux"
-elif [[ "${release}" == "opensuse-tumbleweed" ]]; then
-    LOGI "Your OS is OpenSUSE Tumbleweed"
-elif [[ "${release}" == "openEuler" ]]; then
-    if [[ ${os_version} -lt 2203 ]]; then
-        LOGE "Please use OpenEuler 22.03 or higher"
-        exit 1
-    fi
-elif [[ "${release}" == "centos" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
-        LOGE "Please use CentOS 8 or higher"
-        exit 1
-    fi
-elif [[ "${release}" == "ubuntu" ]]; then
-    if [[ ${os_version} -lt 2004 ]]; then
-        LOGE "Please use Ubuntu 20 or higher version!"
-        exit 1
-    fi
-elif [[ "${release}" == "fedora" ]]; then
-    if [[ ${os_version} -lt 36 ]]; then
-        LOGE "Please use Fedora 36 or higher version!"
-        exit 1
-    fi
-elif [[ "${release}" == "amzn" ]]; then
-    if [[ ${os_version} != "2023" ]]; then
-        LOGE "Please use Amazon Linux 2023!"
-        exit 1
-    fi
-elif [[ "${release}" == "debian" ]]; then
-    if [[ ${os_version} -lt 11 ]]; then
-        LOGE "Please use Debian 11 or higher"
-        exit 1
-    fi
-elif [[ "${release}" == "almalinux" ]]; then
-    if [[ ${os_version} -lt 80 ]]; then
-        LOGE "Please use AlmaLinux 8.0 or higher"
-        exit 1
-    fi
-elif [[ "${release}" == "rocky" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
-        LOGE "Please use Rocky Linux 8 or higher"
-        exit 1
-    fi
-elif [[ "${release}" == "ol" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
-        LOGE "Please use Oracle Linux 8 or higher"
-        exit 1
-    fi
-else
-    LOGE "Your operating system is not supported by this script."
-    echo "Please ensure you are using one of the following supported operating systems:"
-    echo "- Ubuntu 20.04+"
-    echo "- Debian 11+"
-    echo "- CentOS 8+"
-    echo "- OpenEuler 22.03+"
-    echo "- Fedora 36+"
-    echo "- Arch Linux"
-    echo "- Parch Linux"
-    echo "- Manjaro"
-    echo "- Armbian"
-    echo "- AlmaLinux 8.0+"
-    echo "- Rocky Linux 8+"
-    echo "- Oracle Linux 8+"
-    echo "- OpenSUSE Tumbleweed"
-    echo "- Amazon Linux 2023"
-    exit 1
-fi
-
-install_base() {
-    case "${release}" in
-    ubuntu | debian | armbian)
-        apt-get update && apt-get install -y -q wget curl tar tzdata socat fail2ban
-        ;;
-    centos | almalinux | rocky | ol)
-        yum -y update && yum install -y -q wget curl tar tzdata socat fail2ban
-        ;;
-    fedora | amzn)
-        dnf -y update && dnf install -y -q wget curl tar tzdata socat fail2ban
-        ;;
-    arch | manjaro | parch)
-        pacman -Syu && pacman -Syu --noconfirm wget curl tar tzdata socat fail2ban
-        ;;
-    opensuse-tumbleweed)
-        zypper refresh && zypper -q install -y wget curl tar timezone socat fail2ban
-        ;;
-    *)
-        apt-get update && apt install -y -q wget curl tar tzdata socat fail2ban
-        ;;
-    esac
-}
-
+# Function to generate a random string
 gen_random_string() {
     local length="$1"
     local random_string=$(LC_ALL=C tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$length" | head -n 1)
+    if [[ -z "$random_string" ]]; then
+        LOGE "Failed to generate a random string. Please check /dev/urandom."
+        exit 1
+    fi
     echo "$random_string"
 }
 
+# Function to install base dependencies
+install_base() {
+    LOGI "Installing base dependencies..."
+    case "${release}" in
+    ubuntu | debian | armbian)
+        apt-get update && apt-get install -y -q wget curl tar tzdata socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    centos | almalinux | rocky | ol)
+        yum -y update && yum install -y -q wget curl tar tzdata socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    fedora | amzn)
+        dnf -y update && dnf install -y -q wget curl tar tzdata socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    arch | manjaro | parch)
+        pacman -Syu --noconfirm wget curl tar tzdata socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    opensuse-tumbleweed)
+        zypper refresh && zypper -q install -y wget curl tar timezone socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    *)
+        apt-get update && apt install -y -q wget curl tar tzdata socat fail2ban || { LOGE "Failed to install dependencies."; exit 1; }
+        ;;
+    esac
+    LOGI "Base dependencies installed successfully."
+}
+
+# Function to configure X-SL after installation
 config_after_install() {
+    LOGI "Configuring X-SL after installation..."
     local settings_output=$(/usr/local/x-sl/x-sl setting -show true)
     if [[ $? -ne 0 ]]; then
         LOGE "Failed to retrieve X-SL settings. Please check if X-SL is installed correctly."
@@ -226,19 +161,21 @@ config_after_install() {
     /usr/local/x-sl/x-sl migrate
 }
 
+# Function to install X-SL
 install_x-sl() {
-    cd /usr/local/
+    LOGI "Starting X-SL installation..."
+    cd /usr/local/ || { LOGE "Failed to change directory to /usr/local/"; exit 1; }
 
-    if [ $# == 0 ]; then
+    if [[ $# == 0 ]]; then
         tag_version=$(curl -Ls "https://api.github.com/repos/MasterHide/X-SL/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-        if [[ ! -n "$tag_version" ]]; then
+        if [[ -z "$tag_version" ]]; then
             LOGE "Failed to fetch X-SL version. Please check your internet connection or GitHub API status."
             exit 1
         fi
-        LOGI "Got x-sl latest version: ${tag_version}, beginning the installation..."
-        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz
+        LOGI "Got X-SL latest version: ${tag_version}, beginning the installation..."
+        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz "https://github.com/MasterHide/X-SL/releases/download/${tag_version}/x-sl-linux-$(arch).tar.gz"
         if [[ $? -ne 0 ]]; then
-            LOGE "Downloading x-sl failed, please be sure that your server can access GitHub"
+            LOGE "Downloading X-SL failed. Please ensure your server can access GitHub."
             exit 1
         fi
     else
@@ -256,27 +193,26 @@ install_x-sl() {
             LOGE "Invalid URL: $url. Please check if the version exists."
             exit 1
         fi
-        LOGI "Beginning to install x-sl $1"
-        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz ${url}
+        LOGI "Beginning to install X-SL $1"
+        wget -N --no-check-certificate -O /usr/local/x-sl-linux-$(arch).tar.gz "$url"
         if [[ $? -ne 0 ]]; then
-            LOGE "Download x-sl $1 failed, please check if the version exists"
+            LOGE "Download X-SL $1 failed. Please check if the version exists."
             exit 1
         fi
     fi
 
     if [[ -e /usr/local/x-sl/ ]]; then
         systemctl stop x-sl
-        rm /usr/local/x-sl/ -rf
+        rm -rf /usr/local/x-sl/
     fi
 
-    tar zxvf x-sl-linux-$(arch).tar.gz
+    tar zxvf x-sl-linux-$(arch).tar.gz -C "$INSTALL_DIR"
     if [[ $? -ne 0 ]]; then
-        LOGE "Failed to extract x-sl archive. Please check the file integrity."
+        LOGE "Failed to extract X-SL archive. Please check the file integrity."
         exit 1
     fi
     rm x-sl-linux-$(arch).tar.gz -f
-    cd x-sl
-    chmod +x x-sl
+    cd "$INSTALL_DIR" || { LOGE "Failed to change directory to $INSTALL_DIR"; exit 1; }
 
     # Check the system's architecture and rename the file accordingly
     if [[ $(arch) == "armv5" || $(arch) == "armv6" || $(arch) == "armv7" ]]; then
@@ -299,20 +235,20 @@ install_x-sl() {
 
     systemctl enable x-sl
     if [[ $? -ne 0 ]]; then
-        LOGE "Failed to enable x-sl service. Please check the systemd configuration."
+        LOGE "Failed to enable X-SL service. Please check the systemd configuration."
         exit 1
     fi
 
     systemctl start x-sl
     if [[ $? -ne 0 ]]; then
-        LOGE "Failed to start x-sl service. Please check the logs for more details."
+        LOGE "Failed to start X-SL service. Please check the logs for more details."
         exit 1
     fi
 
-    LOGI "x-sl ${tag_version} installation completed, running now..."
+    LOGI "X-SL ${tag_version} installation completed, running now..."
     echo -e ""
     echo -e "┌───────────────────────────────────────────────────────┐
-│  ${blue}x-sl control menu usages (subcommands):${plain}              │
+│  ${blue}X-SL control menu usages (subcommands):${plain}              │
 │                                                       │
 │  ${blue}x-sl${plain}              - Admin Management Script          │
 │  ${blue}x-sl start${plain}        - Start                            │
@@ -331,16 +267,7 @@ install_x-sl() {
 └───────────────────────────────────────────────────────┘"
 }
 
-cleanup() {
-    rm -rf /usr/local/x-sl-linux-$(arch).tar.gz
-    rm -rf /usr/local/x-sl/
-    systemctl stop x-sl
-    systemctl disable x-sl
-    rm -f /etc/systemd/system/x-sl.service
-}
-
-trap cleanup EXIT
-
-LOGI "Running..."
+# Main script execution
+LOGI "Running X-SL installation..."
 install_base
-install_x-sl $1
+install_x-sl "$1"

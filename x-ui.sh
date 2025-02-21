@@ -1721,25 +1721,72 @@ SSH_port_forwarding() {
 }
 
 show_usage() {
-    echo -e "┌───────────────────────────────────────────────────────┐
-│  ${blue}x-ui control menu usages (subcommands):${plain}              │
-│                                                       │
-│  ${blue}x-ui${plain}              - Admin Management Script          │
-│  ${blue}x-ui start${plain}        - Start                            │
-│  ${blue}x-ui stop${plain}         - Stop                             │
-│  ${blue}x-ui restart${plain}      - Restart                          │
-│  ${blue}x-ui status${plain}       - Current Status                   │
-│  ${blue}x-ui settings${plain}     - Current Settings                 │
-│  ${blue}x-ui enable${plain}       - Enable Autostart on OS Startup   │
-│  ${blue}x-ui disable${plain}      - Disable Autostart on OS Startup  │
-│  ${blue}x-ui log${plain}          - Check logs                       │
-│  ${blue}x-ui banlog${plain}       - Check Fail2ban ban logs          │
-│  ${blue}x-ui update${plain}       - Update                           │
-│  ${blue}x-ui legacy${plain}       - legacy version                   │
-│  ${blue}x-ui install${plain}      - Install                          │
-│  ${blue}x-ui uninstall${plain}    - Uninstall                        │
-└───────────────────────────────────────────────────────┘"
+    # Define colors
+    local blue="\033[1;94m"
+    local cyan="\033[1;96m"
+    local green="\033[1;92m"
+    local yellow="\033[1;93m"
+    local red="\033[1;91m"
+    local purple="\033[1;95m"
+    local plain="\033[0m"
+
+    # Icons (using Unicode characters)
+    local rocket="🚀"
+    local gear="⚙️"
+    local stop="🛑"
+    local refresh="🔄"
+    local status="📊"
+    local settings="⚙️"
+    local enable="✅"
+    local disable="❌"
+    local log="📜"
+    local banlog="🚫"
+    local update="🆙"
+    local legacy="🕰️"
+    local install="📥"
+    local uninstall="📤"
+
+    # Spinner animation (cross-terminal compatible)
+    spinner() {
+        local spinchars="/-\|"
+        while :; do
+            for ((i = 0; i < ${#spinchars}; i++)); do
+                echo -ne "\r${spinchars:$i:1} Loading..."
+                sleep 0.1
+            done
+        done
+    }
+
+    # Start spinner in the background
+    spinner &
+    local spinner_pid=$!
+    sleep 2 # Simulate loading time
+    kill $spinner_pid >/dev/null 2>&1
+    echo -ne "\r\033[K" # Clear the spinner line
+
+    # Display the menu
+    echo -e "┌───────────────────────────────────────────────────────┐"
+    echo -e "│  ${blue}x-ui control menu usages (subcommands):${plain}              │"
+    echo -e "│                                                       │"
+    echo -e "│  ${cyan}x-ui${plain}              - Admin Management Script          │"
+    echo -e "│  ${green}x-ui start${plain}        - Start ${rocket}                            │"
+    echo -e "│  ${red}x-ui stop${plain}         - Stop ${stop}                             │"
+    echo -e "│  ${yellow}x-ui restart${plain}      - Restart ${refresh}                          │"
+    echo -e "│  ${purple}x-ui status${plain}       - Current Status ${status}                   │"
+    echo -e "│  ${cyan}x-ui settings${plain}     - Current Settings ${settings}                 │"
+    echo -e "│  ${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}   │"
+    echo -e "│  ${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}  │"
+    echo -e "│  ${yellow}x-ui log${plain}          - Check logs ${log}                       │"
+    echo -e "│  ${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}          │"
+    echo -e "│  ${cyan}x-ui update${plain}       - Update ${update}                           │"
+    echo -e "│  ${green}x-ui legacy${plain}       - Legacy version ${legacy}                   │"
+    echo -e "│  ${red}x-ui install${plain}      - Install ${install}                          │"
+    echo -e "│  ${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}                        │"
+    echo -e "└───────────────────────────────────────────────────────┘"
 }
+
+# Call the function
+show_usage
 
 show_menu() {
     clear

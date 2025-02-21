@@ -1,9 +1,10 @@
+
 package xray
 
 import (
 	"bytes"
 
-	"x-sl/util/json_util"
+	"x-ui/util/json_util"
 )
 
 type Config struct {

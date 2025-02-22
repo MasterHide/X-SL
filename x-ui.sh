@@ -1809,7 +1809,7 @@ show_menu() {
 
     # Minimalist Menu
     echo -e "
-                      ${green}MENU${plain}
+                 ${green}MENU${plain}
 ──────────────────────────────────────────────
 ${red}0.${plain} Exit Script
 ──────────────────────────────────────────────

@@ -1765,24 +1765,24 @@ show_usage() {
     echo -ne "\r\033[K" # Clear the spinner line
 
     # Display the menu
-    echo -e "┌─────────────────────────────────────────────────────────────────────┐"
-    echo -e "│        ${blue}x-ui control menu usages (subcommands):${plain}       │"
-    echo -e "│                                                                     │"
-    echo -e "│  ${cyan}x-ui${plain}              - Admin Management Script         │"
-    echo -e "│  ${green}x-ui start${plain}        - Start ${rocket}                │"
-    echo -e "│  ${red}x-ui stop${plain}         - Stop ${stop}                     │"
-    echo -e "│  ${yellow}x-ui restart${plain}      - Restart ${refresh}            │"
-    echo -e "│  ${purple}x-ui status${plain}       - Current Status ${status}      │"
-    echo -e "│  ${cyan}x-ui settings${plain}     - Current Settings ${settings}    │"
-    echo -e "│  ${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}          │"
-    echo -e "│  ${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}          │"
-    echo -e "│  ${yellow}x-ui log${plain}          - Check logs ${log}             │"
-    echo -e "│  ${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}             │"
-    echo -e "│  ${cyan}x-ui update${plain}       - Update ${update}                │"
-    echo -e "│  ${green}x-ui legacy${plain}       - Legacy version ${legacy}       │"
-    echo -e "│  ${red}x-ui install${plain}      - Install ${install}               │"
-    echo -e "│  ${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}        │"
-    echo -e "└─────────────────────────────────────────────────────────────────────┘"
+    echo -e "┌────────────────────────────────────────────────────────────────┐"
+    echo -e "│        ${blue}x-ui control menu usages (subcommands):${plain}       "
+    echo -e "│                                                                     "
+    echo -e "│  ${cyan}x-ui${plain}              - Admin Management Script         "
+    echo -e "│  ${green}x-ui start${plain}        - Start ${rocket}                "
+    echo -e "│  ${red}x-ui stop${plain}         - Stop ${stop}                     "
+    echo -e "│  ${yellow}x-ui restart${plain}      - Restart ${refresh}            "
+    echo -e "│  ${purple}x-ui status${plain}       - Current Status ${status}      "
+    echo -e "│  ${cyan}x-ui settings${plain}     - Current Settings ${settings}    "
+    echo -e "│  ${green}x-ui enable${plain}       - Enable Autostart on OS Startup ${enable}   "
+    echo -e "│  ${red}x-ui disable${plain}      - Disable Autostart on OS Startup ${disable}    "
+    echo -e "│  ${yellow}x-ui log${plain}          - Check logs ${log}             "
+    echo -e "│  ${purple}x-ui banlog${plain}       - Check Fail2ban ban logs ${banlog}     "
+    echo -e "│  ${cyan}x-ui update${plain}       - Update ${update}                "
+    echo -e "│  ${green}x-ui legacy${plain}       - Legacy version ${legacy}       "
+    echo -e "│  ${red}x-ui install${plain}      - Install ${install}               "
+    echo -e "│  ${yellow}x-ui uninstall${plain}    - Uninstall ${uninstall}        "
+    echo -e "└────────────────────────────────────────────────────────────────┘"
 }
 
 
@@ -1798,11 +1798,11 @@ show_menu() {
     plain="\033[0m"
 
     # Animated text effect for the title
-    text="X-SL PANEL MANAGEMENT SCRIPT"
+    text="X-SL PANEL MANAGEMENT INTERFACE"
     echo -e "${green}"
     for ((i=0; i<${#text}; i++)); do
         echo -n "${text:$i:1}"
-        sleep 0.05  # Reduced delay for faster animation
+        sleep 0.02  # Reduced delay for faster animation
     done
     echo -e "${plain}"
     sleep 0.2  # Short pause after the animation

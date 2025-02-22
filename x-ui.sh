@@ -1807,55 +1807,42 @@ show_menu() {
     echo -e "${plain}"
     sleep 0.2  # Short pause after the animation
 
-    # Icons (using Unicode characters)
-    local server="🖥️"
-    local rocket="🚀"
-    local stop="🛑"
-    local refresh="🔄"
-    local settings="⚙️"
-    local lock="🔒"
-    local key="🔑"
-    local firewall="🔥"
-    local ssl="🔐"
-    local speed="🚀"
-    local bbr="📶"
-
     # Minimalist Menu
     echo -e "
-              ${green}MENU{plain}
+                ${green}MENU${plain}
 ──────────────────────────────────────────────
 ${red}0.${plain} Exit Script
 ──────────────────────────────────────────────
-${blue}1.${plain} Install ${server}
-${blue}2.${plain} Update ${refresh}
-${blue}3.${plain} Update Interface ${settings}
-${blue}4.${plain} Legacy Version 🕰️
-${blue}5.${plain} Uninstall ${stop}
+${blue}1.${plain} Install
+${blue}2.${plain} Update
+${blue}3.${plain} Update Interface
+${blue}4.${plain} Legacy Version
+${blue}5.${plain} Uninstall
 ──────────────────────────────────────────────
-${yellow}6.${plain} Reset Username, Password, & Secret Token ${key}
-${yellow}7.${plain} Reset Panel Web Base Path ${lock}
-${yellow}8.${plain} Reset Settings ${settings}
-${yellow}9.${plain} Change Port ${settings}
-${yellow}10.${plain} View Current Panel Info ${server}
+${yellow}6.${plain} Reset Username, Password, & Secret Token
+${yellow}7.${plain} Reset Panel Web Base Path
+${yellow}8.${plain} Reset Settings
+${yellow}9.${plain} Change Port
+${yellow}10.${plain} View Current Panel Info
 ──────────────────────────────────────────────
-${purple}11.${plain} Start ${rocket}
-${purple}12.${plain} Stop ${stop}
-${purple}13.${plain} Restart ${refresh}
-${purple}14.${plain} Check Status ${server}
-${purple}15.${plain} Logs Management ${settings}
+${purple}11.${plain} Start
+${purple}12.${plain} Stop
+${purple}13.${plain} Restart
+${purple}14.${plain} Check Status
+${purple}15.${plain} Logs Management
 ──────────────────────────────────────────────
-${cyan}16.${plain} Enable Autostart ${rocket}
-${cyan}17.${plain} Disable Autostart ${stop}
+${cyan}16.${plain} Enable Autostart
+${cyan}17.${plain} Disable Autostart
 ──────────────────────────────────────────────
-${green}18.${plain} SSL Certificate Management ${ssl}
-${green}19.${plain} Cloudflare SSL Certificate ${ssl}
-${green}20.${plain} IP Limit Management ${firewall}
-${green}21.${plain} Firewall Management ${firewall}
-${green}22.${plain} SSH Port Forwarding Management ${settings}
+${green}18.${plain} SSL Certificate Management
+${green}19.${plain} Cloudflare SSL Certificate
+${green}20.${plain} IP Limit Management
+${green}21.${plain} Firewall Management
+${green}22.${plain} SSH Port Forwarding Management
 ──────────────────────────────────────────────
-${red}23.${plain} Enable BBR ${bbr}
-${red}24.${plain} Update Geo Files ${settings}
-${red}25.${plain} Speedtest by Ookla ${speed}
+${red}23.${plain} Enable BBR
+${red}24.${plain} Update Geo Files
+${red}25.${plain} Speedtest by Ookla
 ──────────────────────────────────────────────
 "
     

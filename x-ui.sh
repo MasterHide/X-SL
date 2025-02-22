@@ -1809,40 +1809,40 @@ show_menu() {
 
     # Minimalist Menu
     echo -e "
-                ${green}MENU${plain}
+                      ${green}MENU${plain}
 ──────────────────────────────────────────────
 ${red}0.${plain} Exit Script
 ──────────────────────────────────────────────
-${blue}1.${plain} Install
-${blue}2.${plain} Update
+${blue}1.${plain} Install Panel
+${blue}2.${plain} Update Panel
 ${blue}3.${plain} Update Interface
-${blue}4.${plain} Legacy Version
-${blue}5.${plain} Uninstall
+${blue}4.${plain} Switch to Legacy Version
+${blue}5.${plain} Uninstall Panel
 ──────────────────────────────────────────────
 ${yellow}6.${plain} Reset Username, Password, & Secret Token
-${yellow}7.${plain} Reset Panel Web Base Path
-${yellow}8.${plain} Reset Settings
-${yellow}9.${plain} Change Port
+${yellow}7.${plain} Reset Web Base Path
+${yellow}8.${plain} Restore Default Settings
+${yellow}9.${plain} Modify Port Configuration
 ${yellow}10.${plain} View Current Panel Info
 ──────────────────────────────────────────────
-${purple}11.${plain} Start
-${purple}12.${plain} Stop
-${purple}13.${plain} Restart
-${purple}14.${plain} Check Status
-${purple}15.${plain} Logs Management
+${purple}11.${plain} Launch Panel
+${purple}12.${plain} Shutdown Panel
+${purple}13.${plain} Restart Panel
+${purple}14.${plain} Check Panel Status
+${purple}15.${plain} Manage Logs
 ──────────────────────────────────────────────
 ${cyan}16.${plain} Enable Autostart
 ${cyan}17.${plain} Disable Autostart
 ──────────────────────────────────────────────
-${green}18.${plain} SSL Certificate Management
+${green}18.${plain} Manage SSL Certificates important
 ${green}19.${plain} Cloudflare SSL Certificate
-${green}20.${plain} IP Limit Management
+${green}20.${plain} Manage IP Restrictions
 ${green}21.${plain} Firewall Management
-${green}22.${plain} SSH Port Forwarding Management
+${green}22.${plain} Manage SSH Port Forwarding
 ──────────────────────────────────────────────
-${red}23.${plain} Enable BBR
-${red}24.${plain} Update Geo Files
-${red}25.${plain} Speedtest by Ookla
+${red}23.${plain} Optimize with BBR
+${red}24.${plain} Update Geolocation Data
+${red}25.${plain} Run Speed Test (Ookla)
 ──────────────────────────────────────────────
 "
     

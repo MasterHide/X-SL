@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 {{template "head" .}}
 <style>
@@ -92,15 +92,15 @@
               <a-col :sm="24" :lg="12">
                 <a-card hoverable>
                   <b>X-SL:</b>
-                  <a rel="noopener" href="https://github.com/MasterHide/X-SL/releases" target="_blank"><a-tag color="green">v{{ .cur_ver }}</a-tag></a>
-                  <a rel="noopener" href="https://t.me/Xray_SL" target="_blank"><a-tag color="green">@XraySL</a-tag></a>
+                  <a rel="noopener" href="https://github.com/MasterHide/X-SL/releases" target="_blank"><a-tag color="blue">v{{ .cur_ver }}</a-tag></a>
+                  <a rel="noopener" href="https://t.me/Xray_SL" target="_blank"><a-tag color="blue">@XraySL</a-tag></a>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
                 <a-card hoverable>
                   <b>{{ i18n "pages.index.operationHours" }}:</b>
                   <a-tag :color="status.xray.color">Xray: [[ formatSecond(status.appStats.uptime) ]]</a-tag>
-                  <a-tag color="green">OS: [[ formatSecond(status.uptime) ]]</a-tag>
+                  <a-tag color="blue">OS: [[ formatSecond(status.uptime) ]]</a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
@@ -132,7 +132,7 @@
               <a-col :sm="24" :lg="12">
                 <a-card hoverable>
                   <b>{{ i18n "pages.index.systemLoad" }}:</b>
-                  <a-tag color="green">
+                  <a-tag color="blue">
                     <a-tooltip>
                           [[ status.loads[0] ]] | [[ status.loads[1] ]] | [[ status.loads[2] ]]
                       <template slot="title">
@@ -145,8 +145,8 @@
               <a-col :sm="24" :lg="12">
                 <a-card hoverable>
                   <b>{{ i18n "usage"}}:</b>
-                  <a-tag color="green"> RAM: [[ sizeFormat(status.appStats.mem) ]] </a-tag>
-                  <a-tag color="green"> Threads: [[ status.appStats.threads ]] </a-tag>
+                  <a-tag color="blue"> RAM: [[ sizeFormat(status.appStats.mem) ]] </a-tag>
+                  <a-tag color="blue"> Threads: [[ status.appStats.threads ]] </a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
@@ -263,7 +263,7 @@
       <a-alert type="warning" style="margin-bottom: 12px; width: fit-content"
         message='{{ i18n "pages.index.xraySwitchClickDesk" }}' show-icon></a-alert>
       <template v-for="version, index in versionModal.versions">
-        <a-tag :color="index % 2 == 0 ? 'purple' : 'green'" style="margin-right: 12px; margin-bottom: 12px"
+        <a-tag :color="index % 2 == 0 ? 'purple' : 'blue'" style="margin-right: 12px; margin-bottom: 12px"
           @click="switchV2rayVersion(version)">
           [[ version ]]
         </a-tag>
@@ -360,7 +360,7 @@
         get color() {
             const percent = this.percent;
             if (percent < 80) {
-                return '#008771'; // Green
+                return '#26811C'; // Green
             } else if (percent < 90) {
                 return "#f37b24"; // Orange
             } else {
@@ -411,7 +411,7 @@
             this.xray = data.xray;
             switch (this.xray.state) {
                 case State.Running:
-                    this.xray.color = "green";
+                    this.xray.color = "blue";
                     break;
                 case State.Stop:
                     this.xray.color = "orange";

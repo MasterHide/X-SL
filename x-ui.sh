@@ -1051,6 +1051,7 @@ ssl_cert_issue_main() {
 ssl_cert_issue() {
     local existing_webBasePath=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
     local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+    
     # check for acme.sh first
     if ! command -v ~/.acme.sh/acme.sh &>/dev/null; then
         echo "acme.sh could not be found. we will install it"
@@ -1061,7 +1062,7 @@ ssl_cert_issue() {
         fi
     fi
 
-    # install socat second
+    # install socat
     case "${release}" in
     ubuntu | debian | armbian)
         apt update && apt install socat -y
@@ -1112,24 +1113,18 @@ ssl_cert_issue() {
         mkdir -p "$certPath"
     fi
 
-    # get the port number for the standalone server
-    local WebPort=80
-    read -p "Please choose which port to use (default is 80): " WebPort
-    if [[ ${WebPort} -gt 65535 || ${WebPort} -lt 1 ]]; then
-        LOGE "Your input ${WebPort} is invalid, will use default port 80."
-        WebPort=80
-    fi
-    LOGI "Will use port: ${WebPort} to issue certificates. Please make sure this port is open."
-
-    # issue the certificate
+    # issue the certificate using standalone mode
     ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-    ~/.acme.sh/acme.sh --issue -d ${domain} --listen-v6 --standalone --httpport ${WebPort}
+    ~/.acme.sh/acme.sh --issue --force --standalone -d ${domain} \
+        --fullchain-file /root/cert/${domain}/fullchain.pem \
+        --key-file /root/cert/${domain}/privkey.pem
+
     if [ $? -ne 0 ]; then
         LOGE "Issuing certificate failed, please check logs."
         rm -rf ~/.acme.sh/${domain}
         exit 1
     else
-        LOGE "Issuing certificate succeeded, installing certificates..."
+        LOGI "Issuing certificate succeeded, installing certificates..."
     fi
 
     # install the certificate
@@ -1158,24 +1153,22 @@ ssl_cert_issue() {
         chmod 755 $certPath/*
     fi
 
-    # Prompt user to set panel paths after successful certificate installation
-    read -p "Would you like to set this certificate for the panel? (y/n): " setPanel
-    if [[ "$setPanel" == "y" || "$setPanel" == "Y" ]]; then
-        local webCertFile="/root/cert/${domain}/fullchain.pem"
-        local webKeyFile="/root/cert/${domain}/privkey.pem"
+    # Automatically set the certificate paths for the panel
+    local webCertFile="/root/cert/${domain}/fullchain.pem"
+    local webKeyFile="/root/cert/${domain}/privkey.pem"
 
-        if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-            /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
-            LOGI "Panel paths set for domain: $domain"
-            LOGI "  - Certificate File: $webCertFile"
-            LOGI "  - Private Key File: $webKeyFile"
-            echo -e "${green}Access URL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
-            restart
-        else
-            LOGE "Error: Certificate or private key file not found for domain: $domain."
-        fi
+    if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
+        /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+        LOGI "Panel paths set for domain: $domain"
+        LOGI "  - Certificate File: $webCertFile"
+        LOGI "  - Private Key File: $webKeyFile"
+        echo -e "${green}Access URL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
+        
+        # Restart the panel to apply SSL
+        systemctl restart x-ui
+        LOGI "Panel restarted to apply SSL configuration."
     else
-        LOGI "Skipping panel path setting."
+        LOGE "Error: Certificate or private key file not found for domain: $domain."
     fi
 }
 

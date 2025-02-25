@@ -1718,6 +1718,9 @@ ${red}23.${plain} Optimize with BBR
 ${red}24.${plain} Update Geolocation Data
 ${red}25.${plain} Run Speed Test (Ookla)
 ──────────────────────────────────────────────
+${purple}26.${plain} Block-publictorrent-iptables
+${purple}27.${plain} Automated Server Boot System
+──────────────────────────────────────────────
 "
     
     show_status
@@ -1802,8 +1805,22 @@ ${red}25.${plain} Run Speed Test (Ookla)
     25)
         run_speedtest
         ;;
+
+    26)
+        echo "Installing Block-publictorrent-iptables..."
+        sudo wget https://github.com/MasterHide/block-publictorrent-iptables/raw/main/bt.sh && \
+        sudo chmod +x bt.sh && \
+        sudo bash bt.sh
+        ;;
+        
+    27)
+        echo "Installing Automated Server Management System..."
+        curl -O https://raw.githubusercontent.com/MasterHide/A-M-S/main/sr-system.sh && \
+        chmod +x sr-system.sh && \
+        sudo ./sr-system.sh
+        ;;
     *)
-        LOGE "Please enter the correct number [0-25]"
+        LOGE "Please enter the correct number [0-27]"
         ;;
     esac
 }

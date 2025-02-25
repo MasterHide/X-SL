@@ -1052,17 +1052,17 @@ ssl_cert_issue() {
     local existing_webBasePath=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
     local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
     
-    # check for acme.sh first
+    # Check for acme.sh first
     if ! command -v ~/.acme.sh/acme.sh &>/dev/null; then
-        echo "acme.sh could not be found. we will install it"
+        echo "acme.sh could not be found. Installing..."
         install_acme
         if [ $? -ne 0 ]; then
-            LOGE "install acme failed, please check logs"
+            LOGE "Installation of acme.sh failed. Please check logs."
             exit 1
         fi
     fi
 
-    # install socat
+    # Install socat
     case "${release}" in
     ubuntu | debian | armbian)
         apt update && apt install socat -y
@@ -1077,34 +1077,39 @@ ssl_cert_issue() {
         pacman -Sy --noconfirm socat
         ;;
     *)
-        echo -e "${red}Unsupported operating system. Please check the script and install the necessary packages manually.${plain}\n"
+        echo -e "${red}Unsupported operating system. Install required packages manually.${plain}\n"
         exit 1
         ;;
     esac
     if [ $? -ne 0 ]; then
-        LOGE "install socat failed, please check logs"
+        LOGE "Installation of socat failed. Please check logs."
         exit 1
     else
-        LOGI "install socat succeed..."
+        LOGI "Installation of socat succeeded."
     fi
 
-    # get the domain here, and we need to verify it
+    # Get the domain from user
     local domain=""
-    read -p "Please enter your domain name: " domain
-    LOGD "Your domain is: ${domain}, checking it..."
+    read -p "Enter your domain name: " domain
+    LOGD "Your domain: ${domain}. Verifying..."
 
-    # check if there already exists a certificate
+    # Get the port from user
+    local port=""
+    read -p "Enter the port for issuing SSL (Default: 80): " port
+    port=${port:-80} # Use 80 if no input
+
+    # Check if a certificate already exists
     local currentCert=$(~/.acme.sh/acme.sh --list | tail -1 | awk '{print $1}')
     if [ "${currentCert}" == "${domain}" ]; then
         local certInfo=$(~/.acme.sh/acme.sh --list)
-        LOGE "System already has certificates for this domain. Cannot issue again. Current certificate details:"
+        LOGE "A certificate already exists for this domain. Cannot issue again. Current certificate details:"
         LOGI "$certInfo"
         exit 1
     else
-        LOGI "Your domain is ready for issuing certificates now..."
+        LOGI "Domain is ready for certificate issuance."
     fi
 
-    # create a directory for the certificate
+    # Create a directory for the certificate
     certPath="/root/cert/${domain}"
     if [ ! -d "$certPath" ]; then
         mkdir -p "$certPath"
@@ -1113,42 +1118,42 @@ ssl_cert_issue() {
         mkdir -p "$certPath"
     fi
 
-    # issue the certificate using standalone mode
+    # Issue the certificate using standalone mode with the specified port
     ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-    ~/.acme.sh/acme.sh --issue --force --standalone -d ${domain} \
+    ~/.acme.sh/acme.sh --issue --force --standalone -d ${domain} --httpport ${port} \
         --fullchain-file /root/cert/${domain}/fullchain.pem \
         --key-file /root/cert/${domain}/privkey.pem
 
     if [ $? -ne 0 ]; then
-        LOGE "Issuing certificate failed, please check logs."
+        LOGE "Certificate issuance failed. Check logs."
         rm -rf ~/.acme.sh/${domain}
         exit 1
     else
-        LOGI "Issuing certificate succeeded, installing certificates..."
+        LOGI "Certificate issuance succeeded. Installing..."
     fi
 
-    # install the certificate
+    # Install the certificate
     ~/.acme.sh/acme.sh --installcert -d ${domain} \
         --key-file /root/cert/${domain}/privkey.pem \
         --fullchain-file /root/cert/${domain}/fullchain.pem
 
     if [ $? -ne 0 ]; then
-        LOGE "Installing certificate failed, exiting."
+        LOGE "Installation of certificate failed. Exiting."
         rm -rf ~/.acme.sh/${domain}
         exit 1
     else
-        LOGI "Installing certificate succeeded, enabling auto renew..."
+        LOGI "Certificate installed successfully. Enabling auto-renew..."
     fi
 
-    # enable auto-renew
+    # Enable auto-renew
     ~/.acme.sh/acme.sh --upgrade --auto-upgrade
     if [ $? -ne 0 ]; then
-        LOGE "Auto renew failed, certificate details:"
+        LOGE "Auto-renew setup failed."
         ls -lah cert/*
         chmod 755 $certPath/*
         exit 1
     else
-        LOGI "Auto renew succeeded, certificate details:"
+        LOGI "Auto-renew enabled. Certificate details:"
         ls -lah cert/*
         chmod 755 $certPath/*
     fi
@@ -1159,136 +1164,16 @@ ssl_cert_issue() {
 
     if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
         /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
-        LOGI "Panel paths set for domain: $domain"
-        LOGI "  - Certificate File: $webCertFile"
-        LOGI "  - Private Key File: $webKeyFile"
+        LOGI "Panel SSL paths set for domain: $domain"
+        LOGI "  - Certificate: $webCertFile"
+        LOGI "  - Private Key: $webKeyFile"
         echo -e "${green}Access URL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
         
-        # Restart the panel to apply SSL
+        # Restart x-ui panel to apply SSL
         systemctl restart x-ui
-        LOGI "Panel restarted to apply SSL configuration."
+        LOGI "x-ui panel restarted with new SSL settings."
     else
-        LOGE "Error: Certificate or private key file not found for domain: $domain."
-    fi
-}
-
-ssl_cert_issue_CF() {
-    local existing_webBasePath=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
-    local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
-    LOGI "****** Instructions for Use ******"
-    LOGI "Follow the steps below to complete the process:"
-    LOGI "1. Cloudflare Registered E-mail."
-    LOGI "2. Cloudflare Global API Key."
-    LOGI "3. The Domain Name."
-    LOGI "4. Once the certificate is issued, you will be prompted to set the certificate for the panel (optional)."
-    LOGI "5. The script also supports automatic renewal of the SSL certificate after installation."
-
-    confirm "Do you confirm the information and wish to proceed? [y/n]" "y"
-
-    if [ $? -eq 0 ]; then
-        # Check for acme.sh first
-        if ! command -v ~/.acme.sh/acme.sh &>/dev/null; then
-            echo "acme.sh could not be found. We will install it."
-            install_acme
-            if [ $? -ne 0 ]; then
-                LOGE "Install acme failed, please check logs."
-                exit 1
-            fi
-        fi
-
-        CF_Domain=""
-        certPath="/root/cert-CF"
-        if [ ! -d "$certPath" ]; then
-            mkdir -p $certPath
-        else
-            rm -rf $certPath
-            mkdir -p $certPath
-        fi
-
-        LOGD "Please set a domain name:"
-        read -p "Input your domain here: " CF_Domain
-        LOGD "Your domain name is set to: ${CF_Domain}"
-
-        # Set up Cloudflare API details
-        CF_GlobalKey=""
-        CF_AccountEmail=""
-        LOGD "Please set the API key:"
-        read -p "Input your key here: " CF_GlobalKey
-        LOGD "Your API key is: ${CF_GlobalKey}"
-
-        LOGD "Please set up registered email:"
-        read -p "Input your email here: " CF_AccountEmail
-        LOGD "Your registered email address is: ${CF_AccountEmail}"
-
-        # Set the default CA to Let's Encrypt
-        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-        if [ $? -ne 0 ]; then
-            LOGE "Default CA, Let'sEncrypt fail, script exiting..."
-            exit 1
-        fi
-
-        export CF_Key="${CF_GlobalKey}"
-        export CF_Email="${CF_AccountEmail}"
-
-        # Issue the certificate using Cloudflare DNS
-        ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${CF_Domain} -d *.${CF_Domain} --log
-        if [ $? -ne 0 ]; then
-            LOGE "Certificate issuance failed, script exiting..."
-            exit 1
-        else
-            LOGI "Certificate issued successfully, Installing..."
-        fi
-
-        # Install the certificate
-        mkdir -p ${certPath}/${CF_Domain}
-        if [ $? -ne 0 ]; then
-            LOGE "Failed to create directory: ${certPath}/${CF_Domain}"
-            exit 1
-        fi
-
-        ~/.acme.sh/acme.sh --installcert -d ${CF_Domain} -d *.${CF_Domain} \
-            --fullchain-file ${certPath}/${CF_Domain}/fullchain.pem \
-            --key-file ${certPath}/${CF_Domain}/privkey.pem
-
-        if [ $? -ne 0 ]; then
-            LOGE "Certificate installation failed, script exiting..."
-            exit 1
-        else
-            LOGI "Certificate installed successfully, Turning on automatic updates..."
-        fi
-
-        # Enable auto-update
-        ~/.acme.sh/acme.sh --upgrade --auto-upgrade
-        if [ $? -ne 0 ]; then
-            LOGE "Auto update setup failed, script exiting..."
-            exit 1
-        else
-            LOGI "The certificate is installed and auto-renewal is turned on. Specific information is as follows:"
-            ls -lah ${certPath}/${CF_Domain}
-            chmod 755 ${certPath}/${CF_Domain}
-        fi
-
-        # Prompt user to set panel paths after successful certificate installation
-        read -p "Would you like to set this certificate for the panel? (y/n): " setPanel
-        if [[ "$setPanel" == "y" || "$setPanel" == "Y" ]]; then
-            local webCertFile="${certPath}/${CF_Domain}/fullchain.pem"
-            local webKeyFile="${certPath}/${CF_Domain}/privkey.pem"
-
-            if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-                /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
-                LOGI "Panel paths set for domain: $CF_Domain"
-                LOGI "  - Certificate File: $webCertFile"
-                LOGI "  - Private Key File: $webKeyFile"
-                echo -e "${green}Access URL: https://${CF_Domain}:${existing_port}${existing_webBasePath}${plain}"
-                restart
-            else
-                LOGE "Error: Certificate or private key file not found for domain: $CF_Domain."
-            fi
-        else
-            LOGI "Skipping panel path setting."
-        fi
-    else
-        show_menu
+        LOGE "Error: Certificate or private key not found for domain: $domain."
     fi
 }
 

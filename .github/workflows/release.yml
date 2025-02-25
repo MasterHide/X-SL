@@ -45,7 +45,7 @@ jobs:
             sudo apt install gcc-s390x-linux-gnu
           fi
 
-      - name: Build x-sl
+      - name: Build x-ui
         run: |
           export CGO_ENABLED=1
           export GOOS=linux
@@ -72,18 +72,18 @@ jobs:
             export GOARCH=s390x
             export CC=s390x-linux-gnu-gcc
           fi
-          go build -ldflags "-w -s" -o xsl-release -v main.go
+          go build -ldflags "-w -s" -o xui-release -v main.go
           
-          mkdir x-sl
-          cp xsl-release x-sl/
-          cp x-sl.service x-sl/
-          cp x-sl.sh x-sl/
-          mv x-sl/xsl-release x-sl/x-sl
-          mkdir x-sl/bin
-          cd x-sl/bin
+          mkdir x-ui
+          cp xui-release x-ui/
+          cp x-ui.service x-ui/
+          cp x-ui.sh x-ui/
+          mv x-ui/xui-release x-ui/x-ui
+          mkdir x-ui/bin
+          cd x-ui/bin
           
           # Download dependencies
-          Xray_URL="https://github.com/XTLS/Xray-core/releases/download/v25.1.30/"
+          Xray_URL="https://github.com/XTLS/Xray-core/releases/download/v25.2.21/"
           if [ "${{ matrix.platform }}" == "amd64" ]; then
             wget -q ${Xray_URL}Xray-linux-64.zip
             unzip Xray-linux-64.zip
@@ -129,14 +129,14 @@ jobs:
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: x-sl-linux-${{ matrix.platform }}
-          path: ./x-sl-linux-${{ matrix.platform }}.tar.gz
+          name: x-ui-linux-${{ matrix.platform }}
+          path: ./x-ui-linux-${{ matrix.platform }}.tar.gz
 
       - name: Upload files to GH release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref }}
-          file: x-sl-linux-${{ matrix.platform }}.tar.gz
-          asset_name: x-sl-linux-${{ matrix.platform }}.tar.gz
+          file: x-ui-linux-${{ matrix.platform }}.tar.gz
+          asset_name: x-ui-linux-${{ matrix.platform }}.tar.gz
           prerelease: true

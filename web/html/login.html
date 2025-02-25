@@ -181,7 +181,7 @@
                 const msg = await HttpUtil.post('/login', this.user);
                 this.loading = false;
                 if (msg.success) {
-                    location.href = basePath + 'xsl/';
+                    location.href = basePath + 'panel/';
                 }
             }
         },

@@ -1053,8 +1053,8 @@ ssl_cert_issue() {
     local existing_port=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
     
     # Check for acme.sh first
-    if [ ! -f ~/.acme.sh/acme.sh ]; then
-        echo "acme.sh not found. Installing..."
+    if ! command -v ~/.acme.sh/acme.sh &>/dev/null; then
+        echo "acme.sh could not be found. Installing..."
         install_acme
         if [ $? -ne 0 ]; then
             LOGE "Installation of acme.sh failed. Please check logs."
@@ -1062,24 +1062,24 @@ ssl_cert_issue() {
         fi
     fi
 
-    # Install socat (required for acme.sh standalone mode)
+    # Install socat
     case "${release}" in
-        ubuntu | debian | armbian)
-            apt update && apt install socat -y
-            ;;
-        centos | almalinux | rocky | ol)
-            yum -y update && yum -y install socat
-            ;;
-        fedora | amzn)
-            dnf -y update && dnf -y install socat
-            ;;
-        arch | manjaro | parch)
-            pacman -Sy --noconfirm socat
-            ;;
-        *)
-            echo -e "${red}Unsupported operating system. Install required packages manually.${plain}\n"
-            exit 1
-            ;;
+    ubuntu | debian | armbian)
+        apt update && apt install socat -y
+        ;;
+    centos | almalinux | rocky | ol)
+        yum -y update && yum -y install socat
+        ;;
+    fedora | amzn)
+        dnf -y update && dnf -y install socat
+        ;;
+    arch | manjaro | parch)
+        pacman -Sy --noconfirm socat
+        ;;
+    *)
+        echo -e "${red}Unsupported operating system. Install required packages manually.${plain}\n"
+        exit 1
+        ;;
     esac
     if [ $? -ne 0 ]; then
         LOGE "Installation of socat failed. Please check logs."
@@ -1099,62 +1099,84 @@ ssl_cert_issue() {
     port=${port:-80} # Use 80 if no input
 
     # Check if a certificate already exists
-    if ~/.acme.sh/acme.sh --list | grep -q "${domain}"; then
-        LOGI "A certificate already exists for this domain. Attempting renewal..."
-        ~/.acme.sh/acme.sh --renew -d ${domain} --force
+    local currentCert=$(~/.acme.sh/acme.sh --list | tail -1 | awk '{print $1}')
+    if [ "${currentCert}" == "${domain}" ]; then
+        local certInfo=$(~/.acme.sh/acme.sh --list)
+        LOGE "A certificate already exists for this domain. Cannot issue again. Current certificate details:"
+        LOGI "$certInfo"
+        exit 1
     else
-        LOGI "No existing certificate found. Issuing a new one..."
-        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-        ~/.acme.sh/acme.sh --issue --force --standalone -d ${domain} --httpport ${port} --keylength ec-256
+        LOGI "Domain is ready for certificate issuance."
     fi
 
-    # Verify if the certificate was successfully issued
+    # Create a directory for the certificate
+    certPath="/root/cert/${domain}"
+    if [ ! -d "$certPath" ]; then
+        mkdir -p "$certPath"
+    else
+        rm -rf "$certPath"
+        mkdir -p "$certPath"
+    fi
+
+    # Issue the certificate using standalone mode with the specified port
+    ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+    ~/.acme.sh/acme.sh --issue --force --standalone -d ${domain} --httpport ${port} \
+        --fullchain-file /root/cert/${domain}/fullchain.pem \
+        --key-file /root/cert/${domain}/privkey.pem
+
     if [ $? -ne 0 ]; then
         LOGE "Certificate issuance failed. Check logs."
+        rm -rf ~/.acme.sh/${domain}
         exit 1
-    fi
-
-    # Install the certificate and set correct file paths
-    certPath="/root/.acme.sh/${domain}_ecc"
-    ~/.acme.sh/acme.sh --installcert -d ${domain} \
-        --key-file "${certPath}/${domain}.key" \
-        --fullchain-file "${certPath}/${domain}.cer"
-
-    # Check if the certificate files exist
-    if [[ -f "${certPath}/${domain}.cer" && -f "${certPath}/${domain}.key" ]]; then
-        LOGI "Certificate successfully installed:"
-        LOGI "  - Certificate: ${certPath}/${domain}.cer"
-        LOGI "  - Private Key: ${certPath}/${domain}.key"
     else
-        LOGE "Error: Certificate or private key not found!"
-        exit 1
+        LOGI "Certificate issuance succeeded. Installing..."
     fi
 
-    # Enable auto-renewal
-    ~/.acme.sh/acme.sh --install-cronjob
+    # Install the certificate
+    ~/.acme.sh/acme.sh --installcert -d ${domain} \
+        --key-file /root/cert/${domain}/privkey.pem \
+        --fullchain-file /root/cert/${domain}/fullchain.pem
+
+    if [ $? -ne 0 ]; then
+        LOGE "Installation of certificate failed. Exiting."
+        rm -rf ~/.acme.sh/${domain}
+        exit 1
+    else
+        LOGI "Certificate installed successfully. Enabling auto-renew..."
+    fi
+
+    # Enable auto-renew
+    ~/.acme.sh/acme.sh --upgrade --auto-upgrade
     if [ $? -ne 0 ]; then
         LOGE "Auto-renew setup failed."
+        ls -lah cert/*
+        chmod 755 $certPath/*
         exit 1
     else
-        LOGI "Auto-renew enabled."
+        LOGI "Auto-renew enabled. Certificate details:"
+        ls -lah cert/*
+        chmod 755 $certPath/*
     fi
 
-    # Automatically set the certificate paths for x-ui
-    if [[ -f "${certPath}/${domain}.cer" && -f "${certPath}/${domain}.key" ]]; then
-        /usr/local/x-ui/x-ui cert -webCert "${certPath}/${domain}.cer" -webCertKey "${certPath}/${domain}.key"
-        LOGI "x-ui SSL paths updated for domain: ${domain}"
-        LOGI "  - Certificate: ${certPath}/${domain}.cer"
-        LOGI "  - Private Key: ${certPath}/${domain}.key"
+    # Automatically set the certificate paths for the panel
+    local webCertFile="/root/cert/${domain}/fullchain.pem"
+    local webKeyFile="/root/cert/${domain}/privkey.pem"
+
+    if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
+        /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+        LOGI "Panel SSL paths set for domain: $domain"
+        LOGI "  - Certificate: $webCertFile"
+        LOGI "  - Private Key: $webKeyFile"
         echo -e "${green}Access URL: https://${domain}:${existing_port}${existing_webBasePath}${plain}"
         
         # Restart x-ui panel to apply SSL
         systemctl restart x-ui
         LOGI "x-ui panel restarted with new SSL settings."
     else
-        LOGE "Error: SSL certificate files not found. x-ui update failed!"
-        exit 1
+        LOGE "Error: Certificate or private key not found for domain: $domain."
     fi
 }
+
 
 run_speedtest() {
     # Check if Speedtest is already installed

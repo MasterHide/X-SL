@@ -71,8 +71,8 @@
 "link" = "Manage"
 
 [pages.login]
-"hello" = "Hello"
-"title" = "Welcome"
+"XraySL" = "XraySL"
+"title" = "welcome"
 "loginAgain" = "Your session has expired, please log in again"
 
 [pages.login.toasts]

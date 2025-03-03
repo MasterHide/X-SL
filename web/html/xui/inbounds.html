@@ -137,7 +137,7 @@
           </a-alert>
         </transition>
         <transition name="list" appear>
-          <a-card hoverable>
+          <a-card hoverable :bordered="false" class="modern-card">
             <a-row>
               <a-col :xs="24" :sm="24" :lg="12">
                 {{ i18n "pages.inbounds.totalDownUp" }}:
@@ -188,7 +188,7 @@
           </a-card>
         </transition>
         <transition name="list" appear>
-          <a-card hoverable>
+          <a-card hoverable :bordered="false" class="modern-card">
             <div slot="title">
               <a-row>
                 <a-col :xs="12" :sm="12" :lg="12">

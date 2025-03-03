@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 {{template "head" .}}
 <style>
@@ -36,101 +36,212 @@
             </a-alert>
           </transition>
           <transition name="list" appear>
+
+
             <a-row>
-              <a-card hoverable>
-                <a-row>
-                  <a-col :sm="24" :md="12">
-                    <a-row>
-                      <a-col :span="12" style="text-align: center">
-                        <a-progress type="dashboard" status="normal"
-                          :stroke-color="status.cpu.color"
-                          :percent="status.cpu.percent"></a-progress>
-                        <div><b>CPU:</b> [[ cpuCoreFormat(status.cpuCores) ]] <a-tooltip>
-                          <a-icon type="area-chart"></a-icon> 
-                          <template slot="title">
-                            <div><b>Logical Processors:</b> [[ (status.logicalPro) ]]</div>
-                            <div><b>Speed:</b> [[ cpuSpeedFormat(status.cpuSpeedMhz) ]]</div>
-                          </template>
-                        </a-tooltip></div>
-                      </a-col>
-                      <a-col :span="12" style="text-align: center">
-                        <a-progress type="dashboard" status="normal"
-                          :stroke-color="status.mem.color"
-                          :percent="status.mem.percent"></a-progress>
-                        <div>
-                          <b>{{ i18n "pages.index.memory"}}:</b> [[ sizeFormat(status.mem.current) ]] / [[ sizeFormat(status.mem.total) ]]
-                        </div>
-                      </a-col>
-                    </a-row>
+              <a-card hoverable :bordered="false" class="modern-card">
+                <!-- Header Row -->
+                <a-row :gutter="[16, 16]" style="text-align: center; font-weight: bold;">
+                  <a-col :span="6">
+                    <a-icon type="dashboard" style="color: #8E3FDE;" /> CPU
                   </a-col>
-                  <a-col :sm="24" :md="12">
-                    <a-row>
-                      <a-col :span="12" style="text-align: center">
-                        <a-progress type="dashboard" status="normal"
-                          :stroke-color="status.swap.color"
-                          :percent="status.swap.percent"></a-progress>
-                        <div>
-                          <b>Swap:</b> [[ sizeFormat(status.swap.current) ]] / [[ sizeFormat(status.swap.total) ]]
-                        </div>
-                      </a-col>
-                      <a-col :span="12" style="text-align: center">
-                        <a-progress type="dashboard" status="normal"
-                          :stroke-color="status.disk.color"
-                          :percent="status.disk.percent"></a-progress>
-                        <div>
-                          <b>{{ i18n "pages.index.hard"}}:</b> [[ sizeFormat(status.disk.current) ]] / [[ sizeFormat(status.disk.total) ]]
-                        </div>
-                      </a-col>
-                    </a-row>
+                  <a-col :span="6">
+                    <a-icon type="database" style="color: #3c89e8;" /> Memory
+                  </a-col>
+                  <a-col :span="6">
+                    <a-icon type="swap" style="color: #f37b24;" /> Swap
+                  </a-col>
+                  <a-col :span="6">
+                    <a-icon type="hdd" style="color: #cf3c3c;" /> Disk
+                  </a-col>
+                </a-row>
+            
+                <!-- Circular Progress Bars -->
+                <a-row :gutter="[16, 16]" style="text-align: center; margin-top: 16px;">
+                  <!-- CPU -->
+                  <a-col :span="6">
+                    <div class="circular-progress">
+                      <svg class="progress-ring" width="150" height="150">
+                        <circle
+                          class="progress-ring-background"
+                          stroke="#e0e0e06a"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                        />
+                        <circle
+                          class="progress-ring-circle"
+                          stroke="#8E3FDE"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                          :style="`stroke-dasharray: 408.4; stroke-dashoffset: ${408.4 - (408.4 * status.cpu.percent / 100)}`"
+                        />
+                      </svg>
+                      <div class="progress-text">[[ status.cpu.percent ]]%</div>
+                    </div>
+                  </a-col>
+            
+                  <!-- Memory -->
+                  <a-col :span="6">
+                    <div class="circular-progress">
+                      <svg class="progress-ring" width="150" height="150">
+                        <circle
+                          class="progress-ring-background"
+                          stroke="#e0e0e06a"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                        />
+                        <circle
+                          class="progress-ring-circle"
+                          stroke="#3c89e8"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                          :style="`stroke-dasharray: 408.4; stroke-dashoffset: ${408.4 - (408.4 * status.mem.percent / 100)}`"
+                        />
+                      </svg>
+                      <div class="progress-text">[[ status.mem.percent ]]%</div>
+                    </div>
+                  </a-col>
+            
+                  <!-- Swap -->
+                  <a-col :span="6">
+                    <div class="circular-progress">
+                      <svg class="progress-ring" width="150" height="150">
+                        <circle
+                          class="progress-ring-background"
+                          stroke="#e0e0e06a"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                        />
+                        <circle
+                          class="progress-ring-circle"
+                          stroke="#f37b24"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                          :style="`stroke-dasharray: 408.4; stroke-dashoffset: ${408.4 - (408.4 * status.swap.percent / 100)}`"
+                        />
+                      </svg>
+                      <div class="progress-text">[[ status.swap.percent ]]%</div>
+                    </div>
+                  </a-col>
+            
+                  <!-- Disk -->
+                  <a-col :span="6">
+                    <div class="circular-progress">
+                      <svg class="progress-ring" width="150" height="150">
+                        <circle
+                          class="progress-ring-background"
+                          stroke="#e0e0e06a"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                        />
+                        <circle
+                          class="progress-ring-circle"
+                          stroke="#cf3c3c"
+                          stroke-width="8"
+                          fill="transparent"
+                          r="65"
+                          cx="75"
+                          cy="75"
+                          :style="`stroke-dasharray: 408.4; stroke-dashoffset: ${408.4 - (408.4 * status.disk.percent / 100)}`"
+                        />
+                      </svg>
+                      <div class="progress-text">[[ status.disk.percent ]]%</div>
+                    </div>
+                  </a-col>
+                </a-row>
+            
+                <!-- Labels -->
+                <a-row :gutter="[16, 16]" style="text-align: center; margin-top: 16px;">
+                  <a-col :span="6">
+                    <div style="font-size: 14px; color: #8E3FDE;">[[ status.cpu.percent ]]%</div>
+                    <div style="font-size: 12px; color: #828181;">[[ cpuCoreFormat(status.cpuCores) ]] Cores</div>
+                    <div style="font-size: 12px; color: #828181;">[[ cpuSpeedFormat(status.cpuSpeedMhz) ]]</div>
+                  </a-col>
+                  <a-col :span="6">
+                    <div style="font-size: 14px; color: #3c89e8;">[[ status.mem.percent ]]%</div>
+                    <div style="font-size: 12px; color: #828181;">[[ sizeFormat(status.mem.current) ]] of [[ sizeFormat(status.mem.total) ]]</div>
+                  </a-col>
+                  <a-col :span="6">
+                    <div style="font-size: 14px; color: #f37b24;">[[ status.swap.percent ]]%</div>
+                    <div style="font-size: 12px; color: #828181;">[[ sizeFormat(status.swap.current) ]] of [[ sizeFormat(status.swap.total) ]]</div>
+                  </a-col>
+                  <a-col :span="6">
+                    <div style="font-size: 14px; color: #cf3c3c;">[[ status.disk.percent ]]%</div>
+                    <div style="font-size: 12px; color: #828181;">[[ sizeFormat(status.disk.current) ]] of [[ sizeFormat(status.disk.total) ]]</div>
                   </a-col>
                 </a-row>
               </a-card>
             </a-row>
+              
+           
+
           </transition>
           <transition name="list" appear>
             <a-row>
+              
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>X-SL:</b>
                   <a rel="noopener" href="https://github.com/MasterHide/X-SL/releases" target="_blank"><a-tag color="blue">v{{ .cur_ver }}</a-tag></a>
                   <a rel="noopener" href="https://t.me/Xray_SL" target="_blank"><a-tag color="blue">@XraySL</a-tag></a>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>{{ i18n "pages.index.operationHours" }}:</b>
                   <a-tag :color="status.xray.color">Xray: [[ formatSecond(status.appStats.uptime) ]]</a-tag>
                   <a-tag color="blue">OS: [[ formatSecond(status.uptime) ]]</a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>{{ i18n "pages.index.xrayStatus" }}:</b>
                   <a-tag style="text-transform: capitalize;" :color="status.xray.color">[[ status.xray.state ]] </a-tag>
                   <a-popover v-if="status.xray.state === State.Error" :overlay-class-name="themeSwitcher.currentTheme">
                     <span slot="title" style="font-size: 12pt">An error occurred while running Xray
-                      <a-tag color="purple" style="cursor: pointer; float: right;" @click="openLogs()">{{ i18n "pages.index.logs" }}</a-tag>
+                      <a-tag color="#290A77" style="cursor: pointer; float: right;" @click="openLogs()">{{ i18n "pages.index.logs" }}</a-tag>
                     </span>
                     <template slot="content">
                       <p style="max-width: 400px" v-for="line in status.xray.errorMsg.split('\n')">[[ line ]]</p>
                     </template>
                     <a-icon type="question-circle"></a-icon>
                   </a-popover>
-                  <a-tag color="purple" style="cursor: pointer;" @click="stopXrayService">{{ i18n "pages.index.stopXray" }}</a-tag>
-                  <a-tag color="purple" style="cursor: pointer;" @click="restartXrayService">{{ i18n "pages.index.restartXray" }}</a-tag>
-                  <a-tag color="purple" style="cursor: pointer;" @click="openSelectV2rayVersion">v[[ status.xray.version ]]</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="stopXrayService">{{ i18n "pages.index.stopXray" }}</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="restartXrayService">{{ i18n "pages.index.restartXray" }}</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="openSelectV2rayVersion">v[[ status.xray.version ]]</a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>{{ i18n "menu.link" }}:</b>
-                  <a-tag color="purple" style="cursor: pointer;" @click="openLogs()">{{ i18n "pages.index.logs" }}</a-tag>
-                  <a-tag color="purple" style="cursor: pointer;" @click="openConfig">{{ i18n "pages.index.config" }}</a-tag>
-                  <a-tag color="purple" style="cursor: pointer;" @click="openBackup">{{ i18n "pages.index.backup" }}</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="openLogs()">{{ i18n "pages.index.logs" }}</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="openConfig">{{ i18n "pages.index.config" }}</a-tag>
+                  <a-tag color="#290A77" style="cursor: pointer;" @click="openBackup">{{ i18n "pages.index.backup" }}</a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>{{ i18n "pages.index.systemLoad" }}:</b>
                   <a-tag color="blue">
                     <a-tooltip>
@@ -143,14 +254,14 @@
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <b>{{ i18n "usage"}}:</b>
                   <a-tag color="blue"> RAM: [[ sizeFormat(status.appStats.mem) ]] </a-tag>
                   <a-tag color="blue"> Threads: [[ status.appStats.threads ]] </a-tag>
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <a-row>
                     <a-col :span="12">
                       <a-tag>
@@ -176,7 +287,7 @@
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <a-row>
                     <a-col :span="12">
                       <a-tag>
@@ -202,7 +313,7 @@
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <a-row>
                     <a-col :span="12">
                       <a-tag>
@@ -228,7 +339,7 @@
                 </a-card>
               </a-col>
               <a-col :sm="24" :lg="12">
-                <a-card hoverable>
+                <a-card hoverable :bordered="false" class="modern-card">
                   <a-row>
                     <a-col :span="12">
                       <a-tag>
@@ -263,7 +374,7 @@
       <a-alert type="warning" style="margin-bottom: 12px; width: fit-content"
         message='{{ i18n "pages.index.xraySwitchClickDesk" }}' show-icon></a-alert>
       <template v-for="version, index in versionModal.versions">
-        <a-tag :color="index % 2 == 0 ? 'purple' : 'blue'" style="margin-right: 12px; margin-bottom: 12px"
+        <a-tag :color="index % 2 == 0 ? '#290A77' : 'blue'" style="margin-right: 12px; margin-bottom: 12px"
           @click="switchV2rayVersion(version)">
           [[ version ]]
         </a-tag>
@@ -360,7 +471,7 @@
         get color() {
             const percent = this.percent;
             if (percent < 80) {
-                return '#4343D2'; // Cerulean Blue
+                return '#8E3FDE'; // #290A77 Heart
             } else if (percent < 90) {
                 return "#f37b24"; // Orange
             } else {
@@ -514,154 +625,156 @@
     };
 
     const app = new Vue({
-        delimiters: ['[[', ']]'],
-        el: '#app',
-        data: {
-            siderDrawer,
-            themeSwitcher,
-            status: new Status(),
-            versionModal,
-            logModal,
-            backupModal,
-            spinning: false,
-            loadingTip: '{{ i18n "loading"}}',
-            showAlert: false,
-        },
-        methods: {
-            loading(spinning, tip = '{{ i18n "loading"}}') {
-                this.spinning = spinning;
-                this.loadingTip = tip;
-            },
-            async getStatus() {
-                try {
-                    const msg = await HttpUtil.post('/server/status');
-                    if (msg.success) {
-                        this.setStatus(msg.obj);
-                    }
-                } catch (e) {
-                    console.error("Failed to get status:", e);
-                }
-            },
-            setStatus(data) {
-                this.status = new Status(data);
-            },
-            async openSelectV2rayVersion() {
-                this.loading(true);
-                const msg = await HttpUtil.post('server/getXrayVersion');
-                this.loading(false);
-                if (!msg.success) {
-                    return;
-                }
-                versionModal.show(msg.obj);
-            },
-            switchV2rayVersion(version) {
-                this.$confirm({
-                    title: '{{ i18n "pages.index.xraySwitchVersionDialog"}}',
-                    content: '{{ i18n "pages.index.xraySwitchVersionDialogDesc"}}' + ` ${version}?`,
-                    okText: '{{ i18n "confirm"}}',
-                    class: themeSwitcher.currentTheme,
-                    cancelText: '{{ i18n "cancel"}}',
-                    onOk: async () => {
-                        versionModal.hide();
-                        this.loading(true, '{{ i18n "pages.index.dontRefresh"}}');
-                        await HttpUtil.post(`/server/installXray/${version}`);
-                        this.loading(false);
-                    },
-                });
-            },
-            async stopXrayService() {
-                this.loading(true);
-                const msg = await HttpUtil.post('server/stopXrayService');
-                this.loading(false);
-                if (!msg.success) {
-                    return;
-                }
-            },
-            async restartXrayService() {
-                this.loading(true);
-                const msg = await HttpUtil.post('server/restartXrayService');
-                this.loading(false);
-                if (!msg.success) {
-                    return;
-                }
-            },
-            async openLogs(){
-                logModal.loading = true;
-                const msg = await HttpUtil.post('server/logs/'+logModal.rows,{level: logModal.level, syslog: logModal.syslog});
-                if (!msg.success) {
-                    return;
-                }
-                logModal.show(msg.obj);
-                await PromiseUtil.sleep(500);
-                logModal.loading = false;
-            },
-            async openConfig() {
-                this.loading(true);
-                const msg = await HttpUtil.post('server/getConfigJson');
-                this.loading(false);
-                if (!msg.success) {
-                    return;
-                }
-                txtModal.show('config.json', JSON.stringify(msg.obj, null, 2), 'config.json');
-            },
-            openBackup() {
-                backupModal.show({
-                    title: '{{ i18n "pages.index.backupTitle" }}',
-                    description: '{{ i18n "pages.index.backupDescription" }}',
-                    exportText: '{{ i18n "pages.index.exportDatabase" }}',
-                    importText: '{{ i18n "pages.index.importDatabase" }}',
-                });
-            },
-            exportDatabase() {
-                window.location = basePath + 'server/getDb';
-            },
-            importDatabase() {
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.accept = '.db';
-                fileInput.addEventListener('change', async (event) => {
-                    const dbFile = event.target.files[0];
-                    if (dbFile) {
-                        const formData = new FormData();
-                        formData.append('db', dbFile);
-                        backupModal.hide();
-                        this.loading(true);
-                        const uploadMsg = await HttpUtil.post('server/importDB', formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            }
-                        });
-                        this.loading(false);
-                        if (!uploadMsg.success) {
-                            return;
-                        }
-                        this.loading(true);
-                        const restartMsg = await HttpUtil.post("/panel/setting/restartPanel");
-                        this.loading(false);
-                        if (restartMsg.success) {
-                            this.loading(true);
-                            await PromiseUtil.sleep(5000);
-                            location.reload();
-                        }
-                    }
-                });
-                fileInput.click();
-            },
-        },
-        async mounted() {
-            if (window.location.protocol !== "https:") {
-                this.showAlert = true;
-            }
-            while (true) {
-                try {
-                    await this.getStatus();
-                } catch (e) {
-                    console.error(e);
-                }
-                await PromiseUtil.sleep(2000);
-            }
-        },
-    });
+delimiters: ['[[', ']]'],
+el: '#app',
+data: {
+siderDrawer,
+themeSwitcher,
+status: new Status(),
+versionModal,
+logModal,
+backupModal,
+spinning: false,
+loadingTip: '{{ i18n "loading"}}',
+showAlert: false,
+},
+methods: {
+loading(spinning, tip = '{{ i18n "loading"}}') {
+this.spinning = spinning;
+this.loadingTip = tip;
+},
+async getStatus() {
+try {
+const msg = await HttpUtil.post('/server/status');
+if (msg.success) {
+this.setStatus(msg.obj);
+}
+} catch (e) {
+console.error("Failed to get status:", e);
+}
+},
+
+setStatus(data) {
+this.status = new Status(data);
+},
+async openSelectV2rayVersion() {
+this.loading(true);
+const msg = await HttpUtil.post('server/getXrayVersion');
+this.loading(false);
+if (!msg.success) {
+return;
+}
+versionModal.show(msg.obj);
+},
+switchV2rayVersion(version) {
+this.$confirm({
+title: '{{ i18n "pages.index.xraySwitchVersionDialog"}}',
+content: '{{ i18n "pages.index.xraySwitchVersionDialogDesc"}}' + ` ${version}?`,
+okText: '{{ i18n "confirm"}}',
+class: themeSwitcher.currentTheme,
+cancelText: '{{ i18n "cancel"}}',
+onOk: async () => {
+versionModal.hide();
+this.loading(true, '{{ i18n "pages.index.dontRefresh"}}');
+await HttpUtil.post(`/server/installXray/${version}`);
+this.loading(false);
+},
+});
+},
+async stopXrayService() {
+this.loading(true);
+const msg = await HttpUtil.post('server/stopXrayService');
+this.loading(false);
+if (!msg.success) {
+return;
+}
+},
+async restartXrayService() {
+this.loading(true);
+const msg = await HttpUtil.post('server/restartXrayService');
+this.loading(false);
+if (!msg.success) {
+return;
+}
+},
+async openLogs(){
+logModal.loading = true;
+const msg = await HttpUtil.post('server/logs/'+logModal.rows,{level: logModal.level, syslog: logModal.syslog});
+if (!msg.success) {
+return;
+}
+logModal.show(msg.obj);
+await PromiseUtil.sleep(500);
+logModal.loading = false;
+},
+async openConfig() {
+this.loading(true);
+const msg = await HttpUtil.post('server/getConfigJson');
+this.loading(false);
+if (!msg.success) {
+return;
+}
+txtModal.show('config.json', JSON.stringify(msg.obj, null, 2), 'config.json');
+},
+openBackup() {
+backupModal.show({
+title: '{{ i18n "pages.index.backupTitle" }}',
+description: '{{ i18n "pages.index.backupDescription" }}',
+exportText: '{{ i18n "pages.index.exportDatabase" }}',
+importText: '{{ i18n "pages.index.importDatabase" }}',
+});
+},
+exportDatabase() {
+window.location = basePath + 'server/getDb';
+},
+importDatabase() {
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = '.db';
+fileInput.addEventListener('change', async (event) => {
+const dbFile = event.target.files[0];
+if (dbFile) {
+const formData = new FormData();
+formData.append('db', dbFile);
+backupModal.hide();
+this.loading(true);
+const uploadMsg = await HttpUtil.post('server/importDB', formData, {
+headers: {
+'Content-Type': 'multipart/form-data',
+}
+});
+this.loading(false);
+if (!uploadMsg.success) {
+return;
+}
+this.loading(true);
+const restartMsg = await HttpUtil.post("/panel/setting/restartPanel");
+this.loading(false);
+if (restartMsg.success) {
+this.loading(true);
+await PromiseUtil.sleep(5000);
+location.reload();
+}
+}
+});
+fileInput.click();
+},
+},
+async mounted() {
+if (window.location.protocol !== "https:") {
+this.showAlert = true;
+}
+while (true) {
+try {
+await this.getStatus();
+} catch (e) {
+console.error(e);
+}
+await PromiseUtil.sleep(2000);
+}
+},
+});
+
 </script>
 </body>
-</html>
+</html> const

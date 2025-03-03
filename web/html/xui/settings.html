@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <a-card hoverable :bordered="false" class="modern-card"></a-card>
 <html lang="en">
 {{template "head" .}}
 <style>
@@ -86,7 +86,9 @@
             </a-alert>
           </transition>
           <a-space direction="vertical">
-            <a-card hoverable style="margin-bottom: .5rem; overflow-x: hidden;">
+
+            
+            <a-card hoverable class="modern-card" style="margin-bottom: 0.5rem; overflow-x: hidden;">
               <a-row style="display: flex; flex-wrap: wrap; align-items: center;">
                 <a-col :xs="24" :sm="10" style="padding: 4px;">
                   <a-space direction="horizontal">
@@ -107,6 +109,7 @@
                 </a-col>
               </a-row>
             </a-card>
+            <a-card hoverable class="modern-card" style="margin-bottom: 0.5rem; overflow-x: hidden;">
             <a-tabs default-active-key="1">
               <a-tab-pane key="1" tab='{{ i18n "pages.settings.panelSettings"}}'>
                 <a-list item-layout="horizontal">
@@ -850,3 +853,4 @@
 </script>
 </body>
 </html>
+</a-card>

@@ -73,7 +73,7 @@
             </a-alert>
           </transition>
           <a-space direction="vertical">
-            <a-card hoverable style="margin-bottom: .5rem;">
+            <a-card hoverable class="modern-card" style="margin-bottom: .5rem;">
               <a-row style="display: flex; flex-wrap: wrap; align-items: center;">
                 <a-col :xs="24" :sm="10" style="padding: 4px;">
                   <a-space direction="horizontal">
@@ -100,6 +100,7 @@
                 </a-col>
               </a-row>
             </a-card>
+            <a-card hoverable class="modern-card" style="margin-bottom: .5rem;">
             <a-tabs class="ant-card-dark-box-nohover" default-active-key="1"
                 @change="(activeKey) => { this.changePage(activeKey); }"
                 :class="themeSwitcher.currentTheme">
@@ -109,7 +110,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.generalConfigsDesc" }}
                         </template>
                       </a-alert>
@@ -150,7 +151,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.logConfigsDesc" }}
                         </template>
                       </a-alert>
@@ -222,7 +223,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.blockConfigsDesc" }}
                         </template>
                       </a-alert>
@@ -236,7 +237,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.blockConnectionsConfigsDesc" }}
                         </template>
                       </a-alert>
@@ -281,7 +282,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center; margin-top: 20px;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.directConnectionsConfigsDesc" }}
                         </template>
                       </a-alert>
@@ -327,7 +328,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center; margin-top: 20px;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.ipv4RoutingDesc" }}
                         </template>
                       </a-alert>
@@ -354,7 +355,7 @@
                     <a-row :xs="24" :sm="24" :lg="12">
                       <a-alert type="warning" style="text-align: center; margin-top: 20px;">
                         <template slot="message">
-                          <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                          <a-icon type="exclamation-circle" theme="filled" style="color: #ffcf31cb"></a-icon>
                           {{ i18n "pages.xray.warpRoutingDesc" }}
                         </template>
                       </a-alert>
@@ -472,7 +473,7 @@
                           </tr>
                           <tr v-if="rule.sourcePort">
                             <td>Source Port</td>
-                            <td><a-tag color="green" v-for="r in rule.sourcePort.split(',')">[[ r ]]</a-tag></td>
+                            <td><a-tag color="#5979AD" v-for="r in rule.sourcePort.split(',')">[[ r ]]</a-tag></td>
                           </tr>
                           <tr v-if="rule.network">
                             <td>Network</td>
@@ -480,7 +481,7 @@
                           </tr>
                           <tr v-if="rule.protocol">
                             <td>Protocol</td>
-                            <td><a-tag color="green" v-for="r in rule.protocol.split(',')">[[ r ]]</a-tag></td>
+                            <td><a-tag color="#5979AD" v-for="r in rule.protocol.split(',')">[[ r ]]</a-tag></td>
                           </tr>
                           <tr v-if="rule.attrs">
                             <td>Attrs</td>
@@ -488,7 +489,7 @@
                           </tr>
                           <tr v-if="rule.ip">
                             <td>IP</td>
-                            <td><a-tag color="green" v-for="r in rule.ip.split(',')">[[ r ]]</a-tag></td>
+                            <td><a-tag color="#5979AD" v-for="r in rule.ip.split(',')">[[ r ]]</a-tag></td>
                           </tr>
                           <tr v-if="rule.domain">
                             <td>Domain</td>
@@ -496,7 +497,7 @@
                           </tr>
                           <tr v-if="rule.port">
                             <td>Port</td>
-                            <td><a-tag color="green" v-for="r in rule.port.split(',')">[[ r ]]</a-tag></td>
+                            <td><a-tag color="#5979AD" v-for="r in rule.port.split(',')">[[ r ]]</a-tag></td>
                           </tr>
                           <tr v-if="rule.balancerTag">
                             <td>Balancer Tag</td>
@@ -568,15 +569,15 @@
                     <p style="margin: 0 5px;" v-for="addr in findOutboundAddress(outbound)">[[ addr ]]</p>
                   </template>
                   <template slot="protocol" slot-scope="text, outbound, index">
-                    <a-tag style="margin:0;" color="purple">[[ outbound.protocol ]]</a-tag>
+                    <a-tag style="margin:0;" color="#290A77">[[ outbound.protocol ]]</a-tag>
                     <template v-if="[Protocols.VMess, Protocols.VLESS, Protocols.Trojan, Protocols.Shadowsocks].includes(outbound.protocol)">
                       <a-tag style="margin:0;" color="blue">[[ outbound.streamSettings.network ]]</a-tag>
-                      <a-tag style="margin:0;" v-if="outbound.streamSettings.security=='tls'" color="green">tls</a-tag>
-                      <a-tag style="margin:0;" v-if="outbound.streamSettings.security=='reality'" color="green">reality</a-tag>
+                      <a-tag style="margin:0;" v-if="outbound.streamSettings.security=='tls'" color="#5979AD">tls</a-tag>
+                      <a-tag style="margin:0;" v-if="outbound.streamSettings.security=='reality'" color="#5979AD">reality</a-tag>
                     </template>
                   </template>
                   <template slot="traffic" slot-scope="text, outbound, index">
-                    <a-tag color="green">[[ findOutboundTraffic(outbound) ]]</a-tag>
+                    <a-tag color="#5979AD">[[ findOutboundTraffic(outbound) ]]</a-tag>
                   </template>
                 </a-table>
               </a-tab-pane>
@@ -639,10 +640,10 @@
                     </a-dropdown>
                   </template>
                   <template slot="strategy" slot-scope="text, balancer, index">
-                    <a-tag style="margin:0;" v-if="balancer.strategy=='random'" color="purple">Random</a-tag>
-                    <a-tag style="margin:0;" v-if="balancer.strategy=='roundRobin'" color="green">Round Robin</a-tag>
-                    <a-tag style="margin:0;" v-if="balancer.strategy=='leastLoad'" color="green">Least Load</a-tag>
-                    <a-tag style="margin:0;" v-if="balancer.strategy=='leastPing'" color="green">Least Ping</a-tag>
+                    <a-tag style="margin:0;" v-if="balancer.strategy=='random'" color="#290A77">Random</a-tag>
+                    <a-tag style="margin:0;" v-if="balancer.strategy=='roundRobin'" color="#5979AD">Round Robin</a-tag>
+                    <a-tag style="margin:0;" v-if="balancer.strategy=='leastLoad'" color="#5979AD">Least Load</a-tag>
+                    <a-tag style="margin:0;" v-if="balancer.strategy=='leastPing'" color="#5979AD">Least Ping</a-tag>
                   </template>
                   <template slot="selector" slot-scope="text, balancer, index">
                     <a-tag class="info-large-tag" style="margin:1;" v-for="sel in balancer.selector">[[ sel ]]</a-tag>
@@ -1999,3 +2000,4 @@
 </script>
 </body>
 </html>
+</a-card>

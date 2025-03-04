@@ -1724,7 +1724,7 @@ ${purple}27.${plain} Automated Server Boot System
 "
     
     show_status
-    echo && read -p "Please enter your selection [0-25]: " num
+    echo && read -p "Please enter your selection [0-27]: " num
 
     case "${num}" in
     0)

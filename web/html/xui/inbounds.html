@@ -3,7 +3,7 @@
 {{template "head" .}}
 <style>
   .ant-table:not(.ant-table-expanded-row .ant-table) {
-    outline: 1px solid #b4e7b8;
+    outline: 1px solid #b18ce8;
     outline-offset: -1px;
     border-radius: 1rem;
     overflow-x: hidden;
@@ -60,8 +60,8 @@
     border: #D5BED2 solid 1px;
   }
   .dark .infinite-bar .ant-progress-inner .ant-progress-bg {
-    background-color: #7a316f !important;
-    border: #7a316f solid 1px;
+    background-color: #2F1E86 !important;
+    border: #2F1E86 solid 1px;
   }
   .ant-collapse {
     margin: 5px 0;
@@ -334,7 +334,7 @@
                 </a-dropdown>
               </template>
               <template slot="protocol" slot-scope="text, dbInbound">
-                <a-tag style="margin:0;" color="purple">[[ dbInbound.protocol ]]</a-tag>
+                <a-tag style="margin:0;" color="#382863">[[ dbInbound.protocol ]]</a-tag>
                 <template v-if="dbInbound.isVMess || dbInbound.isVLess || dbInbound.isTrojan || dbInbound.isSS">
                   <a-tag style="margin:0;" color="blue">[[ dbInbound.toInbound().stream.network ]]</a-tag>
                   <a-tag style="margin:0;" v-if="dbInbound.toInbound().stream.isTls" color="blue">TLS</a-tag>
@@ -412,7 +412,7 @@
                     [[ remainedDays(dbInbound._expiryTime) ]]
                   </a-tag>
                 </a-popover>
-                <a-tag v-else color="purple" class="infinite-tag">
+                <a-tag v-else color="#382863" class="infinite-tag">
                   <svg height="10px" width="14px" viewBox="0 0 640 512" fill="currentColor">
                     <path d="M484.4 96C407 96 349.2 164.1 320 208.5C290.8 164.1 233 96 155.6 96C69.75 96 0 167.8 0 256s69.75 160 155.6 160C233.1 416 290.8 347.9 320 303.5C349.2 347.9 407 416 484.4 416C570.3 416 640 344.2 640 256S570.3 96 484.4 96zM155.6 368C96.25 368 48 317.8 48 256s48.25-112 107.6-112c67.75 0 120.5 82.25 137.1 112C276 285.8 223.4 368 155.6 368zM484.4 368c-67.75 0-120.5-82.25-137.1-112C364 226.2 416.6 144 484.4 144C543.8 144 592 194.2 592 256S543.8 368 484.4 368z" fill="currentColor"></path>
                   </svg>
@@ -425,7 +425,7 @@
                       <tr>
                         <td>{{ i18n "pages.inbounds.protocol" }}</td>
                         <td>
-                          <a-tag style="margin:0;" color="purple">[[ dbInbound.protocol ]]</a-tag>
+                          <a-tag style="margin:0;" color="#382863">[[ dbInbound.protocol ]]</a-tag>
                           <template v-if="dbInbound.isVMess || dbInbound.isVLess || dbInbound.isTrojan || dbInbound.isSS">
                             <a-tag style="margin:0;" color="blue">[[ dbInbound.toInbound().stream.network ]]</a-tag>
                             <a-tag style="margin:0;" v-if="dbInbound.toInbound().stream.isTls" color="green">tls</a-tag>
@@ -509,7 +509,7 @@
                               [[ DateUtil.convertToJalalian(moment(dbInbound.expiryTime)) ]]
                             </template>
                           </a-tag>
-                          <a-tag v-else style="text-align: center;" color="purple" class="infinite-tag">
+                          <a-tag v-else style="text-align: center;" color="#382863" class="infinite-tag">
                             <svg height="10px" width="14px" viewBox="0 0 640 512" fill="currentColor">
                               <path d="M484.4 96C407 96 349.2 164.1 320 208.5C290.8 164.1 233 96 155.6 96C69.75 96 0 167.8 0 256s69.75 160 155.6 160C233.1 416 290.8 347.9 320 303.5C349.2 347.9 407 416 484.4 416C570.3 416 640 344.2 640 256S570.3 96 484.4 96zM155.6 368C96.25 368 48 317.8 48 256s48.25-112 107.6-112c67.75 0 120.5 82.25 137.1 112C276 285.8 223.4 368 155.6 368zM484.4 368c-67.75 0-120.5-82.25-137.1-112C364 226.2 416.6 144 484.4 144C543.8 144 592 194.2 592 256S543.8 368 484.4 368z" fill="currentColor"></path>
                             </svg>
@@ -1302,9 +1302,9 @@
                 return formatSecond((expTime-now)/1000);
             },
             statsExpColor(dbInbound, email){
-                if (email.length == 0) return '#7a316f';
+                if (email.length == 0) return '#2F1E86';
                 clientStats = dbInbound.clientStats.find(stats => stats.email === email);
-                if (!clientStats) return '#7a316f';
+                if (!clientStats) return '#2F1E86';
                 statsColor = usageColor(clientStats.down + clientStats.up, this.trafficDiff, clientStats.total);
                 expColor = usageColor(new Date().getTime(), this.expireDiff, clientStats.expiryTime);
                 switch (true) {
@@ -1315,7 +1315,7 @@
                     case statsColor == "green" || expColor == "green":
                         return "#008771"; // Green
                     default:
-                        return "#541fd8"; // purple
+                        return "#541fd8"; // #382863
                 }
             },
             isClientEnabled(dbInbound, email) {

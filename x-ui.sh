@@ -1683,7 +1683,7 @@ show_menu() {
                 
       # Minimalist Menu
       echo -e "
-             ${yellow}HELLO${plain}
+${yellow}HELLO${plain}
 ──────────────────────────────────────────────
 ${red}0.${plain} Exit Script
 ──────────────────────────────────────────────

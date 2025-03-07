@@ -1,38 +1,39 @@
 {{define "menuItems"}}
 <!-- Dashboard Menu Item -->
 <a-menu-item key="{{ .base_path }}panel/" class="menu-item">
-  <a-icon type="pie-chart" style="font-size: 16px;"></a-icon>
-  <span style="font-weight: 500; margin-left: 12px;">{{ i18n "menu.dashboard"}}</span>
+  <a-icon type="pie-chart" class="menu-icon"></a-icon>
+  <span class="menu-text">{{ i18n "menu.dashboard"}}</span>
 </a-menu-item>
 
 <!-- Inbounds Menu Item -->
 <a-menu-item key="{{ .base_path }}panel/inbounds" class="menu-item">
-  <a-icon type="user-add" style="font-size: 16px;"></a-icon>
-  <span style="font-weight: 500; margin-left: 12px;">{{ i18n "menu.inbounds"}}</span>
+  <a-icon type="user-add" class="menu-icon"></a-icon>
+  <span class="menu-text">{{ i18n "menu.inbounds"}}</span>
 </a-menu-item>
 
 <!-- Settings Menu Item -->
 <a-menu-item key="{{ .base_path }}panel/settings" class="menu-item">
-  <a-icon type="tool" style="font-size: 16px;"></a-icon>
-  <span style="font-weight: 500; margin-left: 12px;">{{ i18n "menu.settings"}}</span>
+  <a-icon type="tool" class="menu-icon"></a-icon>
+  <span class="menu-text">{{ i18n "menu.settings"}}</span>
 </a-menu-item>
 
 <!-- Xray Menu Item -->
 <a-menu-item key="{{ .base_path }}panel/xray" class="menu-item">
-  <a-icon type="experiment" style="font-size: 16px;"></a-icon>
-  <span style="font-weight: 500; margin-left: 12px;">{{ i18n "menu.xray"}}</span>
+  <a-icon type="experiment" class="menu-icon"></a-icon>
+  <span class="menu-text">{{ i18n "menu.xray"}}</span>
 </a-menu-item>
 
 <!-- Logout Menu Item -->
 <a-menu-item key="{{ .base_path }}logout" class="menu-item">
-  <a-icon type="poweroff" style="font-size: 16px;"></a-icon>
-  <span style="font-weight: 500; margin-left: 12px;">{{ i18n "menu.logout"}}</span>
+  <a-icon type="poweroff" class="menu-icon"></a-icon>
+  <span class="menu-text">{{ i18n "menu.logout"}}</span>
 </a-menu-item>
 {{end}}
 
 {{define "commonSider"}}
 <a-layout-sider :theme="themeSwitcher.currentTheme" id="sider" :collapsible="false" :collapsed="true" breakpoint="md" width="80">
-  <theme-switch style="padding: 16px;"></theme-switch>
+  <!-- Theme Switch Component with Adjusted Bulb Icon -->
+  <theme-switch style="padding: 16px; display: flex; align-items: center; justify-content: center;"></theme-switch>
   <a-menu :theme="themeSwitcher.currentTheme" mode="inline" :selected-keys="['{{ .request_uri }}']" @click="({key}) => key.startsWith('http') ? window.open(key) : location.href = key">
     {{template "menuItems" .}}
   </a-menu>
@@ -41,7 +42,8 @@
   <div class="drawer-handle" @click="siderDrawer.change()" slot="handle">
     <a-icon :type="siderDrawer.visible ? 'close' : 'menu-fold'" style="font-size: 18px;"></a-icon>
   </div>
-  <theme-switch style="padding: 16px;"></theme-switch>
+  <!-- Theme Switch Component with Adjusted Bulb Icon -->
+  <theme-switch style="padding: 16px; display: flex; align-items: center; justify-content: center;"></theme-switch>
   <a-menu :theme="themeSwitcher.currentTheme" mode="inline" :selected-keys="['{{ .request_uri }}']" @click="({key}) => key.startsWith('http') ? window.open(key) : location.href = key">
     {{template "menuItems" .}}
   </a-menu>
@@ -64,7 +66,20 @@
 <style>
   /* Add custom styles for hover effects */
   .menu-item {
+    display: flex;
+    align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .menu-icon {
+    font-size: 16px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-text {
+    font-weight: 500;
   }
 
   .menu-item:hover {
@@ -76,6 +91,12 @@
   [data-theme="dark"] .menu-item:hover {
     background-color: #333; /* Darker background for dark theme */
     color: #1890ff; /* Primary color for text on hover */
+  }
+
+  /* Adjust the position of the bulb icon in the theme-switch component */
+  .theme-switch .anticon-bulb {
+    margin-left: 9px; /* Move the icon to the right */
+    margin-top: 5px; /* Move the icon down */
   }
 </style>
 {{end}}

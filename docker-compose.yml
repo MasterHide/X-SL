@@ -2,9 +2,9 @@
 version: "3"
 
 services:
-  3x-ui:
-    image: ghcr.io/mhsanaei/3x-ui:latest
-    container_name: 3x-ui
+  X-SL:
+    image: MasterHide/X-SL
+    container_name: X-SL
     hostname: yourhostname
     volumes:
       - $PWD/db/:/etc/x-ui/

@@ -41,7 +41,6 @@ func (a *InboundController) initRouter(g *gin.RouterGroup) {
 	g.POST("/delDepletedClients/:id", a.delDepletedClients)
 	g.POST("/import", a.importInbound)
 	g.POST("/onlines", a.onlines)
-	g.POST("/getUserByUUID/:uuid", a.getUserByUUID)
 }
 
 func (a *InboundController) getInbounds(c *gin.Context) {
@@ -328,23 +327,3 @@ func (a *InboundController) delDepletedClients(c *gin.Context) {
 func (a *InboundController) onlines(c *gin.Context) {
 	jsonObj(c, a.inboundService.GetOnlineClients(), nil)
 }
-
-
-// New func for fetching user by UUID
-
-func (a *InboundController) getUserByUUID(c *gin.Context) {
-	uuid := c.Param("uuid")
-	if uuid == "" {
-		jsonMsg(c, "UUID parameter is required", fmt.Errorf("missing UUID"))
-		return
-	}
-
-	userData, err := a.inboundService.GetUserByUUID(uuid)
-	if err != nil {
-		jsonMsg(c, "Failed to fetch user details", err)
-		return
-	}
-
-	jsonObj(c, userData, nil)
-}
-

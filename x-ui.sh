@@ -1681,9 +1681,6 @@ show_menu() {
     echo -e "${plain}"
     sleep 0.2  # Short pause after the animation
 
-    # Minimalist Menu
-    echo -e "
-                 ${green}MENU${plain}
 ──────────────────────────────────────────────
 ${red}0.${plain} Exit Script
 ──────────────────────────────────────────────

@@ -1708,7 +1708,7 @@ ${purple}15.${plain} Manage Logs
 ${cyan}16.${plain} Enable Autostart
 ${cyan}17.${plain} Disable Autostart
 ──────────────────────────────────────────────
-${green}18.${plain} Manage SSL Certificates important
+${green}18.${plain} ${yellow}Manage SSL Certificates important${NC}
 ${green}19.${plain} Cloudflare SSL Certificate
 ${green}20.${plain} Manage IP Restrictions
 ${green}21.${plain} Firewall Management

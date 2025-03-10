@@ -311,8 +311,8 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 ## A Special Thanks to
 
 - [Project X](https://github.com/XTLS)
-- [MHSanaei](https://github.com/MHSanaei)
-- [alireza0](https://github.com/alireza0/)
+- [Inspired by 3x-ui](https://github.com/MHSanaei)
+
 
 ## Acknowledgment
 

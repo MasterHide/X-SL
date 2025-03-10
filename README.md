@@ -1,8 +1,8 @@
 [English](/README.md)
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/4ae35e02-c849-4645-8012-d18ebb2e02d3">
-    <img alt="x-sl" src="https://github.com/user-attachments/assets/4ae35e02-c849-4645-8012-d18ebb2e02d3">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/03b48caa-0646-4ff3-b4d4-50d1724cfc46">
+    <img alt="x-sl" src="https://github.com/user-attachments/assets/03b48caa-0646-4ff3-b4d4-50d1724cfc46">
   </picture>
 </p>
 
@@ -20,6 +20,8 @@
 
 
 - USDT (TRC20): `TXncxkvhkDWGts487Pjqq1qT9JmwRUz8CC`
+- PAYID (Binance): `426577151`
+
 
 
 ## Install & Upgrade

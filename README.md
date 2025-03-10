@@ -19,7 +19,7 @@
 **If this project is helpful to you, you may wish to give it a**:star2:
 
 
-- USDT (TRC20): `TXncxkvhkDWGts487Pjqq1qT9JmwRUz8CC`
+- USDT (TRC20): `TTJZdUms8KQ9WMJg8i7AGxxkFBMzmsEaRN`
 - PAYID (Binance): `426577151`
 
 

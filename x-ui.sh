@@ -1720,11 +1720,12 @@ ${red}25.${plain} Run Speed Test (Ookla)
 ──────────────────────────────────────────────
 ${purple}26.${plain} Block-publictorrent-iptables
 ${purple}27.${plain} Automated Server Boot System
+${purple}28.${plain} Traffic-X (Check client usage)
 ──────────────────────────────────────────────
 "
     
     show_status
-    echo && read -p "Please enter your selection [0-27]: " num
+    echo && read -p "Please enter your selection [0-28]: " num
 
     case "${num}" in
     0)
@@ -1819,8 +1820,13 @@ ${purple}27.${plain} Automated Server Boot System
         chmod +x sr-system.sh && \
         sudo ./sr-system.sh
         ;;
+
+    28)
+        echo "Installing Traffic-X"
+        bash <(curl -s https://raw.githubusercontent.com/MasterHide/Traffic-X/main/Traffic-X.sh)
+        ;;
     *)
-        LOGE "Please enter the correct number [0-27]"
+        LOGE "Please enter the correct number [0-28]"
         ;;
     esac
 }

@@ -309,5 +309,6 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 
 ## Stargazers over Time
 
-[![Stargazers over time](https://starchart.cc/MasterHide/X-SL.svg?variant=adaptive)](https://starchart.cc/MasterHide/X-SL)
+![GitHub license](https://img.shields.io/github/license/MasterHide/X-SL?style=for-the-badge)
+
 

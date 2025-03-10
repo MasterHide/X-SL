@@ -286,25 +286,12 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 
 </details>
 
-
 ## Preview
+![home](https://github.com/user-attachments/assets/1a0187ba-90fa-4518-98d9-7033c475a440)
+![inbound](https://github.com/user-attachments/assets/20837943-25d7-4b40-ad9a-0f0d93611b7e)
+![usage](https://github.com/user-attachments/assets/98b1dc01-6897-4150-8391-12db8b1beadf)
+![result](https://github.com/user-attachments/assets/21c73af1-fc43-4575-be94-4f5df4ed361c)
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./media/01-overview-dark.png">
-  <img alt="3x-ui" src="./media/01-overview-light.png">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./media/02-inbounds-dark.png">
-  <img alt="3x-ui" src="./media/02-inbounds-light.png">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./media/03-add-inbound-dark.png">
-  <img alt="3x-ui" src="./media/03-add-inbound-light.png">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./media/04-add-client-dark.png">
-  <img alt="3x-ui" src="./media/04-add-client-light.png">
-</picture>
 
 
 
@@ -322,4 +309,5 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 
 ## Stargazers over Time
 
-[![Stargazers over time](https://starchart.cc/MHSanaei/3x-ui.svg?variant=adaptive)](https://starchart.cc/MHSanaei/3x-ui)
+[![Stargazers over time](https://starchart.cc/MasterHide/X-SL.svg?variant=adaptive)](https://starchart.cc/MasterHide/X-SL)
+

@@ -309,8 +309,9 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 - [Russia v2ray rules](https://github.com/runetfreedom/russia-v2ray-rules-dat) (License: **GPL-3.0**): _This repository contains automatically updated V2Ray routing rules based on data on blocked domains and addresses in Russia._
 
 
-## Stargazers over Time
+
 
 ![GitHub license](https://img.shields.io/github/license/MasterHide/X-SL?style=for-the-badge)
-
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/MasterHide/X-SL.svg?background=%230e0d11&axis=%23635e5e&line=%236370ff)](https://starchart.cc/MasterHide/X-SL)
 

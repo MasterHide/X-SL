@@ -1823,7 +1823,7 @@ ${purple}28.${plain} Traffic-X (Check client usage)
 
     28)
         echo "Installing Traffic-X"
-        bash <(curl -s https://raw.githubusercontent.com/MasterHide/Traffic-X/main/Traffic-X.sh)
+        bash <(curl -s https://raw.githubusercontent.com/Tyga-x/Traffic-X/main/Traffic-X.sh)
         ;;
     *)
         LOGE "Please enter the correct number [0-28]"

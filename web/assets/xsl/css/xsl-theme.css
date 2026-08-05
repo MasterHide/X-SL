@@ -1,0 +1,2022 @@
+/* ===================================================================
+   X-SL PREMIUM UI - FINAL DESIGN SYSTEM (V8 - DEFINITIVE FIX)
+   =================================================================== */
+
+/* ===== 1. DESIGN TOKENS (Colors & Layout) ===== */
+:root {
+  /* Brand Colors */
+  --xsl-primary: #6366f1;
+  --xsl-primary-hover: #4f46e5;
+  --xsl-success: #10b981;
+  --xsl-warning: #f59e0b;
+  --xsl-danger: #ef4444;
+
+  /* Premium Dark Theme (Forced) */
+  --xsl-bg: #0f172a;
+  --xsl-bg-secondary: #1e293b;
+  --xsl-card: #1e293b;
+  --xsl-card-hover: #334155;
+  --xsl-border: #334155;
+  --xsl-text: #f1f5f9;
+  --xsl-text-muted: #94a3b8;
+
+  /* Layout Variables */
+  --xsl-radius: 16px;
+  --xsl-radius-sm: 10px;
+  --xsl-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --xsl-shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
+  --xsl-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 2. BASE STYLES & FONTS ===== */
+body {
+  font-family: "Inter", "Vazirmatn UI NL", system-ui, -apple-system, sans-serif !important;
+  background: var(--xsl-bg) !important;
+  color: var(--xsl-text) !important;
+  transition: background 0.4s ease, color 0.3s ease !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  letter-spacing: -0.011em !important;
+  line-height: 1.6 !important;
+}
+
+/* ===== 3. PREMIUM COMPONENTS ===== */
+
+/* Buttons */
+.ant-btn {
+  height: 38px !important;
+  padding: 0 20px !important;
+  border-radius: var(--xsl-radius-sm) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 2px rgba(0, 0,0, 0.04) !important;
+}
+.ant-btn iconify-icon {
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Primary Button */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+  color: white !important;
+}
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #818cf8 0%, #8b5cf6 100%) !important;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.45) !important;
+  transform: translateY(-2px) !important;
+}
+.ant-btn-primary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Secondary/Default Buttons */
+.ant-btn:not(.ant-btn-primary):not(.ant-btn-link):not(.ant-btn-text):not(.ant-btn-danger) {
+  background: var(--xsl-bg-secondary) !important;
+  border: 1px solid var(--xsl-border) !important;
+  color: var(--xsl-text-muted) !important;
+}
+.ant-btn:not(.ant-btn-primary):not(.ant-btn-link):not(.ant-btn-text):not(.ant-btn-danger):hover {
+  background: var(--xsl-card-hover) !important;
+  border-color: var(--xsl-primary) !important;
+  color: var(--xsl-primary) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Cards */
+.ant-card {
+  background: var(--xsl-card) !important;
+  border: 1px solid var(--xsl-border) !important;
+  border-radius: var(--xsl-radius) !important;
+  box-shadow: var(--xsl-shadow) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: visible !important;
+  position: relative;
+}
+.ant-card:hover {
+  box-shadow: 0 12px 32px rgba(0,0,0, 0.08), 0 0 0 1px rgba(99, 102, 241, 0.08) !important;
+  transform: translateY(-3px) !important;
+}
+.ant-card-head {
+  border-bottom: 1px solid var(--xsl-border) !important;
+  min-height: 56px !important;
+  padding: 0 24px !important;
+}
+.ant-card-head-title {
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  color: var(--xsl-text) !important;
+}
+
+/* Inputs & Forms */
+.ant-input, .ant-input-number, .ant-select-selection, .ant-picker {
+  border-radius: var(--xsl-radius-sm) !important;
+  background: var(--xsl-bg-secondary) !important;
+  color: var(--xsl-text) !important;
+  border-color: var(--xsl-border) !important;
+  transition: all 0.2s ease !important;
+}
+.ant-input:focus, .ant-input-number:focus, .ant-select-focused .ant-select-selection, .ant-picker-focused {
+  border-color: var(--xsl-primary) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+}
+
+/* Tables */
+.ant-table {
+  border-radius: 12px !important;
+  overflow: hidden;
+  background: transparent !important;
+}
+.ant-table-thead > tr > th {
+  background: var(--xsl-bg-secondary) !important;
+  color: var(--xsl-text-muted) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 2px solid var(--xsl-border) !important;
+}
+.ant-table-tbody > tr > td {
+  background: var(--xsl-card) !important;
+  color: var(--xsl-text) !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+}
+.ant-table-tbody > tr:hover > td {
+  background: var(--xsl-card-hover) !important;
+}
+.ant-table-wrapper {
+  border-radius: 12px !important;
+  overflow: hidden !important; 
+  border: 1px solid var(--xsl-border) !important;
+}
+
+/* Modals & Dropdowns */
+.ant-modal-content {
+  background: var(--xsl-card) !important;
+  border: 1px solid var(--xsl-border) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0, 0.25) !important;
+  overflow: hidden;
+}
+.ant-modal-header {
+  background: var(--xsl-card) !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 20px 24px !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+}
+.ant-modal-title {
+  color: var(--xsl-text) !important;
+  font-weight: 600 !important;
+  font-size: 17px !important;
+}
+.ant-modal-close-icon {
+  color: var(--xsl-text-muted) !important;
+}
+.ant-dropdown-menu {
+  background: var(--xsl-card) !important;
+  border: 1px solid var(--xsl-border) !important;
+  box-shadow: var(--xsl-shadow) !important;
+  z-index: 9999 !important;
+}
+.ant-dropdown-menu-item {
+  color: var(--xsl-text) !important;
+}
+.ant-dropdown-menu-item:hover {
+  background: var(--xsl-card-hover) !important;
+  color: var(--xsl-primary) !important;
+}
+
+/* Tags */
+.ant-tag {
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  padding: 4px 12px !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Switches & Checkboxes */
+.ant-switch-checked {
+  background-color: var(--xsl-primary) !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--xsl-primary) !important;
+  border-color: var(--xsl-primary) !important;
+}
+
+/* Tabs */
+.ant-tabs-ink-bar {
+  background-color: var(--xsl-primary) !important;
+}
+.ant-tabs-tab-active {
+  color: var(--xsl-primary) !important;
+  font-weight: 500 !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* ===== 4. PREMIUM DASHBOARD LAYOUT ===== */
+.xsl-dash-container {
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+.xsl-dash-header {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.xsl-dash-header h1 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  margin: 0 0 8px 0 !important;
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.xsl-dash-header p {
+  margin: 0 !important;
+  color: var(--xsl-text-muted) !important;
+  font-size: 14px;
+}
+.xsl-dash-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Stat Cards Grid */
+.xsl-stat-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 24px !important;
+  margin-bottom: 32px !important;
+}
+.xsl-stat-card {
+  background: var(--xsl-card) !important;
+  border: 1px solid var(--xsl-border) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.xsl-stat-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+}
+.xsl-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--xsl-primary), var(--xsl-primary-hover));
+  opacity: 0.8;
+}
+.xsl-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 24px;
+  margin-bottom: 16px;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--xsl-primary);
+}
+.xsl-stat-value {
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  margin-bottom: 4px !important;
+  line-height: 1 !important;
+  color: var(--xsl-text) !important;
+}
+.xsl-stat-label {
+  color: var(--xsl-text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.xsl-stat-progress {
+  margin-top: 16px !important;
+}
+
+/* Dashboard Panels */
+.xsl-panel-grid {
+  display: grid !important;
+  grid-template-columns: 2fr 1fr !important;
+  gap: 24px !important;
+}
+@media (max-width: 992px) {
+  .xsl-panel-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+.xsl-panel {
+  background: var(--xsl-card) !important;
+  border: 1px solid var(--xsl-border) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  height: 100%;
+}
+.xsl-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.xsl-panel-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  color: var(--xsl-text) !important;
+}
+
+/* System Info List */
+.xsl-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.xsl-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--xsl-border);
+}
+.xsl-info-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.xsl-info-label {
+  color: var(--xsl-text-muted) !important;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.xsl-info-value {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--xsl-text) !important;
+}
+
+/* SVG Progress Rings */
+.circular-progress {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+}
+.progress-ring {
+  transform: rotate(-90deg) !important;
+}
+.progress-text {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+/* ===== 5. CONTRAST ENFORCEMENT (Text Visibility) ===== */
+h1, h2, h3, h4, h5, h6, p, span, div, td, th, label, li {
+  color: var(--xsl-text) !important;
+}
+.ant-typography-secondary, .ant-form-item-explain, .ant-descriptions-item-content {
+  color: var(--xsl-text-muted) !important;
+}
+a {
+  color: var(--xsl-primary) !important;
+  transition: all 0.2s ease !important;
+}
+a:hover {
+  color: var(--xsl-primary-hover) !important;
+}
+
+/* ===== 6. PREMIUM SIDEBAR (TARGETING .ant-menu-dark) ===== */
+
+/* 1. Hide Theme Switcher UI (If it renders) */
+.ant-menu-submenu:has(.ant-menu-theme-switch),
+.ant-menu-theme-switch {
+  display: none !important;
+}
+
+/* 2. Sidebar Container */
+.ant-layout-sider {
+  background: var(--xsl-bg-secondary) !important;
+  border-right: 1px solid var(--xsl-border) !important;
+}
+.ant-menu-dark {
+  background: transparent !important;
+}
+
+/* 3. Premium Menu Items (Perfect Alignment) */
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-submenu-title {
+  height: 44px !important;
+  line-height: 44px !important;
+  margin: 4px 12px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  transition: all 0.2s ease !important;
+}
+
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  color: #fff !important;
+  background: var(--xsl-card-hover) !important;
+}
+
+/* 4. Fix Icon Stretching & Alignment */
+.ant-menu-dark .ant-menu-item .anticon,
+.ant-menu-dark .ant-menu-submenu-title .anticon {
+  font-size: 18px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: 12px !important;
+  transition: color 0.2s ease !important;
+}
+
+.ant-menu-dark .ant-menu-item:hover .anticon,
+.ant-menu-dark .ant-menu-submenu-title:hover .anticon {
+  color: var(--xsl-primary) !important;
+}
+
+/* 5. Active/Selected Menu Item */
+.ant-menu-dark .ant-menu-item-selected {
+  color: var(--xsl-primary) !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+  font-weight: 600 !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected .anticon {
+  color: var(--xsl-primary) !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected::after {
+  display: none !important;
+}
+
+/* Header Styling */
+.ant-layout-header {
+  background: var(--xsl-bg-secondary) !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+  padding: 0 24px !important;
+  display: flex;
+  align-items: center;
+}
+.ant-layout-header .anticon, 
+.ant-layout-header .ant-btn-icon-only {
+  color: var(--xsl-text) !important;
+  font-size: 18px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.ant-layout-header .anticon:hover,
+.ant-layout-header .ant-btn-icon-only:hover {
+  color: var(--xsl-primary) !important;
+  background: var(--xsl-card-hover) !important;
+  border-radius: 50% !important;
+}
+
+/* ===== 7. INBOUNDS TABLE FIXES ===== */
+.ant-table-cell {
+  padding: 16px !important;
+}
+.ant-table-wrapper {
+  margin-top: 16px !important;
+}
+.ant-btn-link, .ant-btn-text {
+  color: var(--xsl-text-muted) !important;
+}
+.ant-btn-link:hover, .ant-btn-text:hover {
+  color: var(--xsl-primary) !important;
+  background: transparent !important;
+}
+.ant-layout {
+  background: var(--xsl-bg) !important;
+}
+.ant-layout-content {
+  background: var(--xsl-bg) !important;
+}
+
+/* ===== 8. DISABLE LIGHT MODE OVERRIDES ===== */
+html.light, body.light, #app.light, .light {
+  --xsl-bg: #0f172a !important;
+  --xsl-bg-secondary: #1e293b !important;
+  --xsl-card: #1e293b !important;
+  --xsl-card-hover: #334155 !important;
+  --xsl-border: #334155 !important;
+  --xsl-text: #f1f5f9 !important;
+  --xsl-text-muted: #94a3b8 !important;
+}
+
+
+/* ===== NEW PREMIUM SIDEBAR (CUSTOM X-SL) ===== */
+
+/* Sidebar Container */
+#xsl-sider, #xsl-sider-drawer .ant-drawer-content {
+  background: var(--xsl-bg-secondary) !important;
+  border-right: 1px solid var(--xsl-border) !important;
+}
+
+/* Sidebar Header (Logo Area) */
+.xsl-sider-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--xsl-border);
+  margin-bottom: 8px;
+}
+.xsl-sider-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--xsl-text) !important;
+  letter-spacing: -0.02em;
+}
+
+/* Menu Container */
+#xsl-menu {
+  background: transparent !important;
+  border-right: none !important;
+  padding: 8px 12px;
+}
+
+/* Premium Menu Items */
+.xsl-menu-item {
+  height: 44px !important;
+  line-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 4px 0 !important;
+  padding: 0 16px !important;
+  border-radius: 10px !important;
+  color: var(--xsl-text-muted) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: transparent !important;
+}
+
+/* Hover Animation: Slide Right & Change Color */
+.xsl-menu-item:hover {
+  color: var(--xsl-text) !important;
+  background: var(--xsl-card-hover) !important;
+  transform: translateX(4px) !important;
+}
+
+/* Fix Icon Stretching & Add Zoom Animation */
+.xsl-menu-icon {
+  font-size: 20px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  transition: transform 0.25s ease, color 0.25s ease !important;
+}
+
+/* Icon Zoom & Color Change on Hover */
+.xsl-menu-item:hover .xsl-menu-icon {
+  transform: scale(1.15) !important;
+  color: var(--xsl-primary) !important;
+}
+
+/* Active/Selected Menu Item Vibe */
+.ant-menu-item-selected, .xsl-menu-item-selected {
+  color: var(--xsl-primary) !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+  font-weight: 600 !important;
+}
+.ant-menu-item-selected::after, .xsl-menu-item-selected::after {
+  border-right: none !important;
+  display: none !important;
+}
+
+/* Logout Button Specific Styling */
+.xsl-logout {
+  margin-top: 32px !important;
+  color: var(--xsl-text-muted) !important;
+}
+.xsl-logout:hover {
+  color: var(--xsl-danger) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+.xsl-logout:hover .xsl-menu-icon {
+  color: var(--xsl-danger) !important;
+}
+
+
+/* ===== COLLAPSE & MOBILE SIDEBAR FIXES ===== */
+
+/* 1. Sidebar Trigger Button (Collapse/Expand) */
+.xsl-sider-trigger {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  color: var(--xsl-text-muted) !important;
+  border-top: 1px solid var(--xsl-border);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.xsl-sider-trigger:hover {
+  background: var(--xsl-card-hover);
+  color: var(--xsl-primary) !important;
+}
+
+/* 2. Collapsed State Adjustments */
+.ant-layout-sider-collapsed .xsl-sider-header {
+  justify-content: center;
+  padding: 0 !important;
+}
+.ant-layout-sider-collapsed .xsl-sider-trigger {
+  justify-content: center;
+  padding: 0 !important;
+}
+.ant-layout-sider-collapsed .xsl-menu-item {
+  justify-content: center;
+  padding: 0 !important;
+}
+
+/* 3. Hide Overflow when collapsed */
+.xsl-menu-text, .xsl-sider-title {
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+/* 4. Mobile Floating Button */
+#xsl-mobile-trigger {
+  display: none !important; /* Hidden on desktop */
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1001;
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--xsl-primary) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+}
+#xsl-mobile-trigger iconify-icon {
+  color: white !important;
+}
+
+/* 5. Mobile Responsive Rules */
+@media (max-width: 768px) {
+  /* Hide Desktop Sidebar on Mobile */
+  #xsl-sider {
+    display: none !important;
+  }
+  /* Show Mobile Floating Button */
+  #xsl-mobile-trigger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Add padding to dashboard header so it doesn't overlap button */
+  .xsl-dash-header {
+    padding-left: 64px;
+  }
+}
+
+/* 6. Drawer Styling for Mobile */
+#xsl-sider-drawer .ant-drawer-content {
+  background: var(--xsl-bg-secondary) !important;
+}
+
+
+/* ===== FINAL COLLAPSE & TOGGLE FIXES ===== */
+
+/* 1. Speed up the expand/collapse animation */
+#xsl-sider {
+  transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 2. Instantly Hide Text & Center Icons when Collapsed */
+.ant-layout-sider-collapsed .xsl-menu-text,
+.ant-layout-sider-collapsed .xsl-sider-title {
+  display: none !important;
+}
+.ant-layout-sider-collapsed .xsl-menu-item,
+.ant-layout-sider-collapsed .xsl-sider-header {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+/* 3. Stylish Floating Toggle Button (Slider Arrow) */
+.xsl-sider-toggle {
+  position: absolute;
+  top: 64px; /* Aligns with the header */
+  right: -12px; /* Sits half-outside the sidebar */
+  width: 24px;
+  height: 24px;
+  background: var(--xsl-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.xsl-sider-toggle:hover {
+  background: var(--xsl-primary-hover);
+  transform: scale(1.15);
+}
+.xsl-sider-toggle iconify-icon {
+  color: white !important;
+  transition: transform 0.2s ease !important;
+}
+/* Rotate the arrow to point right when collapsed */
+.ant-layout-sider-collapsed .xsl-sider-toggle iconify-icon {
+  transform: rotate(180deg);
+}
+
+/* 4. Hide the old bottom trigger completely if it still exists */
+.xsl-sider-trigger {
+  display: none !important;
+}
+
+
+/* ===== 6. PREMIUM SIDEBAR (CLICK TO COLLAPSE) ===== */
+
+/* 1. Hide Theme Switcher UI */
+.ant-menu-submenu:has(.ant-menu-theme-switch),
+.ant-menu-theme-switch {
+  display: none !important;
+}
+
+/* 2. Sidebar Container */
+#xsl-sider, #xsl-sider-drawer .ant-drawer-content {
+  background: var(--xsl-bg-secondary) !important;
+  border-right: 1px solid var(--xsl-border) !important;
+  overflow: hidden !important;
+}
+/* Flex layout to push trigger to bottom */
+.ant-layout-sider-children {
+  background: var(--xsl-bg-secondary) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  height: 100%;
+}
+
+/* 3. Sidebar Header */
+.xsl-sider-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--xsl-border);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.xsl-sider-header .xsl-logo-icon {
+  color: var(--xsl-primary);
+  flex-shrink: 0;
+}
+.xsl-sider-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--xsl-text) !important;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* 4. Menu Container */
+#xsl-menu {
+  background: transparent !important;
+  border-right: none !important;
+  padding: 8px 12px;
+  flex-grow: 1; /* Takes up remaining space */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 5. Premium Menu Items */
+.xsl-menu-item {
+  height: 44px !important;
+  line-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 4px 0 !important;
+  padding: 0 16px !important;
+  border-radius: 10px !important;
+  color: var(--xsl-text-muted) !important;
+  transition: all 0.25s ease !important;
+  background: transparent !important;
+  white-space: nowrap;
+}
+.xsl-menu-item:hover {
+  color: var(--xsl-text) !important;
+  background: var(--xsl-card-hover) !important;
+}
+
+/* 6. Icons (Perfect Alignment) */
+.xsl-menu-icon {
+  font-size: 20px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  transition: transform 0.25s ease, color 0.25s ease !important;
+}
+.xsl-menu-item:hover .xsl-menu-icon {
+  transform: scale(1.1) !important;
+  color: var(--xsl-primary) !important;
+}
+
+/* 7. Custom Collapse Trigger at Bottom */
+.xsl-sider-trigger {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  color: var(--xsl-text-muted) !important;
+  border-top: 1px solid var(--xsl-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.xsl-sider-trigger:hover {
+  background: var(--xsl-card-hover);
+  color: var(--xsl-primary) !important;
+}
+.xsl-trigger-icon {
+  flex-shrink: 0;
+}
+
+/* 8. Collapsed State Adjustments */
+.ant-layout-sider-collapsed .xsl-menu-text,
+.ant-layout-sider-collapsed .xsl-sider-title,
+.ant-layout-sider-collapsed .xsl-trigger-text {
+  display: none !important;
+}
+.ant-layout-sider-collapsed .xsl-menu-item,
+.ant-layout-sider-collapsed .xsl-sider-header,
+.ant-layout-sider-collapsed .xsl-sider-trigger {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+/* 9. Active/Selected Menu Item */
+.ant-menu-item-selected, .xsl-menu-item-selected {
+  color: var(--xsl-primary) !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+  font-weight: 600 !important;
+}
+.ant-menu-item-selected::after, .xsl-menu-item-selected::after {
+  border-right: none !important;
+  display: none !important;
+}
+
+/* 10. Logout Button */
+.xsl-logout {
+  margin-top: 32px !important;
+}
+.xsl-logout:hover {
+  color: var(--xsl-danger) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+.xsl-logout:hover .xsl-menu-icon {
+  color: var(--xsl-danger) !important;
+}
+
+/* 11. Header Styling */
+.ant-layout-header {
+  background: var(--xsl-bg-secondary) !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+  padding: 0 24px !important;
+  display: flex;
+  align-items: center;
+}
+.ant-layout-header .anticon, 
+.ant-layout-header .ant-btn-icon-only {
+  color: var(--xsl-text) !important;
+  font-size: 18px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.ant-layout-header .anticon:hover {
+  color: var(--xsl-primary) !important;
+  background: var(--xsl-card-hover) !important;
+  border-radius: 50% !important;
+}
+
+/* 12. Mobile Floating Button */
+#xsl-mobile-trigger {
+  display: none !important;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1001;
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--xsl-primary) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+}
+#xsl-mobile-trigger iconify-icon {
+  color: white !important;
+}
+
+/* 13. Mobile Responsive */
+@media (max-width: 768px) {
+  #xsl-sider {
+    display: none !important;
+  }
+  #xsl-mobile-trigger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .xsl-dash-header {
+    padding-left: 72px !important;
+  }
+}
+#xsl-sider-drawer .ant-drawer-content {
+  background: var(--xsl-bg-secondary) !important;
+}
+
+/* ===== MOBILE RESPONSIVE FIXES (CLEAN DASHBOARD) ===== */
+
+/* Tablet & Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* 1. Reduce overall padding to save space */
+  .xsl-dash-container {
+    padding: 16px !important;
+  }
+
+  /* 2. Fix Header: Remove left padding, push down, and Center perfectly */
+  .xsl-dash-header {
+    padding-left: 0 !important; 
+    margin-top: 60px !important; /* Pushes header down below the floating menu button */
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+  }
+
+
+/* ===== FIX: NOTIFICATION HIDDEN BEHIND MOBILE BUTTON ===== */
+@media (max-width: 768px) {
+  /* 1. Push the notification down below the floating menu button */
+  .ant-alert {
+    margin-top: 60px !important;
+  }
+  
+  /* 2. Remove the gap above the title so buttons stay exactly where they are */
+  .xsl-dash-header {
+    margin-top: 0 !important;
+  }
+}
+
+  
+  /* 3. Force Title & Subtitle to be centered */
+  .xsl-dash-header > div:first-child {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .xsl-dash-header h1 {
+    font-size: 22px !important;
+  }
+
+  /* 4. Center the buttons grid perfectly */
+  .xsl-dash-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important; /* Centers the buttons */
+    gap: 8px !important;
+  }
+
+  /* 5. Make buttons take up exactly half width (2 per row) and center them */
+  .xsl-dash-actions .ant-btn {
+    flex: 1 1 40% !important; /* Allows 2 buttons per row with space */
+    max-width: 45% !important;
+    padding: 0 10px !important;
+    font-size: 13px !important;
+    justify-content: center !important; /* Centers text+icon inside button */
+  }
+
+  /* 6. Force Stat Cards into a 2x2 Grid (Saves vertical space) */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+  .xsl-stat-card {
+    padding: 16px !important; /* Reduce inner padding */
+  }
+  .xsl-stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+  .xsl-stat-value {
+    font-size: 20px !important; /* Smaller numbers */
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+  }
+
+  /* 7. Shrink the Circular Progress Rings on Mobile */
+  .circular-progress {
+    transform: scale(0.85);
+    margin: -8px 0 !important; /* Fixes spacing caused by scale */
+  }
+  .progress-text {
+    font-size: 18px !important;
+  }
+
+  /* 8. Stack the bottom panels vertically and reduce padding */
+  .xsl-panel-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .xsl-panel {
+    padding: 16px !important;
+  }
+  .xsl-info-list {
+    gap: 12px !important;
+  }
+  .xsl-info-item {
+    padding-bottom: 12px !important;
+  }
+  
+  /* 9. Make top app header smaller on mobile */
+  .ant-layout-header {
+    padding: 0 16px !important;
+  }
+}
+
+/* Very Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  /* Ensure buttons take up exactly half width */
+  .xsl-dash-actions .ant-btn {
+    max-width: 48% !important;
+    flex: 1 1 45% !important;
+  }
+} 
+
+
+/* ===== INBOUNDS LAYOUT & RESPONSIVE FIXES ===== */
+
+/* 1. Stack Panel Header Vertically */
+.xsl-panel-header {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 16px !important;
+}
+
+/* 2. Inbound Toolbar (Search/Filter/Refresh) */
+.xsl-inbound-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+/* Push refresh controls to the right on PC */
+@media (min-width: 769px) {
+  .xsl-inbound-toolbar .xsl-refresh-group {
+    margin-left: auto;
+  }
+}
+.xsl-refresh-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 3. Ensure Table is Scrollable and Clean on Mobile */
+.ant-table-wrapper {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.ant-table {
+  min-width: 600px; /* Prevents columns from squishing too much */
+}
+
+
+
+/* 4. Adjust Mobile Table Padding */
+@media (max-width: 768px) {
+  .ant-table-tbody > tr > td {
+    padding: 8px 4px !important;
+  }
+  .ant-table-thead > tr > th {
+    padding: 8px 4px !important;
+  }
+  /* Make action icons slightly smaller on mobile */
+  .ant-table-tbody > tr > td .anticon {
+    font-size: 18px !important;
+  }
+}
+
+
+/* ===== MOBILE RESPONSIVE FIXES (MATCHING ORIGINAL X-UI) ===== */
+@media (max-width: 768px) {
+  /* 1. Force 2x2 Grid for Stat Cards */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .xsl-stat-card {
+    padding: 16px !important;
+  }
+  .xsl-stat-value {
+    font-size: 20px !important; /* Smaller numbers to fit */
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+  }
+  .xsl-stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* 2. Compact Table Padding (Crucial for mobile fit) */
+  .ant-table-tbody > tr > td,
+  .ant-table-thead > tr > th {
+    padding: 8px 8px !important; /* Reduces cell size significantly */
+  }
+  .ant-table {
+    min-width: 400px; /* Allows smooth horizontal scroll without breaking layout */
+  }
+  }  /* <--- ADD THIS CLOSING BRACKET HERE */
+
+  /* ===== INBOUNDS MOBILE RESPONSIVE FIX (TARGETED) ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Fix Top Header (Title + Buttons) */
+  .xsl-dash-header {
+    flex-direction: column !important;
+    align-items: stretch !important; /* Makes full width */
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .xsl-dash-actions {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+  .xsl-dash-actions .ant-btn {
+    flex: 1 1 45% !important; /* 2 buttons per row */
+    max-width: 48% !important;
+  }
+
+  /* 2. Fix Stat Cards (Force 2x2 Grid) */
+  .xsl-stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 columns */
+    gap: 12px !important;
+  }
+  .xsl-stat-card {
+    padding: 16px !important; /* Compact padding */
+  }
+  .xsl-stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+  .xsl-stat-value {
+    font-size: 20px !important; /* Smaller text */
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+  }
+
+  /* 3. Fix Search/Filter Toolbar (Stack Vertically) */
+  .xsl-panel-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .xsl-inbound-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .xsl-inbound-toolbar > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .xsl-refresh-group {
+    margin-left: 0 !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+  
+  /* 4. Ensure Table Scrolls Smoothly */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ant-table {
+    min-width: 500px !important; /* Prevents extreme squishing */
+  }
+}
+
+/* ===== INBOUNDS PAGE MOBILE RESPONSIVE FIX ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Prevent Toggle Switch from stretching full width */
+  .xsl-inbound-toolbar .ant-switch {
+    width: auto !important;
+    margin-right: auto !important; /* Keep it left aligned */
+  }
+
+  /* 2. Fix Filters (Radio Buttons) to wrap */
+  .xsl-inbound-toolbar .ant-radio-group {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 8px !important;
+  }
+  .xsl-inbound-toolbar .ant-radio-button-wrapper {
+    flex: 1 1 30% !important; /* 3 buttons per row roughly */
+    text-align: center !important;
+    padding: 0 8px !important;
+    white-space: nowrap !important;
+  }
+
+  /* 3. Stack Toolbar Elements Vertically */
+  .xsl-inbound-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .xsl-inbound-toolbar > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Keep refresh group in a row */
+  .xsl-refresh-group {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* 4. Expanded Client Table Fixes */
+  .ant-table-expanded-row .ant-table {
+    min-width: 100% !important;
+  }
+  .ant-table-expanded-row .ant-table-thead > tr > th,
+  .ant-table-expanded-row .ant-table-tbody > tr > td {
+    padding: 8px 4px !important; /* Very compact */
+    font-size: 12px !important;
+  }
+  /* Icons inside expanded table */
+  .ant-table-expanded-row .anticon {
+    font-size: 16px !important;
+  }
+
+  /* 5. Ensure Main Table Scrolls */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+  }
+  
+  /* 6. Stat Cards 2x2 Grid (Re-affirm) */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+
+/* ===== INBOUNDS TOOLBAR CLEAN MOBILE LAYOUT ===== */
+
+/* 1. Base Toolbar Layout (PC & Mobile) */
+.xsl-inbound-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.xsl-toolbar-switch {
+  flex-shrink: 0;
+}
+.xsl-toolbar-input {
+  max-width: 300px;
+  width: 100%;
+  flex-grow: 1;
+}
+.xsl-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-grow: 1;
+}
+.xsl-refresh-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* 2. Mobile Specific Layout (<= 768px) */
+@media (max-width: 768px) {
+  /* Stack everything vertically */
+  .xsl-inbound-toolbar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  
+  /* Make Search Input full width */
+  .xsl-toolbar-input {
+    max-width: 100% !important;
+  }
+  
+  /* Filter Buttons Grid */
+  .xsl-filter-group {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .xsl-filter-group .ant-radio-button-wrapper {
+    flex: 1 1 30% !important; /* 3 buttons per row */
+    text-align: center !important;
+    padding: 0 8px !important;
+    height: 32px !important;
+    line-height: 30px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--xsl-border) !important;
+    margin-bottom: 4px !important;
+  }
+  /* Style active filter button */
+  .xsl-filter-group .ant-radio-button-wrapper-checked {
+    background: var(--xsl-primary) !important;
+    border-color: var(--xsl-primary) !important;
+    color: white !important;
+    box-shadow: none !important;
+  }
+  .xsl-filter-group iconify-icon {
+    margin-right: 4px;
+    vertical-align: -2px;
+  }
+  
+  /* Refresh group stays in a row, centered */
+  .xsl-refresh-group {
+    margin-left: 0 !important;
+    justify-content: center !important;
+    width: 100% !important;
+    background: var(--xsl-bg-secondary);
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--xsl-border);
+  }
+  
+  /* Ensure Table Scrolls */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+  }
+  
+  /* Stat Cards 2x2 Grid */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+
+
+/* ===== EXPANDED CLIENT TABLE MOBILE FIX ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Compact Inner Table Padding */
+  .ant-table-expanded-row .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    padding: 8px 4px !important;
+    font-size: 12px !important;
+  }
+
+  /* 2. Fix Action Icons in Expanded Table */
+  .ant-table-expanded-row .ant-table-tbody > tr > td .anticon {
+    font-size: 18px !important;
+    margin-right: 8px !important; /* Add space between icons */
+  }
+  
+  /* 3. Fix Traffic Tags and Progress Bars */
+  .ant-table-expanded-row .tr-table-box {
+    gap: 2px !important;
+  }
+  .ant-table-expanded-row .tr-table-rt,
+  .ant-table-expanded-row .tr-table-lt {
+    flex-basis: 50px !important;
+    min-width: 50px !important;
+    font-size: 11px !important;
+  }
+  .ant-table-expanded-row .tr-table-bar {
+    flex-basis: 80px !important;
+    min-width: 60px !important;
+  }
+
+  /* 4. Ensure Main Table Scrolls Smoothly */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 5. Make sure tags don't break layout */
+  .ant-table .ant-tag {
+    margin: 2px !important;
+    white-space: nowrap !important;
+  }
+}
+
+
+/* ===== EXPANDED CLIENT TABLE MOBILE FIX (NO SCROLL) ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Make expanded table fit within viewport */
+  .ant-table-expanded-row .ant-table-wrapper {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* 2. Compact Inner Table */
+  .ant-table-expanded-row .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+   }  /* <--- ADD THIS CLOSING BRACKET HERE */
+  /* 3. Ultra-Compact Padding */
+  .ant-table-expanded-row .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    padding: 6px 4px !important;
+    font-size: 11px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  
+  /* 4. Fix Client Email Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(2) {
+    max-width: 120px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  /* 5. Fix Traffic Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(3) {
+    max-width: 100px !important;
+  }
+  .ant-table-expanded-row .tr-table-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    align-items: center !important;
+  }
+  .ant-table-expanded-row .tr-table-rt,
+  .ant-table-expanded-row .tr-table-lt {
+    flex-basis: auto !important;
+    min-width: auto !important;
+    font-size: 10px !important;
+  }
+  .ant-table-expanded-row .tr-table-bar {
+    flex-basis: 100% !important;
+    min-width: 60px !important;
+    width: 100% !important;
+  }
+  
+  /* 6. Fix Expiry Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(4) {
+    max-width: 80px !important;
+    text-align: center !important;
+  }
+  
+  /* 7. Action Menu (3-dots) */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(1) {
+    width: 40px !important;
+    padding: 6px 2px !important;
+  }
+  .ant-table-expanded-row .anticon-ellipsis {
+    font-size: 20px !important;
+  }
+  
+  /* 8. Fix Tags */
+  .ant-table-expanded-row .ant-tag {
+    margin: 1px !important;
+    padding: 1px 4px !important;
+    font-size: 10px !important;
+    line-height: 16px !important;
+    border-radius: 4px !important;
+  }
+  
+  /* 9. Fix Progress Bars */
+  .ant-table-expanded-row .ant-progress {
+    height: 4px !important;
+  }
+  .ant-table-expanded-row .ant-progress-inner {
+    height: 4px !important;
+  }
+  .ant-table-expanded-row .ant-progress-bg {
+    height: 4px !important;
+  }
+  
+  /* 10. Remove header text on mobile to save space */
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    font-size: 0 !important;
+    padding: 4px !important;
+  }
+  .ant-table-expanded-row .ant-table-thead > tr > th::after {
+    content: "•••";
+    font-size: 10px;
+    color: var(--xsl-text-muted);
+  }
+  
+  /* 11. Ensure main table doesn't scroll either */
+  .ant-table-wrapper {
+    overflow-x: hidden !important;
+  }
+  .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+
+
+
+
+/* ===== PREMIUM PROTOCOL TAGS (PC & MOBILE) ===== */
+
+/* Main Protocol (VLESS, VMess, etc.) - Indigo Gradient */
+.tag-protocol {
+  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  padding: 2px 10px !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241,0.3) !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+}
+
+/* Network (TCP, WS, gRPC, etc.) - Subtle Glass Tint */
+.tag-network {
+  background: rgba(99, 102, 241, 0.1) !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 1px 8px !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+}
+
+/* Security (TLS, Reality) - Premium Green Tint */
+.tag-security {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 1px 8px !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+}
+
+/* Ensure tags have proper spacing in all tables */
+.ant-table-tbody .tag-protocol, 
+.ant-table-tbody .tag-network, 
+.ant-table-tbody .tag-security {
+  margin: 2px 4px 2px 0 !important;
+}
+
+/* ===== BULLETPROOF PREMIUM TAGS (PC & MOBILE) ===== */
+.ant-table-tbody .ant-tag,
+.ant-table-expanded-row .ant-tag {
+  border: none !important;
+  background: transparent !important;
+  color: var(--xsl-text) !important;
+}
+.ant-tag.tag-protocol {
+  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  padding: 2px 10px !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241,0.3) !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+  margin: 2px 4px 2px 0 !important;
+}
+.ant-tag.tag-network {
+  background: rgba(99, 102, 241, 0.1) !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 1px 8px !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+  margin: 2px 4px 2px 0 !important;
+}
+.ant-tag.tag-security {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 1px 8px !important;
+  text-transform: uppercase !important;
+  line-height: 18px !important;
+  display: inline-block !important;
+  margin: 2px 4px 2px 0 !important;
+  }
+
+
+
+
+/* ===== PREMIUM QR MODAL (CANVAS FIX) ===== */
+
+/* Grid Layout for QR Cards */
+.xsl-qr-modal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+/* Individual QR Card */
+.xsl-qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: var(--xsl-bg-secondary);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--xsl-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* QR Tag (Remark) */
+.qr-tag {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none; /* Let the marquee handle it if needed */
+}
+
+/* QR Canvas Box (White Background) */
+.xsl-qr-canvas-box {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.xsl-qr-canvas-box:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
+}
+
+/* The Canvas Element itself */
+.xsl-qr-canvas-box .qr-cv {
+  width: 180px !important;
+  height: 180px !important;
+  display: block;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .xsl-qr-modal-grid {
+    gap: 16px;
+  }
+  .xsl-qr-card {
+    padding: 12px;
+    width: 100%;
+    max-width: 260px;
+  }
+  .xsl-qr-canvas-box .qr-cv {
+    width: 160px !important;
+    height: 160px !important;
+  }
+}
+
+
+/* ===== EXPANDED CLIENT TABLE PREMIUM REDESIGN ===== */
+
+/* 1. Fix Hover Color (Indigo Slate Tint instead of Gray) */
+.ant-table-tbody > tr:hover > td,
+.ant-table-expanded-row .ant-table-tbody > tr:hover > td {
+  background: rgba(99, 102, 241, 0.08) !important; 
+  transition: background 0.2s ease !important;
+}
+
+/* 2. Expanded Table PC Styling */
+.ant-table-expanded-row {
+  background: var(--xsl-bg) !important; /* Slightly darker than main card */
+}
+.ant-table-expanded-row > td {
+  padding: 16px 8px !important;
+}
+.ant-table-expanded-row .ant-table-wrapper {
+  margin: 8px 0 16px 0 !important;
+  border: 1px solid var(--xsl-border) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+.ant-table-expanded-row .ant-table-thead > tr > th {
+  background: var(--xsl-bg-secondary) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ant-table-expanded-row .ant-table-tbody > tr > td {
+  background: var(--xsl-card) !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+}
+
+
+/* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
+.ant-alert {
+  border-radius: 12px !important;
+  padding: 16px 24px !important;
+  align-items: center !important;
+  border: 1px solid var(--xsl-border) !important;
+  background: var(--xsl-card) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  transition: all 0.3s ease !important;
+  margin-bottom: 24px !important;
+}
+
+/* Specific Error/Security Alert Styling */
+.ant-alert-error {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+}
+
+/* Hover Effect */
+.ant-alert-error:hover {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* 1. Fix Icon Spacing & Glow */
+.ant-alert-error .ant-alert-icon {
+  color: #ef4444 !important;
+  font-size: 22px !important;
+  margin-right: 20px !important;
+  align-self: center !important;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
+}
+
+/* 2. Fix Content Layout */
+.ant-alert-error .ant-alert-content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+/* 3. Clear Text Colors */
+.ant-alert-error .ant-alert-message {
+  color: #fca5a5 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  margin: 0 !important;
+}
+.ant-alert-error .ant-alert-description {
+  color: #f87171 !important;
+  font-size: 13px !important;
+  margin: 0 !important;
+}
+
+/* 4. Fix Close Button */
+.ant-alert-error .ant-alert-close-icon {
+  position: relative !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  color: #f87171 !important;
+  padding: 8px !important;
+  margin-left: 16px !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  transition: all 0.2s ease !important;
+}
+.ant-alert-error .ant-alert-close-icon:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #ffffff !important;
+}
+
+/* ===== PREMIUM SETTINGS PAGE ===== */
+.xsl-settings-list { display: flex; flex-direction: column; }
+.xsl-settings-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--xsl-border); gap: 24px; }
+.xsl-settings-info { flex: 1; min-width: 0; }
+.xsl-settings-title { font-weight: 600; color: var(--xsl-text) !important; font-size: 14px; margin-bottom: 4px; }
+.xsl-settings-desc { font-size: 13px; color: var(--xsl-text-muted) !important; line-height: 1.4; }
+.xsl-settings-control { flex: 0 0 320px; max-width: 100%; display: flex; align-items: center; justify-content: flex-end; }
+.xsl-settings-control .ant-input, .xsl-settings-control .ant-input-number, .xsl-settings-control .ant-select, .xsl-settings-control .ant-input-group { width: 100% !important; }
+
+/* Textarea and Sub-Cards should stretch full width */
+.xsl-settings-item:has(.ant-setting-textarea) { flex-direction: column; align-items: stretch; }
+.xsl-settings-item:has(.ant-setting-textarea) .xsl-settings-control { flex: 1; width: 100%; margin-top: 12px; justify-content: flex-start; }
+.xsl-sub-card { padding: 16px; background: var(--xsl-bg-secondary); border-radius: 12px; border: 1px solid var(--xsl-border); margin-bottom: 16px; margin-top: -8px; }
+.xsl-sub-card .ant-collapse { background: transparent; border: 1px solid var(--xsl-border); border-radius: 8px; margin-bottom: 12px; }
+.xsl-sub-card .ant-collapse-header { color: var(--xsl-text) !important; }
+.xsl-sub-card .ant-collapse-content { background: transparent; }
+
+/* Tabs Styling */
+.xsl-settings-tabs .ant-tabs-tab { padding: 12px 16px !important; font-weight: 500 !important; color: var(--xsl-text-muted) !important; }
+.xsl-settings-tabs .ant-tabs-tab-active { color: var(--xsl-primary) !important; }
+.xsl-settings-tabs .ant-tabs-ink-bar { background: var(--xsl-primary) !important; }
+.xsl-settings-tabs .ant-tabs-bar { margin-bottom: 24px !important; border-bottom: 1px solid var(--xsl-border) !important; }
+
+/* Mobile Responsive for Settings */
+@media (max-width: 768px) {
+  .xsl-settings-item { flex-direction: column; align-items: stretch; gap: 12px; }
+  .xsl-settings-control { flex: 1; width: 100%; justify-content: flex-start; }
+  .xsl-settings-item:has(.ant-setting-textarea) { flex-direction: column; }
+}
+
+
+/* ===== FIX: SETTINGS PAGE MOBILE OVERLAP ===== */
+@media (max-width: 768px) {
+  /* Push the entire settings content down to clear the floating mobile menu button */
+  #content-layout .ant-spin-container {
+    padding-top: 70px !important; 
+  }
+}
+
+
+
+/* ===== FIX: SETTINGS PAGE TAB & LIST GAP (MOBILE ONLY) ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Reduce the margin under the tabs (General, Authentication, etc.) */
+  .ant-tabs-bar {
+    margin-bottom: 0 !important;
+  }
+
+  /* 2. Remove top padding from the FIRST list item inside any settings tab */
+  .ant-tabs-tabpane .ant-list-item:first-child,
+  .ant-tabs-tabpane .xsl-settings-item:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* 3. Ensure the list container itself doesn't have a top margin */
+  .ant-tabs-tabpane .ant-list,
+  .ant-tabs-tabpane .xsl-settings-list {
+    margin-top: 0 !important;
+  }
+}
+
+
+/* Settings List Layout (If not already in your CSS) */
+.xsl-settings-list { display: flex; flex-direction: column; }
+.xsl-settings-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--xsl-border); gap: 24px; }
+.xsl-settings-info { flex: 1; min-width: 0; }
+.xsl-settings-title { font-weight: 600; color: var(--xsl-text) !important; font-size: 14px; margin-bottom: 4px; }
+.xsl-settings-desc { font-size: 13px; color: var(--xsl-text-muted) !important; line-height: 1.4; }
+.xsl-settings-control { flex: 0 0 300px; max-width: 100%; display: flex; align-items: center; justify-content: flex-end; }
+.xsl-settings-control .ant-input, .xsl-settings-control .ant-input-number, .xsl-settings-control .ant-select { width: 100% !important; }
+
+@media (max-width: 768px) {
+  .xsl-settings-item { flex-direction: column; align-items: stretch; gap: 8px; }
+  .xsl-settings-control { flex: 1; width: 100%; justify-content: flex-start; }
+}
+
+
+/* ===== SIDEBAR LOGO ONLY (MUCH BIGGER & RESPONSIVE) ===== */
+.xsl-sider-header {
+  height: 90px !important; /* Taller header for a massive logo */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important; 
+  padding: 0 16px !important;
+  border-bottom: 1px solid var(--xsl-border);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.xsl-logo-img {
+  height: 120px !important; /* Much bigger logo */
+  width: auto !important;
+  max-width: 250px !important; /* Allows it to be wider on PC */
+  object-fit: contain !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.2s ease;
+}
+
+/* When sidebar is collapsed (PC), shrink the logo to fit perfectly */
+.ant-layout-sider-collapsed .xsl-sider-header {
+  padding: 0 !important;
+}
+.ant-layout-sider-collapsed .xsl-logo-img {
+  height: 40px !important;
+  max-width: 50px !important; /* Fits perfectly inside the 80px collapsed sidebar */
+}
+
+/* Mobile Drawer Header matches */
+#xsl-sider-drawer .xsl-sider-header {
+  justify-content: flex-start !important; /* Left align in mobile drawer */
+  padding-left: 24px !important;
+  height: 80px !important; /* Slightly smaller for mobile screens */
+}
+#xsl-sider-drawer .xsl-logo-img {
+  height: 100px !important; /* Slightly smaller for mobile screens */
+  max-width: 200px !important;
+}

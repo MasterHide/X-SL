@@ -10,7 +10,7 @@
         <div class="xsl-dash-container">
           
           <!-- Header -->
-          <div class="xsl-dash-header" data-aos="fade-down">
+          <div class="xsl-dash-header">
             <div>
               <h1>Traffic Manager</h1>
               <p>Monitor and limit VPS bandwidth usage</p>
@@ -42,7 +42,7 @@
             <!-- 1. Check Status (Live Cards) -->
             <div class="xsl-stat-grid">
               <!-- Inbound Card -->
-              <div class="xsl-stat-card" data-aos="fade-up">
+              <div class="xsl-stat-card">
                 <div class="xsl-stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">
                   <iconify-icon icon="mdi:download-network-outline"></iconify-icon>
                 </div>
@@ -72,7 +72,7 @@
               </div>
 
               <!-- Outbound Card -->
-              <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="xsl-stat-card">
                 <div class="xsl-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
                   <iconify-icon icon="mdi:upload-network-outline"></iconify-icon>
                 </div>
@@ -103,7 +103,7 @@
             </div>
 
             <!-- 2. Set Quota & 3. Reset All -->
-            <div class="xsl-panel" style="margin-top: 24px;" data-aos="fade-up" data-aos-delay="200">
+            <div class="xsl-panel" style="margin-top: 24px;">
               <div class="xsl-panel-header">
                 <h3 class="xsl-panel-title">Quota Settings</h3>
                 <a-button shape="round" @click="resetUsage" :loading="resetting">
@@ -145,7 +145,7 @@
             </div>
 
             <!-- 4. View Raw Config -->
-            <div class="xsl-panel" style="margin-top: 24px;" data-aos="fade-up" data-aos-delay="300">
+            <div class="xsl-panel" style="margin-top: 24px;">
               <a-collapse :bordered="false" class="xsl-settings-collapse">
                 <a-collapse-panel key="1" header='View Raw Configuration File'>
                   <pre style="background: var(--xsl-bg); padding: 16px; border-radius: 8px; color: var(--xsl-text-muted); font-size: 13px; max-height: 300px; overflow-y: auto; margin: 0;">[[ status.rawConfig ]]</pre>

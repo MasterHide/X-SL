@@ -29,7 +29,7 @@ type TrafficController struct{}
 func (c *TrafficController) Index(ctx *gin.Context) {
     ctx.HTML(http.StatusOK, "traffic.html", gin.H{
         "base_path":   ctx.GetString("base_path"),
-        "host":        ctx.Request.Host, // Added for template stability
+        "host":        ctx.Request.Host,
         "request_uri": ctx.Request.RequestURI,
         "title":       "Traffic Manager",
         "cur_ver":     "1.0.0",
@@ -77,7 +77,6 @@ func parseConfig() TrafficData {
     return data
 }
 
-// FIX: Wrapped the response in "success": true and "obj" so the frontend Vue can read it
 func (c *TrafficController) Status(ctx *gin.Context) {
     data := parseConfig()
     ctx.JSON(http.StatusOK, gin.H{
@@ -111,8 +110,10 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         InboundLimit  string `json:"inboundLimit"`
         OutboundLimit string `json:"outboundLimit"`
     }
-    if err := ctx.ShouldBind(&params); err != nil {
-        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid parameters"})
+    
+    // FIX 1: Explicitly use ShouldBindJSON to read the Vue payload
+    if err := ctx.ShouldBindJSON(&params); err != nil {
+        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid parameters sent"})
         return
     }
 
@@ -122,15 +123,15 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         return
     }
 
-    // Use secure pure Go function instead of bash to prevent injection
+    // FIX 2: Pass to the improved convertToBytes function
     inBytesStr, err := convertToBytes(params.InboundLimit)
     if err != nil {
-        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid Inbound format. Use e.g. 1000GB, 1TB"})
+        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid Inbound format: " + err.Error()})
         return
     }
     outBytesStr, err := convertToBytes(params.OutboundLimit)
     if err != nil {
-        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid Outbound format. Use e.g. 1000GB, 1TB"})
+        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid Outbound format: " + err.Error()})
         return
     }
 
@@ -142,7 +143,7 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         } else if strings.HasPrefix(line, "outbound_limit_bytes=") {
             lines[i] = "outbound_limit_bytes=" + outBytesStr
         } else if strings.HasPrefix(line, "inbound_throttled=") {
-            lines[i] = "inbound_throttled=0" // Reset throttle status on save
+            lines[i] = "inbound_throttled=0" 
         } else if strings.HasPrefix(line, "outbound_throttled=") {
             lines[i] = "outbound_throttled=0"
         }
@@ -154,20 +155,25 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         return
     }
 
-    // Clear existing tc rules so the daemon starts fresh with the new limits
+    // Clear existing tc rules and restart service
     resetScript := `
         CONF="/etc/blimit/blimit-config.ini"
         IFACE=$(grep interface $CONF | cut -d= -f2)
-        tc qdisc del dev $IFACE root 2>/dev/null
-        tc qdisc del dev $IFACE ingress 2>/dev/null
+        if [ -n "$IFACE" ]; then
+            tc qdisc del dev $IFACE root 2>/dev/null
+            tc qdisc del dev $IFACE ingress 2>/dev/null
+        fi
         tc qdisc del dev ifb0 root 2>/dev/null
+        systemctl restart blimit-monitor
     `
-    exec.Command("bash", "-c", resetScript).Run()
+    cmd := exec.Command("bash", "-c", resetScript)
+    out, err := cmd.CombinedOutput()
+    if err != nil {
+        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Failed to apply rules: " + string(out)})
+        return
+    }
 
-    // Restart service to apply changes immediately
-    exec.Command("systemctl", "restart", "blimit-monitor").Run()
-
-    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Settings saved"})
+    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Settings saved and applied"})
 }
 
 func (c *TrafficController) Reset(ctx *gin.Context) {
@@ -180,8 +186,10 @@ func (c *TrafficController) Reset(ctx *gin.Context) {
         sed -i "s/offset_outbound=.*/offset_outbound=0/" $CONF
         sed -i "s/inbound_bytes=.*/inbound_bytes=0/" $CONF
         sed -i "s/outbound_bytes=.*/outbound_bytes=0/" $CONF
-        tc qdisc del dev $IFACE root 2>/dev/null
-        tc qdisc del dev $IFACE ingress 2>/dev/null
+        if [ -n "$IFACE" ]; then
+            tc qdisc del dev $IFACE root 2>/dev/null
+            tc qdisc del dev $IFACE ingress 2>/dev/null
+        fi
         tc qdisc del dev ifb0 root 2>/dev/null
         systemctl restart blimit-monitor
     `
@@ -194,17 +202,16 @@ func (c *TrafficController) Reset(ctx *gin.Context) {
     ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Usage reset"})
 }
 
-// Helper to convert e.g. "1GB" to bytes using pure Go (Safe from bash injection)
+// FIX 3: Improved robust conversion (handles bare numbers, KB, MB, GB, TB)
 func convertToBytes(input string) (string, error) {
     input = strings.TrimSpace(strings.ToUpper(input))
     if input == "" || input == "0" {
         return "0", nil
     }
 
-    var multiplier int64
+    var multiplier int64 = 1
     var numStr string
 
-    // Check suffix and set multiplier
     if strings.HasSuffix(input, "TB") {
         multiplier = 1024 * 1024 * 1024 * 1024
         numStr = strings.TrimSuffix(input, "TB")
@@ -214,8 +221,12 @@ func convertToBytes(input string) (string, error) {
     } else if strings.HasSuffix(input, "MB") {
         multiplier = 1024 * 1024
         numStr = strings.TrimSuffix(input, "MB")
+    } else if strings.HasSuffix(input, "KB") {
+        multiplier = 1024
+        numStr = strings.TrimSuffix(input, "KB")
     } else {
-        return "0", fmt.Errorf("invalid format (use TB, GB, or MB)")
+        // If no suffix, assume it's already in bytes
+        numStr = input
     }
 
     // Parse the number part

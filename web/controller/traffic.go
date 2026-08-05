@@ -77,8 +77,13 @@ func parseConfig() TrafficData {
     return data
 }
 
+// FIX: Wrapped the response in "success": true and "obj" so the frontend Vue can read it
 func (c *TrafficController) Status(ctx *gin.Context) {
-    ctx.JSON(http.StatusOK, parseConfig())
+    data := parseConfig()
+    ctx.JSON(http.StatusOK, gin.H{
+        "success": true,
+        "obj":     data,
+    })
 }
 
 func (c *TrafficController) Install(ctx *gin.Context) {

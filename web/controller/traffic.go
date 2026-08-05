@@ -181,20 +181,33 @@ func (c *TrafficController) Save(ctx *gin.Context) {
 }
 
 func (c *TrafficController) Reset(ctx *gin.Context) {
+    // This script resets usage to 0 AND removes the quota limits (sets to 0)
     resetScript := `
         CONF="/etc/blimit/blimit-config.ini"
         IFACE=$(grep interface $CONF | cut -d= -f2)
-        sed -i "s/inbound_throttled=.*/inbound_throttled=0/" $CONF
-        sed -i "s/outbound_throttled=.*/outbound_throttled=0/" $CONF
-        sed -i "s/offset_inbound=.*/offset_inbound=0/" $CONF
-        sed -i "s/offset_outbound=.*/offset_outbound=0/" $CONF
+        
+        # Reset Usage Counters
         sed -i "s/inbound_bytes=.*/inbound_bytes=0/" $CONF
         sed -i "s/outbound_bytes=.*/outbound_bytes=0/" $CONF
+        sed -i "s/offset_inbound=.*/offset_inbound=0/" $CONF
+        sed -i "s/offset_outbound=.*/offset_outbound=0/" $CONF
+        
+        # Reset Throttle Status
+        sed -i "s/inbound_throttled=.*/inbound_throttled=0/" $CONF
+        sed -i "s/outbound_throttled=.*/outbound_throttled=0/" $CONF
+        
+        # Clear Quota Limits (Set to 0 = Unlimited)
+        sed -i "s/inbound_limit_bytes=.*/inbound_limit_bytes=0/" $CONF
+        sed -i "s/outbound_limit_bytes=.*/outbound_limit_bytes=0/" $CONF
+        
+        # Remove active TC rules
         if [ -n "$IFACE" ]; then
             tc qdisc del dev $IFACE root 2>/dev/null
             tc qdisc del dev $IFACE ingress 2>/dev/null
         fi
         tc qdisc del dev ifb0 root 2>/dev/null
+        
+        # Restart daemon to apply changes
         systemctl restart blimit-monitor
     `
     cmd := exec.Command("bash", "-c", resetScript)
@@ -203,7 +216,7 @@ func (c *TrafficController) Reset(ctx *gin.Context) {
         ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Reset failed: " + err.Error()})
         return
     }
-    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Usage reset successfully"})
+    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Usage and limits reset successfully"})
 }
 
 // Improved robust conversion (handles bare numbers, KB, MB, GB, TB)

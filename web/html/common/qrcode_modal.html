@@ -4,34 +4,35 @@
     :closable="true"
     :class="themeSwitcher.currentTheme"
     :footer="null" width="fit-content">
-  <tr-qr-modal class="qr-modal">
+  <div class="xsl-qr-modal-grid">
     <template v-if="app.subSettings.enable && qrModal.subId">
-      <tr-qr-box class="qr-box">
-        <a-tag color="purple" class="qr-tag"><span>{{ i18n "pages.settings.subSettings"}}</span></a-tag>
-        <tr-qr-bg class="qr-bg-sub">
-          <tr-qr-bg-inner class="qr-bg-sub-inner">
+      <div class="xsl-qr-card">
+        <a-tag class="tag-protocol qr-tag"><span>{{ i18n "pages.settings.subSettings"}}</span></a-tag>
+        <div class="xsl-qr-canvas-box qr-bg-sub">
+          <div class="xsl-qr-canvas-inner qr-bg-sub-inner">
             <canvas @click="copyToClipboard('qrCode-sub',genSubLink(qrModal.client.subId))" id="qrCode-sub" class="qr-cv"></canvas>
-          </tr-qr-bg-inner>
-        </tr-qr-bg>
-      </tr-qr-box>
-      <tr-qr-box class="qr-box">
-        <a-tag color="purple" class="qr-tag"><span>{{ i18n "pages.settings.subSettings"}} Json</span></a-tag>
-        <tr-qr-bg class="qr-bg-sub">
-          <tr-qr-bg-inner class="qr-bg-sub-inner">
+          </div>
+        </div>
+      </div>
+      <div class="xsl-qr-card">
+        <a-tag class="tag-protocol qr-tag"><span>{{ i18n "pages.settings.subSettings"}} Json</span></a-tag>
+        <div class="xsl-qr-canvas-box qr-bg-sub">
+          <div class="xsl-qr-canvas-inner qr-bg-sub-inner">
             <canvas @click="copyToClipboard('qrCode-subJson',genSubJsonLink(qrModal.client.subId))" id="qrCode-subJson" class="qr-cv"></canvas>
-          </tr-qr-bg-inner>
-        </tr-qr-bg>
-      </tr-qr-box>
+          </div>
+        </div>
+      </div>
     </template>
+    
     <template v-for="(row, index) in qrModal.qrcodes">
-      <tr-qr-box class="qr-box">
-        <a-tag color="green" class="qr-tag"><span>[[ row.remark ]]</span></a-tag>
-        <tr-qr-bg class="qr-bg">
+      <div class="xsl-qr-card" :key="index">
+        <a-tag class="tag-network qr-tag"><span>[[ row.remark ]]</span></a-tag>
+        <div class="xsl-qr-canvas-box qr-bg">
           <canvas @click="copyToClipboard('qrCode-'+index, row.link)" :id="'qrCode-'+index" class="qr-cv"></canvas>
-        </tr-qr-bg>
-      </tr-qr-box>
+        </div>
+      </div>
     </template>
-  </tr-qr-modal>
+  </div>
 </a-modal>
 
 <script>

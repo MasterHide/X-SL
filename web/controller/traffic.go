@@ -8,6 +8,7 @@ import (
     "strconv"
     "strings"
 
+    "x-ui/logger" // Make sure to import your logger
     "github.com/gin-gonic/gin"
 )
 
@@ -107,13 +108,14 @@ func (c *TrafficController) Uninstall(ctx *gin.Context) {
 
 func (c *TrafficController) Save(ctx *gin.Context) {
     var params struct {
-        InboundLimit  string `json:"inboundLimit"`
-        OutboundLimit string `json:"outboundLimit"`
+        InboundLimit  string `json:"inboundLimit" form:"inboundLimit"`
+        OutboundLimit string `json:"outboundLimit" form:"outboundLimit"`
     }
     
-    // FIX 1: Explicitly use ShouldBindJSON to read the Vue payload
-    if err := ctx.ShouldBindJSON(&params); err != nil {
-        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid parameters sent"})
+    // FIX: Use ShouldBind instead of ShouldBindJSON to accept all content types
+    if err := ctx.ShouldBind(&params); err != nil {
+        logger.Error("Traffic Save Bind Error:", err)
+        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid parameters sent: " + err.Error()})
         return
     }
 
@@ -123,7 +125,7 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         return
     }
 
-    // FIX 2: Pass to the improved convertToBytes function
+    // Convert inputs to bytes
     inBytesStr, err := convertToBytes(params.InboundLimit)
     if err != nil {
         ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Invalid Inbound format: " + err.Error()})
@@ -155,7 +157,7 @@ func (c *TrafficController) Save(ctx *gin.Context) {
         return
     }
 
-    // Clear existing tc rules and restart service
+    // Clear existing tc rules and restart service to apply immediately
     resetScript := `
         CONF="/etc/blimit/blimit-config.ini"
         IFACE=$(grep interface $CONF | cut -d= -f2)
@@ -169,11 +171,13 @@ func (c *TrafficController) Save(ctx *gin.Context) {
     cmd := exec.Command("bash", "-c", resetScript)
     out, err := cmd.CombinedOutput()
     if err != nil {
-        ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Failed to apply rules: " + string(out)})
+        // Log the error but don't fail the whole request, as the config was saved successfully
+        logger.Error("Traffic Save Apply Error:", string(out), err)
+        ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Settings saved, but failed to restart service."})
         return
     }
 
-    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Settings saved and applied"})
+    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Settings saved and applied successfully"})
 }
 
 func (c *TrafficController) Reset(ctx *gin.Context) {
@@ -199,10 +203,10 @@ func (c *TrafficController) Reset(ctx *gin.Context) {
         ctx.JSON(http.StatusOK, gin.H{"success": false, "msg": "Reset failed: " + err.Error()})
         return
     }
-    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Usage reset"})
+    ctx.JSON(http.StatusOK, gin.H{"success": true, "msg": "Usage reset successfully"})
 }
 
-// FIX 3: Improved robust conversion (handles bare numbers, KB, MB, GB, TB)
+// Improved robust conversion (handles bare numbers, KB, MB, GB, TB)
 func convertToBytes(input string) (string, error) {
     input = strings.TrimSpace(strings.ToUpper(input))
     if input == "" || input == "0" {

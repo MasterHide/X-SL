@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head" .}}
+<body>
+<a-layout id="app" v-cloak :class="themeSwitcher.currentTheme">
+  {{ template "commonSider" . }}
+  <a-layout id="content-layout">
+    <a-layout-content>
+      <a-spin :spinning="spinning" tip="Loading Dashboard...">
+        <div class="xsl-dash-container">
+          
+          <!-- Header -->
+          <div class="xsl-dash-header" data-aos="fade-down">
+            <div>
+              <h1>Traffic Manager</h1>
+              <p>Monitor and limit VPS bandwidth usage</p>
+            </div>
+            <div class="xsl-dash-actions" v-if="status.installed">
+              <a-button type="danger" shape="round" @click="uninstall" :loading="uninstalling">
+                <iconify-icon icon="mdi:trash-can-outline" width="18"></iconify-icon> Uninstall
+              </a-button>
+            </div>
+          </div>
+
+          <!-- Not Installed View -->
+          <div class="xsl-panel" v-if="!status.installed && !spinning" style="text-align: center; padding: 64px 24px; max-width: 600px; margin: 0 auto;">
+            <iconify-icon icon="mdi:gauge-empty" width="72" style="color: var(--xsl-primary); margin-bottom: 24px;"></iconify-icon>
+            <h2 style="font-size: 24px; margin-bottom: 12px;">TrafficCap Not Installed</h2>
+            <p style="color: var(--xsl-text-muted); margin-bottom: 32px; font-size: 15px;">
+              Install the backend tool to start managing your bandwidth limits. This will allow you to set hard quotas and throttle speeds automatically.
+            </p>
+            <a-button type="primary" shape="round" size="large" @click="install" :loading="installing">
+              <iconify-icon icon="mdi:download-network-outline" width="20"></iconify-icon> 
+              <span v-if="!installing">Install Now</span>
+              <span v-else>Installing Backend...</span>
+            </a-button>
+          </div>
+
+          <!-- Installed View -->
+          <div v-if="status.installed">
+            <div class="xsl-stat-grid">
+              <!-- Inbound Card -->
+              <div class="xsl-stat-card" data-aos="fade-up">
+                <div class="xsl-stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">
+                  <iconify-icon icon="mdi:download-network-outline"></iconify-icon>
+                </div>
+                <div class="xsl-stat-value">[[ formatBytes(status.inboundUsed) ]]</div>
+                <div class="xsl-stat-label">Download (Inbound)</div>
+                
+                <div style="margin-top: 16px; width: 100%;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; color: var(--xsl-text-muted);">
+                    <span>Used</span>
+                    <span>[[ status.inboundLimit > 0 ? formatBytes(status.inboundLimit) : 'Unlimited' ]]</span>
+                  </div>
+                  <a-progress 
+                    v-if="status.inboundLimit > 0"
+                    :percent="getPercent(status.inboundUsed, status.inboundLimit)" 
+                    :show-info="false" 
+                    strokeColor="#6366f1" 
+                    :strokeWidth="8"
+                  />
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <a-tag v-if="status.inboundThrottled" color="error" style="margin: 0;">
+                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled (1Mbps)
+                  </a-tag>
+                  <a-tag v-else color="success" style="margin: 0;">
+                    <iconify-icon icon="mdi:check-circle-outline" width="14"></iconify-icon> Normal
+                  </a-tag>
+                </div>
+              </div>
+
+              <!-- Outbound Card -->
+              <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="xsl-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                  <iconify-icon icon="mdi:upload-network-outline"></iconify-icon>
+                </div>
+                <div class="xsl-stat-value">[[ formatBytes(status.outboundUsed) ]]</div>
+                <div class="xsl-stat-label">Upload (Outbound)</div>
+                
+                <div style="margin-top: 16px; width: 100%;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; color: var(--xsl-text-muted);">
+                    <span>Used</span>
+                    <span>[[ status.outboundLimit > 0 ? formatBytes(status.outboundLimit) : 'Unlimited' ]]</span>
+                  </div>
+                  <a-progress 
+                    v-if="status.outboundLimit > 0"
+                    :percent="getPercent(status.outboundUsed, status.outboundLimit)" 
+                    :show-info="false" 
+                    strokeColor="#10b981" 
+                    :strokeWidth="8"
+                  />
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <a-tag v-if="status.outboundThrottled" color="error" style="margin: 0;">
+                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled (1Mbps)
+                  </a-tag>
+                  <a-tag v-else color="success" style="margin: 0;">
+                    <iconify-icon icon="mdi:check-circle-outline" width="14"></iconify-icon> Normal
+                  </a-tag>
+                </div>
+              </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="xsl-panel" style="margin-top: 24px;" data-aos="fade-up" data-aos-delay="200">
+              <div class="xsl-panel-header">
+                <h3 class="xsl-panel-title">Quota Settings</h3>
+                <a-button shape="round" @click="resetUsage" :loading="resetting">
+                  <iconify-icon icon="mdi:restart" width="18"></iconify-icon> Reset Usage
+                </a-button>
+              </div>
+              
+              <div class="xsl-settings-list">
+                <div class="xsl-settings-item">
+                  <div class="xsl-settings-info">
+                    <div class="xsl-settings-title">Inbound Limit (Download)</div>
+                    <div class="xsl-settings-desc">Set the quota for incoming traffic (e.g., 1000GB, 1TB). Use 0 for unlimited.</div>
+                  </div>
+                  <div class="xsl-settings-control">
+                    <a-input v-model="form.inboundLimit" placeholder="0 (Unlimited)">
+                      <a-icon slot="prefix" type="download" />
+                    </a-input>
+                  </div>
+                </div>
+
+                <div class="xsl-settings-item">
+                  <div class="xsl-settings-info">
+                    <div class="xsl-settings-title">Outbound Limit (Upload)</div>
+                    <div class="xsl-settings-desc">Set the quota for outgoing traffic (e.g., 500GB). Use 0 for unlimited.</div>
+                  </div>
+                  <div class="xsl-settings-control">
+                    <a-input v-model="form.outboundLimit" placeholder="0 (Unlimited)">
+                      <a-icon slot="prefix" type="upload" />
+                    </a-input>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 24px; text-align: right;">
+                <a-button type="primary" shape="round" size="large" @click="saveSettings" :loading="saving">
+                  <iconify-icon icon="mdi:content-save-outline" width="18"></iconify-icon> Save Limits
+                </a-button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </a-spin>
+    </a-layout-content>
+  </a-layout>
+</a-layout>
+
+{{template "js" .}}
+{{template "component/themeSwitcher" .}}
+<script>
+  const app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+      siderDrawer,
+      themeSwitcher,
+      spinning: false,
+      installing: false,
+      uninstalling: false,
+      saving: false,
+      resetting: false,
+      status: {
+        installed: false,
+        inboundUsed: 0,
+        inboundLimit: 0,
+        outboundUsed: 0,
+        outboundLimit: 0,
+        inboundThrottled: false,
+        outboundThrottled: false,
+      },
+      form: {
+        inboundLimit: '',
+        outboundLimit: ''
+      },
+      pollInterval: null
+    },
+    methods: {
+      getPercent(used, limit) {
+        if (!limit || limit === 0) return 0;
+        let percent = (used / limit) * 100;
+        return percent > 100 ? 100 : Math.round(percent);
+      },
+      async getStatus() {
+        const msg = await HttpUtil.post('/panel/traffic/status');
+        if (msg.success) {
+          this.status = msg.obj;
+          // Update form fields if limits exist and form is empty
+          if (this.form.inboundLimit === '' && this.status.inboundLimit > 0) {
+             this.form.inboundLimit = this.formatBytes(this.status.inboundLimit);
+          }
+          if (this.form.outboundLimit === '' && this.status.outboundLimit > 0) {
+             this.form.outboundLimit = this.formatBytes(this.status.outboundLimit);
+          }
+        }
+      },
+      async install() {
+        this.installing = true;
+        const msg = await HttpUtil.post('/panel/traffic/install');
+        this.installing = false;
+        if (msg.success) {
+          app.$message.success('TrafficCap installed successfully');
+          await this.getStatus();
+          this.startPolling();
+        } else {
+          app.$message.error(msg.msg || 'Installation failed');
+        }
+      },
+      async uninstall() {
+        this.$confirm({
+          title: 'Uninstall TrafficCap',
+          content: 'Are you sure you want to remove the bandwidth manager? Limits will be removed.',
+          okText: 'Uninstall',
+          okType: 'danger',
+          cancelText: 'Cancel',
+          onOk: async () => {
+            this.uninstalling = true;
+            const msg = await HttpUtil.post('/panel/traffic/uninstall');
+            this.uninstalling = false;
+            if (msg.success) {
+              app.$message.success('Uninstalled successfully');
+              this.status = { installed: false, inboundUsed: 0, outboundUsed: 0 };
+              this.stopPolling();
+            } else {
+              app.$message.error(msg.msg || 'Uninstall failed');
+            }
+          }
+        });
+      },
+      async saveSettings() {
+        this.saving = true;
+        const msg = await HttpUtil.post('/panel/traffic/save', this.form);
+        this.saving = false;
+        if (msg.success) {
+          app.$message.success('Settings saved successfully');
+          await this.getStatus();
+        } else {
+          app.$message.error(msg.msg || 'Failed to save settings');
+        }
+      },
+      async resetUsage() {
+        this.$confirm({
+          title: 'Reset Usage Data',
+          content: 'This will reset current usage counters to 0 and remove any active throttles.',
+          okText: 'Reset',
+          okType: 'danger',
+          cancelText: 'Cancel',
+          onOk: async () => {
+            this.resetting = true;
+            const msg = await HttpUtil.post('/panel/traffic/reset');
+            this.resetting = false;
+            if (msg.success) {
+              app.$message.success('Usage reset successfully');
+              await this.getStatus();
+            } else {
+              app.$message.error(msg.msg || 'Reset failed');
+            }
+          }
+        });
+      },
+      formatBytes(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      },
+      startPolling() {
+        this.stopPolling();
+        this.pollInterval = setInterval(this.getStatus, 5000); // Update every 5 seconds
+      },
+      stopPolling() {
+        if (this.pollInterval) {
+          clearInterval(this.pollInterval);
+          this.pollInterval = null;
+        }
+      }
+    },
+        async mounted() {
+      document.title = "Traffic Manager"; // Add this line
+      this.spinning = true;
+      await this.getStatus();
+      this.spinning = false;
+      if (this.status.installed) {
+        this.startPolling();
+      }
+    },
+    beforeDestroy() {
+      this.stopPolling();
+    }
+  });
+</script>
+</body>
+</html>

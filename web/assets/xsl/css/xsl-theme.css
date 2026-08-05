@@ -1020,7 +1020,7 @@ html.light, body.light, #app.light, .light {
     gap: 16px !important;
     margin-bottom: 24px !important;
   }
-  
+
   /* 3. Force Title & Subtitle to be centered */
   .xsl-dash-header > div:first-child {
     width: 100% !important;
@@ -1089,12 +1089,12 @@ html.light, body.light, #app.light, .light {
   }
   .xsl-panel {
     padding: 16px !important;
-    display: block !important; /* Ensure panels are visible */
-    opacity: 1 !important; /* Force visibility over animation library bugs */
+    display: block !important; /* FIX: Force panels to be visible on mobile */
+    opacity: 1 !important;
   }
   .xsl-info-list {
     gap: 12px !important;
-    display: flex !important;
+    display: flex !important; /* FIX: Force list to be visible */
     opacity: 1 !important;
   }
   .xsl-info-item {
@@ -1105,7 +1105,7 @@ html.light, body.light, #app.light, .light {
   .ant-layout-header {
     padding: 0 16px !important;
   }
-  
+
   /* 10. Fix Notification overlap */
   .ant-alert {
     margin-top: 60px !important;

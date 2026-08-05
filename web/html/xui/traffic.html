@@ -27,17 +27,19 @@
             <iconify-icon icon="mdi:gauge-empty" width="72" style="color: var(--xsl-primary); margin-bottom: 24px;"></iconify-icon>
             <h2 style="font-size: 24px; margin-bottom: 12px;">TrafficCap Not Installed</h2>
             <p style="color: var(--xsl-text-muted); margin-bottom: 32px; font-size: 15px;">
-              Install the backend tool to start managing your bandwidth limits. This will allow you to set hard quotas and throttle speeds automatically.
+              Install the backend tool to start managing your bandwidth limits.
             </p>
             <a-button type="primary" shape="round" size="large" @click="install" :loading="installing">
               <iconify-icon icon="mdi:download-network-outline" width="20"></iconify-icon> 
               <span v-if="!installing">Install Now</span>
-              <span v-else>Installing Backend...</span>
+              <span v-else>Installing...</span>
             </a-button>
           </div>
 
           <!-- Installed View -->
           <div v-if="status.installed">
+            
+            <!-- 1. Check Status (Live Cards) -->
             <div class="xsl-stat-grid">
               <!-- Inbound Card -->
               <div class="xsl-stat-card" data-aos="fade-up">
@@ -46,7 +48,6 @@
                 </div>
                 <div class="xsl-stat-value">[[ formatBytes(status.inboundUsed) ]]</div>
                 <div class="xsl-stat-label">Download (Inbound)</div>
-                
                 <div style="margin-top: 16px; width: 100%;">
                   <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; color: var(--xsl-text-muted);">
                     <span>Used</span>
@@ -60,10 +61,9 @@
                     :strokeWidth="8"
                   />
                 </div>
-
                 <div style="margin-top: 12px;">
                   <a-tag v-if="status.inboundThrottled" color="error" style="margin: 0;">
-                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled (1Mbps)
+                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled
                   </a-tag>
                   <a-tag v-else color="success" style="margin: 0;">
                     <iconify-icon icon="mdi:check-circle-outline" width="14"></iconify-icon> Normal
@@ -78,7 +78,6 @@
                 </div>
                 <div class="xsl-stat-value">[[ formatBytes(status.outboundUsed) ]]</div>
                 <div class="xsl-stat-label">Upload (Outbound)</div>
-                
                 <div style="margin-top: 16px; width: 100%;">
                   <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; color: var(--xsl-text-muted);">
                     <span>Used</span>
@@ -92,10 +91,9 @@
                     :strokeWidth="8"
                   />
                 </div>
-
                 <div style="margin-top: 12px;">
                   <a-tag v-if="status.outboundThrottled" color="error" style="margin: 0;">
-                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled (1Mbps)
+                    <iconify-icon icon="mdi:alert-octagon-outline" width="14"></iconify-icon> Throttled
                   </a-tag>
                   <a-tag v-else color="success" style="margin: 0;">
                     <iconify-icon icon="mdi:check-circle-outline" width="14"></iconify-icon> Normal
@@ -104,7 +102,7 @@
               </div>
             </div>
 
-            <!-- Settings Panel -->
+            <!-- 2. Set Quota & 3. Reset All -->
             <div class="xsl-panel" style="margin-top: 24px;" data-aos="fade-up" data-aos-delay="200">
               <div class="xsl-panel-header">
                 <h3 class="xsl-panel-title">Quota Settings</h3>
@@ -145,6 +143,16 @@
                 </a-button>
               </div>
             </div>
+
+            <!-- 4. View Raw Config -->
+            <div class="xsl-panel" style="margin-top: 24px;" data-aos="fade-up" data-aos-delay="300">
+              <a-collapse :bordered="false" class="xsl-settings-collapse">
+                <a-collapse-panel key="1" header='View Raw Configuration File'>
+                  <pre style="background: var(--xsl-bg); padding: 16px; border-radius: 8px; color: var(--xsl-text-muted); font-size: 13px; max-height: 300px; overflow-y: auto; margin: 0;">[[ status.rawConfig ]]</pre>
+                </a-collapse-panel>
+              </a-collapse>
+            </div>
+
           </div>
 
         </div>
@@ -161,6 +169,7 @@
     el: '#app',
     data: {
       siderDrawer,
+      sidebar,
       themeSwitcher,
       spinning: false,
       installing: false,
@@ -175,6 +184,7 @@
         outboundLimit: 0,
         inboundThrottled: false,
         outboundThrottled: false,
+        rawConfig: ""
       },
       form: {
         inboundLimit: '',
@@ -226,7 +236,7 @@
             this.uninstalling = false;
             if (msg.success) {
               app.$message.success('Uninstalled successfully');
-              this.status = { installed: false, inboundUsed: 0, outboundUsed: 0 };
+              this.status = { installed: false, inboundUsed: 0, outboundUsed: 0, rawConfig: "" };
               this.stopPolling();
             } else {
               app.$message.error(msg.msg || 'Uninstall failed');
@@ -283,8 +293,8 @@
         }
       }
     },
-        async mounted() {
-      document.title = "Traffic Manager"; // Add this line
+    async mounted() {
+      document.title = "Traffic Manager - X-SL Panel";
       this.spinning = true;
       await this.getStatus();
       this.spinning = false;

@@ -1,390 +1,232 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 {{template "head" .}}
 <style>
+  :root {
+    --xsl-primary: #6366f1;
+    --xsl-primary-hover: #4f46e5;
+    --xsl-bg: #0f172a;
+    --xsl-bg-secondary: #1e293b;
+    --xsl-card: rgba(30, 41, 59, 0.7);
+    --xsl-border: rgba(255, 255, 255, 0.1);
+    --xsl-text: #f1f5f9;
+    --xsl-text-muted: #94a3b8;
+  }
+
   html * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1 {
-    text-align: center;
-/*    margin: 20px 0 50px 0;*/
-    height: 110px;
-  }
-  .ant-btn,
-  .ant-input {
-    height: 50px;
-    border-radius: 30px;
-  }
-  .ant-input-group-addon {
-    border-radius: 0 30px 30px 0;
-    width: 50px;
-    font-size: 18px;
-  }
-  .ant-input-affix-wrapper .ant-input-prefix {
-    left: 23px;
-  }
-  .ant-input-affix-wrapper .ant-input:not(:first-child) {
-    padding-left: 50px;
-  }
-  .centered {
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  .title {
-    font-size: 32px;
-  }
-  .title b {
-    font-weight: bold !important;
-  }
-  #app {
+
+  body {
+    background-color: var(--xsl-bg) !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     overflow: hidden;
   }
+
+  h1 {
+    text-align: center;
+    height: 40px;
+    margin-bottom: 32px;
+  }
+
+  /* Glassmorphism Login Card */
   #login {
-    animation: charge 0.5s both;
-    background-color: #fff;
-    border-radius: 2rem;
-    padding: 3rem;
-    transition: all 0.3s;
+    animation: charge 0.6s both;
+    background: var(--xsl-card) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--xsl-border) !important;
+    border-radius: 24px !important;
+    padding: 48px 40px !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     user-select:none;
     -webkit-user-select:none;
     -moz-user-select: none;
-  }
-  #login:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    max-width: 440px; /* Keeps the card compact and centered */
+    width: 100% !important;
+    margin: 0 auto !important;
   }
   @keyframes charge {
-    from {
-      transform: translateY(5rem);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(2rem); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
+
+  /* Title Animation - Now Pure White */
+  .title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff !important;
+    background: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+  .title b { font-weight: 700 !important; }
+  .words-wrapper { width: 100%; display: inline-block; position: relative; text-align: center; }
+  .words-wrapper b { width: 100%; display: inline-block; position: absolute; left: 0; top: 0; }
+  .words-wrapper b.is-visible { position: relative; }
+  .headline.zoom .words-wrapper { -webkit-perspective: 300px; perspective: 300px; }
+  .headline { display: flex; justify-content: center; align-items: center; }
+  .headline.zoom b { opacity: 0; }
+  .headline.zoom b.is-visible { opacity: 1; -webkit-animation: zoom-in 0.8s; animation: cubic-bezier(0.215, 0.610, 0.355, 1.000) zoom-in 0.8s; }
+  .headline.zoom b.is-hidden { -webkit-animation: zoom-out 0.8s; animation: cubic-bezier(0.215, 0.610, 0.355, 1.000) zoom-out 0.4s; }
+  @keyframes zoom-in { 0% { opacity: 0; transform: translateZ(100px); } 100% { opacity: 1; transform: translateZ(0); } }
+  @keyframes zoom-out { 0% { opacity: 1; transform: translateZ(0); } 100% { opacity: 0; transform: translateZ(-100px); } }
+
+  /* Background Waves */
   .under {
-    background-color: #4B85C5;
+    background-color: var(--xsl-bg) !important;
     z-index: 0;
-  }
-  .dark .under {
-    background-color: var(--dark-color-login-wave);
-  }
-  .dark #login {
-    background-color: var(--dark-color-surface-100);
-  }
-  .dark h1 {
-    color: rgba(255, 255, 255);
-  }
-  .ant-form-item {
-    margin-bottom: 16px;
-  }
-  .ant-btn-primary-login {
-    width: 100%;
-  }
-  .ant-btn-primary-login:focus,
-  .ant-btn-primary-login:hover {
-    color: #fff;
-    background-color: #5979AD;
-    border-color: #5979AD;
-    background-image: linear-gradient(
-      270deg,
-      rgba(123, 199, 77, 0) 30%,
-      #4570B5,
-      rgba(123, 199, 77, 0) 100%
-    );
-    background-repeat: no-repeat;
-    animation: ma-bg-move ease-in-out 5s infinite;
-    background-position-x: -500px;
-    width: 95%;
-    animation-delay: -0.5s;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
-  }
-  .ant-btn-primary-login.active,
-  .ant-btn-primary-login:active {
-    color: #fff;
-    background-color: #5979AD;
-    border-color: #5979AD;
-  }
-  @keyframes ma-bg-move {
-    0% {
-      background-position: -500px 0;
-    }
-    50% {
-      background-position: 1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-  .wave-btn-bg {
     position: relative;
-    border-radius: 25px;
-    width: 100%;
-    transition: all 0.3s cubic-bezier(.645,.045,.355,1);
-  }
-  .dark .wave-btn-bg {
-    color: #fff;
-    position: relative;
-    background-color: #4570B5;
-    border: 2px double transparent;
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    background-size: 300%;
-    width: 100%;
-    z-index: 1;
-  }
-  .dark .wave-btn-bg:hover {animation: wave-btn-tara 4s ease infinite;}
-  .dark .wave-btn-bg-cl {
-    background-image: linear-gradient(rgba(13, 14, 33, 0), rgba(13, 14, 33, 0)),
-      radial-gradient(circle at left top, #5979AD, #4570B5, #5979AD) !important;
-    border-radius: 3em;
-  }
-  .dark .wave-btn-bg-cl:hover {
-    width: 95%;
-  }
-  .dark .wave-btn-bg-cl:before {
-    position: absolute;
-    content: "";
-    top: -5px;
-    left: -5px;
-    bottom: -5px;
-    right: -5px;
-    z-index: -1;
-    background: inherit;
-    background-size: inherit;
-    border-radius: 4em;
-    opacity: 0;
-    transition: 0.5s;
-  }
-  .dark .wave-btn-bg-cl:hover::before {
-    opacity: 1;
-    filter: blur(20px);
-    animation: wave-btn-tara 8s linear infinite;
-  }
-  @keyframes wave-btn-tara {
-    to {
-      background-position: 300%;
-    }
-  }
-  .dark .ant-btn-primary-login {
-    font-size: 14px;
-    color: #fff;
-    text-align: center;
-    background-image: linear-gradient(
-      rgba(13, 14, 33, 0.45),
-      rgba(13, 14, 33, 0.35)
-    );
-    border-radius: 2rem;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    height: 46px;
-    position: relative;
-    white-space: nowrap;
-    cursor: pointer;
-    touch-action: manipulation;
-    padding: 0 15px;
-    width: 100%;
-    animation: none;
-    background-position-x: 0;
-    box-shadow: none;
+    overflow: hidden;
   }
   .waves-header {
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    background-color: #bac9f0;
-    color: white;
-    z-index: -1;
+    position: absolute; top: 0; left: 0; width: 100%; text-align: center; z-index: 0;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   }
-  .dark .waves-header {
-    background-color: var(--dark-color-login-background);
-  }
-  .waves-inner-header {
-    height: 50vh;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  .waves {
-    position: relative;
-    width: 100%;
-    height: 15vh;
-    margin-bottom: -8px; /*Fix for safari gap*/
-    min-height: 100px;
-    max-height: 150px;
-  }
-  .parallax > use {
-    animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-  }
-  .dark .parallax > use {
-    fill: var(--dark-color-login-wave);
-  }
-  .parallax > use:nth-child(1) {
-    animation-delay: -2s;
-    animation-duration: 4s;
-    opacity: 0.2;
-  }
-  .parallax > use:nth-child(2) {
-    animation-delay: -3s;
-    animation-duration: 7s;
-    opacity: 0.4;
-  }
-  .parallax > use:nth-child(3) {
-    animation-delay: -4s;
-    animation-duration: 10s;
-    opacity: 0.6;
-  }
-  .parallax > use:nth-child(4) {
-  animation-delay: -5s;
-  animation-duration: 13s;
-  }
-  @keyframes move-forever {
-    0% {
-      transform: translate3d(-90px, 0, 0);
-    }
-    100% {
-      transform: translate3d(85px, 0, 0);
-    }
-  }
-  @media (max-width: 768px) {
-    .waves {
-      height: 40px;
-      min-height: 40px;
-    }
-  }
-  .words-wrapper {
-    width: 100%;
-    display: inline-block;
-    position: relative;
-    text-align: center;
-  }
-  .words-wrapper b {
-    width: 100%;
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  .words-wrapper b.is-visible {
-    position: relative;
-  }
-  .headline.zoom .words-wrapper {
-    -webkit-perspective: 300px;
-    -moz-perspective: 300px;
-    perspective: 300px;
-  }
-  .headline {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .headline.zoom b {
-    opacity: 0;
-  }
-  .headline.zoom b.is-visible {
-    opacity: 1;
-    -webkit-animation: zoom-in 0.8s;
-    -moz-animation: zoom-in 0.8s;
-    animation: cubic-bezier(0.215, 0.610, 0.355, 1.000) zoom-in 0.8s;
-  }
-  .headline.zoom b.is-hidden {
-    -webkit-animation: zoom-out 0.8s;
-    -moz-animation: zoom-out 0.8s;
-    animation: cubic-bezier(0.215, 0.610, 0.355, 1.000) zoom-out 0.4s;
-  }
-  @-webkit-keyframes zoom-in {
-    0% {
-      opacity: 0;
-      -webkit-transform: translateZ(100px);
-    }
+  .waves-inner-header { height: 50vh; width: 100%; margin: 0; padding: 0; }
+  .waves { position: absolute; bottom: 0; width: 100%; height: 15vh; margin-bottom: -8px; min-height: 100px; max-height: 150px; }
+  .parallax > use { animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite; }
+  .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 4s; opacity: 0.2; }
+  .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 7s; opacity: 0.3; }
+  .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 10s; opacity: 0.4; }
+  .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 13s; }
+  @keyframes move-forever { 0% { transform: translate3d(-90px, 0, 0); } 100% { transform: translate3d(85px, 0, 0); } }
 
-    100% {
-      opacity: 1;
-      -webkit-transform: translateZ(0);
-    }
+  /* Premium Inputs (No Icons, Strict Dark Background, No White Hover) */
+  .ant-form-item { margin-bottom: 24px; }
+  
+  .ant-input-wrapper.ant-input-group {
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
   }
-  @-moz-keyframes zoom-in {
-    0% {
-      opacity: 0;
-      -moz-transform: translateZ(100px);
-    }
-    100% {
-      opacity: 1;
-      -moz-transform: translateZ(0);
-    }
+  
+  /* Main Input Container - Forced Dark */
+  .ant-input-affix-wrapper,
+  .ant-input {
+    background-color: #1e293b !important;
+    border: 1px solid var(--xsl-border) !important;
+    border-radius: 12px !important;
+    height: 50px !important;
+    padding: 0 20px !important; 
+    transition: border-color 0.3s ease !important;
+    box-shadow: none !important;
+    color: var(--xsl-text) !important;
+    font-size: 15px !important;
   }
-  @keyframes zoom-in {
-    0% {
-      opacity: 0;
-      -webkit-transform: translateZ(100px);
-      -moz-transform: translateZ(100px);
-      -ms-transform: translateZ(100px);
-      -o-transform: translateZ(100px);
-      transform: translateZ(100px);
-    }
-    100% {
-      opacity: 1;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
-    }
+  
+  /* Remove White Hover Completely */
+  .ant-input-affix-wrapper:hover,
+  .ant-input:hover {
+    background-color: #1e293b !important;
+    border-color: rgba(99, 102, 241, 0.5) !important;
   }
-  @-webkit-keyframes zoom-out {
-    0% {
-      opacity: 1;
-      -webkit-transform: translateZ(0);
-    }
-    100% {
-      opacity: 0;
-      -webkit-transform: translateZ(-100px);
-    }
+  
+  /* Focus State */
+  .ant-input-affix-wrapper-focused,
+  .ant-input-focused { 
+    background-color: #1e293b !important;
+    border-color: var(--xsl-primary) !important; 
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important; 
   }
-  @-moz-keyframes zoom-out {
-    0% {
-      opacity: 1;
-      -moz-transform: translateZ(0);
-    }
-    100% {
-      opacity: 0;
-      -moz-transform: translateZ(-100px);
-    }
+  
+  .ant-input::placeholder { color: var(--xsl-text-muted) !important; }
+  
+  /* Webkit Autofill Fix (Stops white background when selecting saved passwords) */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f1f5f9 !important;
+    caret-color: #f1f5f9 !important;
+    -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
-  @keyframes zoom-out {
-    0% {
-      opacity: 1;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
-    }
-    100% {
-      opacity: 0;
-      -webkit-transform: translateZ(-100px);
-      -moz-transform: translateZ(-100px);
-      -ms-transform: translateZ(-100px);
-      -o-transform: translateZ(-100px);
-      transform: translateZ(-100px);
-    }
-  }
-  .ant-menu-item .anticon {
-    margin-right: 4px;
-  }
-  .ant-menu-inline .ant-menu-item {
+  
+  /* Fix Password Component Addon (Eye Icon Container) */
+  .ant-input-group-addon {
+    background-color: #1e293b !important;
+    border: 1px solid var(--xsl-border) !important;
+    border-left: none !important;
+    border-radius: 0 12px 12px 0 !important;
+    color: var(--xsl-text-muted) !important;
     padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 50px !important;
+  }
+  .ant-input-group-addon .anticon {
+    color: var(--xsl-text-muted) !important;
+    font-size: 16px !important;
+    margin: 0 !important;
+  }
+  .ant-input-group-addon .anticon:hover {
+    color: var(--xsl-primary) !important;
+  }
+  
+  .ant-input-group .ant-input-affix-wrapper {
+    border-radius: 12px 0 0 12px !important;
+  }
+
+  /* Remove default browser outlines */
+  .ant-input:focus, .ant-btn:focus, .ant-select:focus, .ant-select-selection:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+  }
+
+  /* Centering */
+  .centered { display: flex; text-align: center; align-items: center; justify-content: center; width: 100%; }
+
+  /* Premium Login Button Alignment */
+  .wave-btn-bg {
+    position: relative; width: 100%; transition: all 0.3s ease;
+    display: flex !important; justify-content: center !important;
+  }
+  .ant-btn-primary-login {
+    width: 100% !important; height: 50px !important; border-radius: 12px !important;
+    font-weight: 600 !important; font-size: 16px !important; letter-spacing: 0.5px !important;
+    background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%) !important;
+    border: none !important; color: #fff !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+  }
+  .ant-btn-primary-login:hover {
+    background: linear-gradient(135deg, #818cf8 0%, #8b5cf6 100%) !important;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
+    transform: translateY(-2px) !important;
+  }
+  .ant-btn-primary-login:active { transform: translateY(0) !important; }
+
+  /* Language Select Alignment */
+  .ant-select { width: 100% !important; }
+  .ant-select-selection {
+    background-color: #1e293b !important;
+    border: 1px solid var(--xsl-border) !important; border-radius: 12px !important;
+    color: var(--xsl-text) !important; height: 50px !important;
+    display: flex !important; align-items: center !important; box-shadow: none !important;
+  }
+  .ant-select-selection:hover { border-color: rgba(99, 102, 241, 0.5) !important; }
+  .ant-select-selection__rendered {
+    margin: 0 !important; padding: 0 16px !important; height: 100% !important;
+    display: flex !important; align-items: center !important; line-height: 50px !important;
+  }
+  .ant-select-arrow { color: var(--xsl-text-muted) !important; right: 16px !important; }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 576px) {
+    #login {
+      padding: 32px 24px !important;
+    }
   }
 </style>
 <body>
   <a-layout id="app" v-cloak :class="themeSwitcher.currentTheme">
     <transition name="list" appear>
-      <a-layout-content class="under" style="min-height: 0;">
+      <a-layout-content class="under" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+        
+        <!-- Animated Background Waves -->
         <div class="waves-header">
           <div class="waves-inner-header"></div>
           <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -393,50 +235,60 @@
               <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
             </defs>
             <g class="parallax">
-              <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(67, 120, 177, 1)" />
-              <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(67, 120, 177, 1)" />
-              <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(67, 120, 177, 1)" />
-              <use xlink:href="#gentle-wave" x="48" y="7" fill="#4B85C5" />
+              <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(99, 102, 241, 0.15)" />
+              <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(124, 58, 237, 0.15)" />
+              <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(30, 41, 59, 0.4)" />
+              <use xlink:href="#gentle-wave" x="48" y="7" fill="#0f172a" />
             </g>
           </svg>
         </div>
-        <a-row type="flex" justify="center" align="middle" style="height: 100%; overflow: auto; overflow-x: hidden;">
-          <a-col :xs="22" :sm="20" :md="14" :lg="10" :xl="8" :xxl="6" id="login" style="margin: 3rem 0;">
+
+        <!-- Login Card -->
+        <a-row type="flex" justify="center" align="middle" style="width: 100%; position: relative; z-index: 1; padding: 24px;">
+          <a-col :xs="22" :sm="20" :md="14" :lg="10" :xl="8" :xxl="6" id="login">
+            
+            <!-- Responsive Logo -->
+            <a-row type="flex" justify="center">
+              <a-col style="width: 100%; text-align: center; margin-bottom: 16px;">
+                <img src="{{ .base_path }}assets/xsl/img/logo.png" alt="Xray SL Logo" style="max-width: 500px; width: 100%; height: auto; margin: 0 auto 24px; display: block; filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.3));" />
+              </a-col>
+            </a-row>
+            
+            <!-- Wellcome Text -->
             <a-row type="flex" justify="center">
               <a-col style="width: 100%;">
-                <h1 class="title headline zoom">
+                <h1 class="title headline zoom" style="font-size: 32px; height: 40px; margin-bottom: 32px;">
                   <span class="words-wrapper">
-                    <b class="is-visible">{{ i18n "pages.login.XraySL" }}</b>
-                    <b>{{ i18n "pages.login.title" }}</b>
+                    <b class="is-visible">Wellcome</b>
                   </span>
                 </h1>
               </a-col>
             </a-row>
+
+            <!-- Login Form -->
             <a-row type="flex" justify="center">
               <a-col span="24">
                 <a-form>
                   <a-form-item>
                     <a-input autocomplete="username" name="username" v-model.trim="user.username" placeholder='{{ i18n "username" }}'
                              @keydown.enter.native="login" autofocus>
-                      <a-icon slot="prefix" type="user" style="font-size: 16px;"></a-icon>
                     </a-input>
                   </a-form-item>
                   <a-form-item>
-                    <password-input autocomplete="password" name="password" icon="lock" v-model.trim="user.password"
+                    <password-input autocomplete="password" name="password" v-model.trim="user.password"
                                     placeholder='{{ i18n "password" }}'
                                     @keydown.enter.native="login">
                     </password-input>
                   </a-form-item>
                   <a-form-item v-if="secretEnable">
-                    <password-input autocomplete="secret" name="secret" icon="key" v-model.trim="user.loginSecret"
+                    <password-input autocomplete="secret" name="secret" v-model.trim="user.loginSecret"
                                     placeholder='{{ i18n "secretToken" }}'
                                     @keydown.enter.native="login">
                     </password-input>
                   </a-form-item>
                   <a-form-item>
                     <a-row justify="center" class="centered">
-                      <div style="height: 50px;" class="wave-btn-bg wave-btn-bg-cl"
-                           :style="loading ? { width: '52px' } : { display: 'inline-block' }">
+                      <div class="wave-btn-bg" :style="loading ? { width: '52px' } : { width: '100%' }">
                         <a-button class="ant-btn-primary-login" type="primary"
                                   :loading="loading" @click="login"
                                   :icon="loading ? 'poweroff' : undefined">
@@ -446,10 +298,10 @@
                     </a-row>
                   </a-form-item>
                   <a-form-item>
-                    <a-row justify="center" class="centered">
-                      <a-col :span="24">
+                    <a-row justify="center" class="centered" style="margin-top: 8px;">
+                      <a-col :span="24" style="text-align: center;">
                         <a-select ref="selectLang" v-model="lang"
-                                  @change="setLang(lang)" style="width: 200px;"
+                                  @change="setLang(lang)"
                                   :dropdown-class-name="themeSwitcher.currentTheme">
                           <a-select-option :value="l.value" label="English" v-for="l in supportLangs">
                             <span role="img" aria-label="l.name" v-text="l.icon"></span>

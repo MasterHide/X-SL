@@ -86,6 +86,8 @@ type Server struct {
 	server *controller.ServerController
 	panel  *controller.XUIController
 	api    *controller.APIController
+	traffic *controller.TrafficController
+	torrent *controller.TorrentController
 
 	xrayService    service.XrayService
 	settingService service.SettingService
@@ -102,6 +104,8 @@ func NewServer() *Server {
 	return &Server{
 		ctx:    ctx,
 		cancel: cancel,
+		traffic: &controller.TrafficController{}, // Add this line
+		torrent: &controller.TorrentController{},
 	}
 }
 
@@ -232,6 +236,25 @@ func (s *Server) initRouter() (*gin.Engine, error) {
 	s.server = controller.NewServerController(g)
 	s.panel = controller.NewXUIController(g)
 	s.api = controller.NewAPIController(g)
+
+	    traffic := s.traffic
+    gTraffic := engine.Group(basePath + "panel/traffic")
+    gTraffic.GET("/", traffic.Index)
+    gTraffic.POST("/status", traffic.Status)
+    gTraffic.POST("/install", traffic.Install)
+    gTraffic.POST("/uninstall", traffic.Uninstall)
+    gTraffic.POST("/save", traffic.Save)
+    gTraffic.POST("/reset", traffic.Reset)
+
+
+	    torrent := s.torrent
+    gTorrent := engine.Group(basePath + "panel/torrent")
+    gTorrent.GET("/", torrent.Index)
+    gTorrent.POST("/status", torrent.Status)
+    gTorrent.POST("/install", torrent.Install)
+    gTorrent.POST("/uninstall", torrent.Uninstall)
+    gTorrent.POST("/add", torrent.AddTracker)
+    gTorrent.POST("/remove", torrent.RemoveTracker)
 
 	return engine, nil
 }

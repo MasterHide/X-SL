@@ -75,15 +75,15 @@
       <a-layout-content>
         <a-spin :spinning="spinning" :delay="500" tip='{{ i18n "loading"}}'>
           <transition name="list" appear>
-            <a-alert type="error" v-if="confAlerts.length>0" style="margin-bottom: 10px;"
-                message='{{ i18n "secAlertTitle" }}'
-                color="red"
-                show-icon closable>
-              <template slot="description">
-                <b>{{ i18n "secAlertConf" }}</b>
-                <ul><li v-for="a in confAlerts">[[ a ]]</li></ul>
-              </template>
-            </a-alert>
+            <a-alert type="error" v-if="confAlerts.length>0" @close="confAlerts = []" style="margin-bottom: 10px;"
+    message='{{ i18n "secAlertTitle" }}'
+    color="red"
+    closable>
+  <template slot="description">
+    <b>{{ i18n "secAlertConf" }}</b>
+    <ul><li v-for="a in confAlerts">[[ a ]]</li></ul>
+  </template>
+</a-alert>
           </transition>
           <a-space direction="vertical">
 

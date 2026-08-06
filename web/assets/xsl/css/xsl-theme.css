@@ -2094,7 +2094,7 @@ html.light, body.light, #app.light, .light {
     flex-wrap: nowrap;
 }
 
-/* ===== TORRENT TABLE (FIT TO SCREEN LIKE ROUTING TABLE) ===== */
+/* ===== TORRENT TABLE (FIT TO SCREEN - NO SCROLL) ===== */
 
 /* 1. Strictly hide horizontal scroll */
 .xsl-torrent-table .ant-table-wrapper {
@@ -2102,11 +2102,19 @@ html.light, body.light, #app.light, .light {
 }
 .xsl-torrent-table .ant-table {
     width: 100% !important;
-    table-layout: fixed !important; /* Forces columns to obey width rules */
+    table-layout: fixed !important; 
 }
 
-/* 2. Allow long domains to wrap to the next line instead of stretching */
-.xsl-torrent-table .ant-table-thead > tr > th,
+/* 2. Table Headers - Prevent wrapping and shrink to fit */
+.xsl-torrent-table .ant-table-thead > tr > th {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 12px !important;
+    padding: 8px !important;
+}
+
+/* 3. Table Cells - Allow long domains to wrap */
 .xsl-torrent-table .ant-table-tbody > tr > td {
     white-space: normal !important;
     word-break: break-all !important;
@@ -2114,12 +2122,25 @@ html.light, body.light, #app.light, .light {
     padding: 8px !important;
 }
 
+/* 4. Earth Icon Fix - Use Flex to prevent overlap */
+.xsl-entry-cell {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+}
+.xsl-entry-cell iconify-icon {
+    flex-shrink: 0 !important;
+    margin-top: 2px !important; /* Aligns icon nicely with first line of text */
+}
 .xsl-entry-text {
     font-weight: 600;
     color: var(--xsl-text) !important;
     white-space: normal !important;
     word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+    line-height: 1.3 !important;
 }
+
 .xsl-blocked-tag {
     border-radius: 6px !important;
     text-transform: uppercase;
@@ -2136,12 +2157,12 @@ html.light, body.light, #app.light, .light {
 
 /* Tablet & Mobile (<= 768px) */
 @media (max-width: 768px) {
-    /* 1. Reduce main dashboard outer padding to give more room */
+    /* Reduce main dashboard outer padding */
     .xsl-dash-container {
         padding: 12px !important;
     }
 
-    /* 2. Strip Ant Design Card body padding (Main culprit for wasted space) */
+    /* Strip Ant Design Card body padding */
     .modern-card.xsl-torrent-card > .ant-card-body {
         padding: 12px !important;
     }
@@ -2149,12 +2170,12 @@ html.light, body.light, #app.light, .light {
         margin-bottom: 12px !important;
     }
 
-    /* 3. Remove inner padding of the torrent content area */
+    /* Remove inner padding of the torrent content area */
     .xsl-torrent-content {
         padding: 0 !important;
     }
 
-    /* 4. Tighten the Toolbar */
+    /* Tighten the Toolbar */
     .xsl-torrent-toolbar {
         flex-direction: column;
         align-items: stretch;
@@ -2178,15 +2199,19 @@ html.light, body.light, #app.light, .light {
         padding: 0 16px !important;
     }
 
-    /* 5. Ensure Table wrapper has no extra margins */
+    /* Ensure Table wrapper has no extra margins */
     .xsl-torrent-table .ant-table-wrapper {
         margin: 0 !important;
     }
 
-    /* 6. Table compact padding */
+    /* Table compact padding */
     .xsl-torrent-table .ant-table-thead > tr > th,
     .xsl-torrent-table .ant-table-tbody > tr > td {
         padding: 8px 6px !important;
+    }
+    /* Shrink Status header text specifically */
+    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2) {
+        font-size: 10px !important;
     }
 
     /* Set percentage widths for columns */
@@ -2207,11 +2232,34 @@ html.light, body.light, #app.light, .light {
 
     .xsl-entry-text { font-size: 12px !important; }
     .xsl-blocked-tag { font-size: 10px !important; padding: 2px 6px !important; }
+
+    /* 5. Pagination Compact Fix */
+    .xsl-torrent-table .ant-pagination {
+        margin: 8px 0 !important;
+    }
+    .xsl-torrent-table .ant-pagination-item,
+    .xsl-torrent-table .ant-pagination-jump-next,
+    .xsl-torrent-table .ant-pagination-jump-prev {
+        min-width: 24px !important;
+        height: 24px !important;
+        line-height: 24px !important;
+        font-size: 12px !important;
+    }
+    .xsl-torrent-table .ant-pagination-item a {
+        font-size: 12px !important;
+    }
+    .xsl-torrent-table .ant-pagination-prev .ant-pagination-item-link,
+    .xsl-torrent-table .ant-pagination-next .ant-pagination-item-link {
+        min-width: 24px !important;
+        height: 24px !important;
+        line-height: 24px !important;
+        font-size: 12px !important;
+    }
 }
 
 /* Small Phones (<= 480px) */
 @media (max-width: 480px) {
-    /* Reduce dashboard padding even more on tiny phones */
+    /* Reduce dashboard padding even more */
     .xsl-dash-container {
         padding: 8px !important;
     }
@@ -2242,7 +2290,7 @@ html.light, body.light, #app.light, .light {
         height: 14px !important;
     }
 
-    /* Adjust column widths to give Domain more room on tiny screens */
+    /* Adjust column widths to give Domain more room */
     .xsl-torrent-table .ant-table-thead > tr > th:nth-child(1),
     .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(1) {
         width: 60% !important;
@@ -2260,6 +2308,26 @@ html.light, body.light, #app.light, .light {
     .xsl-entry-cell iconify-icon { width: 12px !important; }
     .xsl-torrent-toolbar-title { font-size: 14px !important; }
     .xsl-torrent-toolbar-title iconify-icon { width: 16 !important; }
+
+    /* Pagination even smaller */
+    .xsl-torrent-table .ant-pagination-item,
+    .xsl-torrent-table .ant-pagination-jump-next,
+    .xsl-torrent-table .ant-pagination-jump-prev {
+        min-width: 22px !important;
+        height: 22px !important;
+        line-height: 22px !important;
+        font-size: 11px !important;
+    }
+    .xsl-torrent-table .ant-pagination-item a {
+        font-size: 11px !important;
+    }
+    .xsl-torrent-table .ant-pagination-prev .ant-pagination-item-link,
+    .xsl-torrent-table .ant-pagination-next .ant-pagination-item-link {
+        min-width: 22px !important;
+        height: 22px !important;
+        line-height: 22px !important;
+        font-size: 11px !important;
+    }
 }
 
 /* Extra Small Phones (<= 360px) */

@@ -2095,16 +2095,23 @@ html.light, body.light, #app.light, .light {
 }
 
 /* ===== TORRENT TABLE (FIT TO SCREEN - NO SCROLL) ===== */
+
+/* 1. Strictly hide horizontal scroll bars */
+.xsl-torrent-table .ant-table-content,
+.xsl-torrent-table .ant-table-body,
 .xsl-torrent-table .ant-table-wrapper {
-    overflow-x: hidden !important; 
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
+
+/* 2. Force table to respect 100% width and use fixed layout */
 .xsl-torrent-table .ant-table {
     min-width: 100% !important;
     width: 100% !important;
-    table-layout: auto !important;
+    table-layout: fixed !important; 
 }
 
-/* Allow long domains to break into multiple lines */
+/* 3. Allow long domains to break into multiple lines instead of stretching */
 .xsl-entry-cell {
     display: block !important;
     word-break: break-all !important;
@@ -2169,24 +2176,31 @@ html.light, body.light, #app.light, .light {
         font-size: 13px;
     }
 
-    /* Table compact */
+    /* Table compact padding */
     .xsl-torrent-table .ant-table-thead > tr > th,
     .xsl-torrent-table .ant-table-tbody > tr > td {
         padding: 8px 6px !important;
     }
 
-    /* Column widths to fit mobile screen */
+    /* Target the hidden <col> elements that Ant Design uses to set widths */
+    .xsl-torrent-table colgroup col:nth-child(1) {
+        width: 50% !important;
+    }
+    .xsl-torrent-table colgroup col:nth-child(2) {
+        width: 20% !important;
+    }
+    .xsl-torrent-table colgroup col:nth-child(3) {
+        width: 30% !important;
+    }
+
+    /* Align Status & Action columns */
     .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2),
     .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(2) {
-        width: 80px !important; /* Status column */
-        white-space: nowrap !important;
         text-align: center !important;
     }
     .xsl-torrent-table .ant-table-thead > tr > th:nth-child(3),
     .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(3) {
-        width: 90px !important; /* Action column */
         text-align: right !important;
-        white-space: nowrap !important;
     }
 
     .xsl-entry-text { font-size: 12px !important; }
@@ -2212,7 +2226,7 @@ html.light, body.light, #app.light, .light {
     .xsl-coming-soon-desc,
     .xsl-not-installed-desc { font-size: 12px; }
 
-    /* Table ultra-compact */
+    /* Table ultra-compact padding */
     .xsl-torrent-table .ant-table-thead > tr > th,
     .xsl-torrent-table .ant-table-tbody > tr > td {
         padding: 6px 2px !important;
@@ -2222,6 +2236,7 @@ html.light, body.light, #app.light, .light {
     .xsl-blocked-tag {
         font-size: 0 !important;
         padding: 4px !important;
+        margin: 0 auto !important;
     }
     .xsl-blocked-tag iconify-icon {
         margin: 0 !important;
@@ -2229,18 +2244,19 @@ html.light, body.light, #app.light, .light {
         height: 14px !important;
     }
 
-    /* Shrink Action & Status columns to minimum */
-    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(3),
-    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(3) {
-        width: 50px !important;
+    /* Adjust column widths to give Domain more room */
+    .xsl-torrent-table colgroup col:nth-child(1) {
+        width: 60% !important;
     }
-    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2),
-    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(2) {
-        width: 40px !important;
+    .xsl-torrent-table colgroup col:nth-child(2) {
+        width: 15% !important;
+    }
+    .xsl-torrent-table colgroup col:nth-child(3) {
+        width: 25% !important;
     }
 
-    .xsl-entry-text { font-size: 12px; }
-    .xsl-entry-cell iconify-icon { width: 14 !important; }
+    .xsl-entry-text { font-size: 11px !important; }
+    .xsl-entry-cell iconify-icon { width: 12px !important; }
     .xsl-torrent-toolbar-title { font-size: 14px !important; }
     .xsl-torrent-toolbar-title iconify-icon { width: 16 !important; }
 }

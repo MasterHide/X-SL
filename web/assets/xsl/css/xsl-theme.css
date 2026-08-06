@@ -2105,7 +2105,7 @@ html.light, body.light, #app.light, .light {
     table-layout: fixed !important; 
 }
 
-/* 2. Table Headers - Prevent wrapping and shrink to fit */
+/* 2. Table Headers - ALL auto resize and prevent wrapping */
 .xsl-torrent-table .ant-table-thead > tr > th {
     white-space: nowrap !important;
     overflow: hidden !important;
@@ -2130,7 +2130,7 @@ html.light, body.light, #app.light, .light {
 }
 .xsl-entry-cell iconify-icon {
     flex-shrink: 0 !important;
-    margin-top: 2px !important; /* Aligns icon nicely with first line of text */
+    margin-top: 2px !important;
 }
 .xsl-entry-text {
     font-weight: 600;
@@ -2149,6 +2149,50 @@ html.light, body.light, #app.light, .light {
     font-weight: 600;
     margin: 0;
     white-space: nowrap;
+}
+
+/* ===================================================================
+   INBOUNDS TABLE - MOBILE FIT & GAP FIX
+   =================================================================== */
+@media (max-width: 768px) {
+    /* Remove huge gaps between TLS area and Info area */
+    .xsl-panel {
+        padding: 12px !important;
+    }
+    .xsl-panel-header {
+        margin-bottom: 12px !important;
+    }
+    .ant-table-wrapper {
+        margin-top: 0 !important;
+        overflow-x: hidden !important;
+    }
+    .ant-table {
+        min-width: 100% !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+        white-space: normal !important;
+        word-break: break-all !important;
+        padding: 8px 4px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* ===================================================================
+   FIX: NOTIFICATION ICON ALIGNMENT
+   =================================================================== */
+.ant-alert {
+    align-items: center !important;
+    display: flex !important;
+}
+.ant-alert-icon {
+    align-self: center !important;
+    margin-top: 0 !important;
+}
+.ant-alert-message {
+    margin: 0 !important;
 }
 
 /* ===================================================================
@@ -2209,10 +2253,6 @@ html.light, body.light, #app.light, .light {
     .xsl-torrent-table .ant-table-tbody > tr > td {
         padding: 8px 6px !important;
     }
-    /* Shrink Status header text specifically */
-    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2) {
-        font-size: 10px !important;
-    }
 
     /* Set percentage widths for columns */
     .xsl-torrent-table .ant-table-thead > tr > th:nth-child(1),
@@ -2271,6 +2311,18 @@ html.light, body.light, #app.light, .light {
     .add-btn-text,
     .remove-btn-text { display: none !important; }
     .xsl-torrent-add-form .ant-btn { padding: 0 12px !important; }
+
+    /* Smaller Delete Button in mobile view */
+    .xsl-torrent-table .ant-btn-danger {
+        padding: 0 8px !important;
+        font-size: 11px !important;
+        height: 26px !important;
+        line-height: 1 !important;
+    }
+    .xsl-torrent-table .ant-btn-danger iconify-icon {
+        width: 12px !important;
+        height: 12px !important;
+    }
 
     /* Table ultra-compact padding */
     .xsl-torrent-table .ant-table-thead > tr > th,

@@ -1021,6 +1021,21 @@ html.light, body.light, #app.light, .light {
     margin-bottom: 24px !important;
   }
 
+
+/* ===== FIX: NOTIFICATION HIDDEN BEHIND MOBILE BUTTON ===== */
+@media (max-width: 768px) {
+  /* 1. Push the notification down below the floating menu button */
+  .ant-alert {
+    margin-top: 60px !important;
+  }
+  
+  /* 2. Remove the gap above the title so buttons stay exactly where they are */
+  .xsl-dash-header {
+    margin-top: 0 !important;
+  }
+}
+
+  
   /* 3. Force Title & Subtitle to be centered */
   .xsl-dash-header > div:first-child {
     width: 100% !important;
@@ -1082,20 +1097,20 @@ html.light, body.light, #app.light, .light {
     font-size: 18px !important;
   }
 
-  /* 8. Stack the bottom panels vertically and reduce padding */
+    /* 8. Stack the bottom panels vertically and reduce padding */
   .xsl-panel-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
   .xsl-panel {
     padding: 16px !important;
-    display: block !important; /* FIX: Force panels to be visible on mobile */
     opacity: 1 !important;
+    display: block !important;
   }
   .xsl-info-list {
     gap: 12px !important;
-    display: flex !important; /* FIX: Force list to be visible */
     opacity: 1 !important;
+    display: flex !important;
   }
   .xsl-info-item {
     padding-bottom: 12px !important;
@@ -1104,11 +1119,6 @@ html.light, body.light, #app.light, .light {
   /* 9. Make top app header smaller on mobile */
   .ant-layout-header {
     padding: 0 16px !important;
-  }
-
-  /* 10. Fix Notification overlap */
-  .ant-alert {
-    margin-top: 60px !important;
   }
 }
 
@@ -1120,6 +1130,7 @@ html.light, body.light, #app.light, .light {
     flex: 1 1 45% !important;
   }
 } 
+
 
 /* ===== INBOUNDS LAYOUT & RESPONSIVE FIXES ===== */
 
@@ -1160,6 +1171,8 @@ html.light, body.light, #app.light, .light {
   min-width: 600px; /* Prevents columns from squishing too much */
 }
 
+
+
 /* 4. Adjust Mobile Table Padding */
 @media (max-width: 768px) {
   .ant-table-tbody > tr > td {
@@ -1172,15 +1185,90 @@ html.light, body.light, #app.light, .light {
   .ant-table-tbody > tr > td .anticon {
     font-size: 18px !important;
   }
+}
+
+
+/* ===== MOBILE RESPONSIVE FIXES (MATCHING ORIGINAL X-UI) ===== */
+@media (max-width: 768px) {
+  /* 1. Force 2x2 Grid for Stat Cards */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .xsl-stat-card {
+    padding: 16px !important;
+  }
+  .xsl-stat-value {
+    font-size: 20px !important; /* Smaller numbers to fit */
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+  }
+  .xsl-stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* 2. Compact Table Padding (Crucial for mobile fit) */
+  .ant-table-tbody > tr > td,
+  .ant-table-thead > tr > th {
+    padding: 8px 8px !important; /* Reduces cell size significantly */
+  }
+  .ant-table {
+    min-width: 400px; /* Allows smooth horizontal scroll without breaking layout */
+  }
+  }  /* <--- ADD THIS CLOSING BRACKET HERE */
+
+  /* ===== INBOUNDS MOBILE RESPONSIVE FIX (TARGETED) ===== */
+@media (max-width: 768px) {
   
-  /* Inbound Mobile Responsive Fix */
+  /* 1. Fix Top Header (Title + Buttons) */
+  .xsl-dash-header {
+    flex-direction: column !important;
+    align-items: stretch !important; /* Makes full width */
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .xsl-dash-actions {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+  .xsl-dash-actions .ant-btn {
+    flex: 1 1 45% !important; /* 2 buttons per row */
+    max-width: 48% !important;
+  }
+
+  /* 2. Fix Stat Cards (Force 2x2 Grid) */
   .xsl-stat-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important; /* 2 columns */
     gap: 12px !important;
   }
-  
-  /* Fix Search/Filter Toolbar (Stack Vertically) */
+  .xsl-stat-card {
+    padding: 16px !important; /* Compact padding */
+  }
+  .xsl-stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+  .xsl-stat-value {
+    font-size: 20px !important; /* Smaller text */
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+  }
+
+  /* 3. Fix Search/Filter Toolbar (Stack Vertically) */
+  .xsl-panel-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
   .xsl-inbound-toolbar {
     flex-direction: column !important;
     align-items: stretch !important;
@@ -1196,13 +1284,26 @@ html.light, body.light, #app.light, .light {
     width: 100% !important;
   }
   
-  /* Prevent Toggle Switch from stretching full width */
+  /* 4. Ensure Table Scrolls Smoothly */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ant-table {
+    min-width: 500px !important; /* Prevents extreme squishing */
+  }
+}
+
+/* ===== INBOUNDS PAGE MOBILE RESPONSIVE FIX ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Prevent Toggle Switch from stretching full width */
   .xsl-inbound-toolbar .ant-switch {
     width: auto !important;
     margin-right: auto !important; /* Keep it left aligned */
   }
 
-  /* Fix Filters (Radio Buttons) to wrap */
+  /* 2. Fix Filters (Radio Buttons) to wrap */
   .xsl-inbound-toolbar .ant-radio-group {
     width: 100% !important;
     display: flex !important;
@@ -1216,8 +1317,25 @@ html.light, body.light, #app.light, .light {
     padding: 0 8px !important;
     white-space: nowrap !important;
   }
-  
-  /* Expanded Client Table Fixes */
+
+  /* 3. Stack Toolbar Elements Vertically */
+  .xsl-inbound-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .xsl-inbound-toolbar > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Keep refresh group in a row */
+  .xsl-refresh-group {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* 4. Expanded Client Table Fixes */
   .ant-table-expanded-row .ant-table {
     min-width: 100% !important;
   }
@@ -1226,18 +1344,139 @@ html.light, body.light, #app.light, .light {
     padding: 8px 4px !important; /* Very compact */
     font-size: 12px !important;
   }
+  /* Icons inside expanded table */
   .ant-table-expanded-row .anticon {
     font-size: 16px !important;
   }
-  
-  /* Make expanded table fit within viewport */
-  .ant-table-expanded-row .ant-table-wrapper {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    margin: 0 !important;
+
+  /* 5. Ensure Main Table Scrolls */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
   }
   
-  /* Fix Traffic Tags and Progress Bars */
+  /* 6. Stat Cards 2x2 Grid (Re-affirm) */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+
+/* ===== INBOUNDS TOOLBAR CLEAN MOBILE LAYOUT ===== */
+
+/* 1. Base Toolbar Layout (PC & Mobile) */
+.xsl-inbound-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.xsl-toolbar-switch {
+  flex-shrink: 0;
+}
+.xsl-toolbar-input {
+  max-width: 300px;
+  width: 100%;
+  flex-grow: 1;
+}
+.xsl-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-grow: 1;
+}
+.xsl-refresh-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* 2. Mobile Specific Layout (<= 768px) */
+@media (max-width: 768px) {
+  /* Stack everything vertically */
+  .xsl-inbound-toolbar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  
+  /* Make Search Input full width */
+  .xsl-toolbar-input {
+    max-width: 100% !important;
+  }
+  
+  /* Filter Buttons Grid */
+  .xsl-filter-group {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .xsl-filter-group .ant-radio-button-wrapper {
+    flex: 1 1 30% !important; /* 3 buttons per row */
+    text-align: center !important;
+    padding: 0 8px !important;
+    height: 32px !important;
+    line-height: 30px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--xsl-border) !important;
+    margin-bottom: 4px !important;
+  }
+  /* Style active filter button */
+  .xsl-filter-group .ant-radio-button-wrapper-checked {
+    background: var(--xsl-primary) !important;
+    border-color: var(--xsl-primary) !important;
+    color: white !important;
+    box-shadow: none !important;
+  }
+  .xsl-filter-group iconify-icon {
+    margin-right: 4px;
+    vertical-align: -2px;
+  }
+  
+  /* Refresh group stays in a row, centered */
+  .xsl-refresh-group {
+    margin-left: 0 !important;
+    justify-content: center !important;
+    width: 100% !important;
+    background: var(--xsl-bg-secondary);
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--xsl-border);
+  }
+  
+  /* Ensure Table Scrolls */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+  }
+  
+  /* Stat Cards 2x2 Grid */
+  .xsl-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+
+
+/* ===== EXPANDED CLIENT TABLE MOBILE FIX ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Compact Inner Table Padding */
+  .ant-table-expanded-row .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    padding: 8px 4px !important;
+    font-size: 12px !important;
+  }
+
+  /* 2. Fix Action Icons in Expanded Table */
+  .ant-table-expanded-row .ant-table-tbody > tr > td .anticon {
+    font-size: 18px !important;
+    margin-right: 8px !important; /* Add space between icons */
+  }
+  
+  /* 3. Fix Traffic Tags and Progress Bars */
   .ant-table-expanded-row .tr-table-box {
     gap: 2px !important;
   }
@@ -1251,7 +1490,134 @@ html.light, body.light, #app.light, .light {
     flex-basis: 80px !important;
     min-width: 60px !important;
   }
+
+  /* 4. Ensure Main Table Scrolls Smoothly */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 5. Make sure tags don't break layout */
+  .ant-table .ant-tag {
+    margin: 2px !important;
+    white-space: nowrap !important;
+  }
 }
+
+
+/* ===== EXPANDED CLIENT TABLE MOBILE FIX (NO SCROLL) ===== */
+@media (max-width: 768px) {
+  
+  /* 1. Make expanded table fit within viewport */
+  .ant-table-expanded-row .ant-table-wrapper {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* 2. Compact Inner Table */
+  .ant-table-expanded-row .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+   }  /* <--- ADD THIS CLOSING BRACKET HERE */
+  /* 3. Ultra-Compact Padding */
+  .ant-table-expanded-row .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    padding: 6px 4px !important;
+    font-size: 11px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  
+  /* 4. Fix Client Email Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(2) {
+    max-width: 120px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  /* 5. Fix Traffic Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(3) {
+    max-width: 100px !important;
+  }
+  .ant-table-expanded-row .tr-table-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    align-items: center !important;
+  }
+  .ant-table-expanded-row .tr-table-rt,
+  .ant-table-expanded-row .tr-table-lt {
+    flex-basis: auto !important;
+    min-width: auto !important;
+    font-size: 10px !important;
+  }
+  .ant-table-expanded-row .tr-table-bar {
+    flex-basis: 100% !important;
+    min-width: 60px !important;
+    width: 100% !important;
+  }
+  
+  /* 6. Fix Expiry Column */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(4) {
+    max-width: 80px !important;
+    text-align: center !important;
+  }
+  
+  /* 7. Action Menu (3-dots) */
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(1) {
+    width: 40px !important;
+    padding: 6px 2px !important;
+  }
+  .ant-table-expanded-row .anticon-ellipsis {
+    font-size: 20px !important;
+  }
+  
+  /* 8. Fix Tags */
+  .ant-table-expanded-row .ant-tag {
+    margin: 1px !important;
+    padding: 1px 4px !important;
+    font-size: 10px !important;
+    line-height: 16px !important;
+    border-radius: 4px !important;
+  }
+  
+  /* 9. Fix Progress Bars */
+  .ant-table-expanded-row .ant-progress {
+    height: 4px !important;
+  }
+  .ant-table-expanded-row .ant-progress-inner {
+    height: 4px !important;
+  }
+  .ant-table-expanded-row .ant-progress-bg {
+    height: 4px !important;
+  }
+  
+  /* 10. Remove header text on mobile to save space */
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    font-size: 0 !important;
+    padding: 4px !important;
+  }
+  .ant-table-expanded-row .ant-table-thead > tr > th::after {
+    content: "•••";
+    font-size: 10px;
+    color: var(--xsl-text-muted);
+  }
+  
+  /* 11. Ensure main table doesn't scroll either */
+  .ant-table-wrapper {
+    overflow-x: hidden !important;
+  }
+  .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+
+
+
 
 /* ===== PREMIUM PROTOCOL TAGS (PC & MOBILE) ===== */
 
@@ -1351,7 +1717,10 @@ html.light, body.light, #app.light, .light {
   line-height: 18px !important;
   display: inline-block !important;
   margin: 2px 4px 2px 0 !important;
-}
+  }
+
+
+
 
 /* ===== PREMIUM QR MODAL (CANVAS FIX) ===== */
 
@@ -1426,6 +1795,7 @@ html.light, body.light, #app.light, .light {
   }
 }
 
+
 /* ===== EXPANDED CLIENT TABLE PREMIUM REDESIGN ===== */
 
 /* 1. Fix Hover Color (Indigo Slate Tint instead of Gray) */
@@ -1458,6 +1828,7 @@ html.light, body.light, #app.light, .light {
   background: var(--xsl-card) !important;
   border-bottom: 1px solid var(--xsl-border) !important;
 }
+
 
 /* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
 .ant-alert {
@@ -1562,30 +1933,56 @@ html.light, body.light, #app.light, .light {
   .xsl-settings-item { flex-direction: column; align-items: stretch; gap: 12px; }
   .xsl-settings-control { flex: 1; width: 100%; justify-content: flex-start; }
   .xsl-settings-item:has(.ant-setting-textarea) { flex-direction: column; }
-  
+}
+
+
+/* ===== FIX: SETTINGS PAGE MOBILE OVERLAP ===== */
+@media (max-width: 768px) {
   /* Push the entire settings content down to clear the floating mobile menu button */
   #content-layout .ant-spin-container {
     padding-top: 70px !important; 
   }
+}
+
+
+
+/* ===== FIX: SETTINGS PAGE TAB & LIST GAP (MOBILE ONLY) ===== */
+@media (max-width: 768px) {
   
-  /* Reduce the margin under the tabs (General, Authentication, etc.) */
+  /* 1. Reduce the margin under the tabs (General, Authentication, etc.) */
   .ant-tabs-bar {
     margin-bottom: 0 !important;
   }
 
-  /* Remove top padding from the FIRST list item inside any settings tab */
+  /* 2. Remove top padding from the FIRST list item inside any settings tab */
   .ant-tabs-tabpane .ant-list-item:first-child,
   .ant-tabs-tabpane .xsl-settings-item:first-child {
     padding-top: 0 !important;
     margin-top: 0 !important;
   }
 
-  /* Ensure the list container itself doesn't have a top margin */
+  /* 3. Ensure the list container itself doesn't have a top margin */
   .ant-tabs-tabpane .ant-list,
   .ant-tabs-tabpane .xsl-settings-list {
     margin-top: 0 !important;
   }
 }
+
+
+/* Settings List Layout (If not already in your CSS) */
+.xsl-settings-list { display: flex; flex-direction: column; }
+.xsl-settings-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--xsl-border); gap: 24px; }
+.xsl-settings-info { flex: 1; min-width: 0; }
+.xsl-settings-title { font-weight: 600; color: var(--xsl-text) !important; font-size: 14px; margin-bottom: 4px; }
+.xsl-settings-desc { font-size: 13px; color: var(--xsl-text-muted) !important; line-height: 1.4; }
+.xsl-settings-control { flex: 0 0 300px; max-width: 100%; display: flex; align-items: center; justify-content: flex-end; }
+.xsl-settings-control .ant-input, .xsl-settings-control .ant-input-number, .xsl-settings-control .ant-select { width: 100% !important; }
+
+@media (max-width: 768px) {
+  .xsl-settings-item { flex-direction: column; align-items: stretch; gap: 8px; }
+  .xsl-settings-control { flex: 1; width: 100%; justify-content: flex-start; }
+}
+
 
 /* ===== SIDEBAR LOGO ONLY (MUCH BIGGER & RESPONSIVE) ===== */
 .xsl-sider-header {
@@ -1626,4 +2023,280 @@ html.light, body.light, #app.light, .light {
 #xsl-sider-drawer .xsl-logo-img {
   height: 100px !important; /* Slightly smaller for mobile screens */
   max-width: 200px !important;
+}
+
+
+/* ===================================================================
+   TORRENT BLOCKER PAGE STYLES & RESPONSIVE FIXES
+   =================================================================== */
+
+/* ===== TORRENT CARD ===== */
+.xsl-torrent-card {
+    background: var(--xsl-card) !important;
+    border: 1px solid var(--xsl-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+}
+
+/* ===== COMING SOON SECTION ===== */
+.xsl-coming-soon {
+    text-align: center;
+    padding: 80px 24px;
+}
+.xsl-coming-soon-icon {
+    display: inline-block;
+    padding: 24px;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 50%;
+    margin-bottom: 24px;
+}
+.xsl-coming-soon-title {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+    color: var(--xsl-text) !important;
+}
+.xsl-coming-soon-desc {
+    color: var(--xsl-text-muted) !important;
+    max-width: 500px;
+    margin: 0 auto 24px !important;
+    font-size: 15px;
+}
+
+/* ===== NOT INSTALLED SECTION ===== */
+.xsl-not-installed {
+    text-align: center;
+    padding: 80px 24px;
+}
+.xsl-not-installed-icon {
+    display: inline-block;
+    padding: 24px;
+    background: rgba(239, 68, 68, 0.05);
+    border-radius: 50%;
+    margin-bottom: 24px;
+}
+.xsl-not-installed-title {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+    color: var(--xsl-text) !important;
+}
+.xsl-not-installed-desc {
+    color: var(--xsl-text-muted) !important;
+    margin-bottom: 32px !important;
+    font-size: 15px;
+    max-width: 500px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* ===== TORRENT CONTENT ===== */
+.xsl-torrent-content {
+    padding: 8px 4px;
+}
+
+/* ===== TORRENT TOOLBAR ===== */
+.xsl-torrent-toolbar {
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--xsl-border);
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.xsl-torrent-toolbar-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    color: var(--xsl-text) !important;
+    white-space: nowrap;
+}
+
+/* ===== ADD FORM ===== */
+.xsl-torrent-add-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* ===== TABLE CELLS ===== */
+.xsl-entry-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.xsl-entry-text {
+    font-weight: 600;
+    color: var(--xsl-text) !important;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+/* ===== BLOCKED TAG ===== */
+.xsl-blocked-tag {
+    border-radius: 6px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* ===== TORRENT TABLE ===== */
+.xsl-torrent-table .ant-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ===================================================================
+   TORRENT BLOCKER — RESPONSIVE BREAKPOINTS
+   =================================================================== */
+
+/* Tablet (<= 768px) */
+@media (max-width: 768px) {
+    /* Toolbar: stack vertically */
+    .xsl-torrent-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .xsl-torrent-toolbar-title {
+        font-size: 15px !important;
+        text-align: center;
+    }
+
+    /* Add form: full width, button text hidden */
+    .xsl-torrent-add-form {
+        width: 100%;
+    }
+    .xsl-torrent-add-form .ant-input {
+        flex: 1;
+        min-width: 0;
+    }
+    .xsl-torrent-add-form .ant-btn {
+        flex-shrink: 0;
+        padding: 0 16px !important;
+    }
+
+    /* Coming soon / Not installed: reduce padding */
+    .xsl-coming-soon,
+    .xsl-not-installed {
+        padding: 48px 16px;
+    }
+    .xsl-coming-soon-title,
+    .xsl-not-installed-title {
+        font-size: 20px !important;
+    }
+    .xsl-coming-soon-desc,
+    .xsl-not-installed-desc {
+        font-size: 13px;
+    }
+
+    /* Table compact */
+    .xsl-torrent-table .ant-table {
+        min-width: 400px;
+    }
+    .ant-table-tbody > tr > td {
+        padding: 8px 4px !important;
+        font-size: 13px;
+    }
+    .ant-table-thead > tr > th {
+        padding: 8px 4px !important;
+        font-size: 11px;
+    }
+
+    /* Entry text smaller */
+    .xsl-entry-text {
+        font-size: 13px;
+    }
+    .xsl-blocked-tag {
+        font-size: 10px;
+    }
+}
+
+/* Small Phones (<= 480px) */
+@media (max-width: 480px) {
+    /* Add button: hide text, show only icon */
+    .add-btn-text {
+        display: none;
+    }
+    .remove-btn-text {
+        display: none;
+    }
+    .xsl-torrent-add-form .ant-btn {
+        padding: 0 12px !important;
+    }
+
+    /* Coming soon / Not installed: even more compact */
+    .xsl-coming-soon,
+    .xsl-not-installed {
+        padding: 32px 12px;
+    }
+    .xsl-coming-soon-icon,
+    .xsl-not-installed-icon {
+        padding: 16px;
+    }
+    .xsl-coming-soon-icon iconify-icon,
+    .xsl-not-installed-icon iconify-icon {
+        width: 56 !important;
+    }
+    .xsl-coming-soon-title,
+    .xsl-not-installed-title {
+        font-size: 18px !important;
+    }
+    .xsl-coming-soon-desc,
+    .xsl-not-installed-desc {
+        font-size: 12px;
+    }
+
+    /* Table ultra-compact */
+    .xsl-torrent-table .ant-table {
+        min-width: 350px;
+    }
+    .ant-table-tbody > tr > td {
+        padding: 6px 2px !important;
+        font-size: 12px;
+    }
+    .ant-table-thead > tr > th {
+        padding: 6px 2px !important;
+        font-size: 10px;
+    }
+    .xsl-entry-text {
+        font-size: 12px;
+    }
+    .xsl-entry-cell iconify-icon {
+        width: 14 !important;
+    }
+    .xsl-blocked-tag {
+        font-size: 9px;
+        padding: 2px 6px !important;
+    }
+
+    /* Toolbar title smaller */
+    .xsl-torrent-toolbar-title {
+        font-size: 14px !important;
+    }
+    .xsl-torrent-toolbar-title iconify-icon {
+        width: 16 !important;
+    }
+}
+
+/* Extra Small Phones (<= 360px) */
+@media (max-width: 360px) {
+    .xsl-torrent-add-form {
+        gap: 6px;
+    }
+    .xsl-torrent-add-form .ant-input {
+        font-size: 13px !important;
+    }
+    .ant-table-tbody > tr > td {
+        font-size: 11px;
+    }
+    .xsl-entry-text {
+        font-size: 11px;
+    }
 }

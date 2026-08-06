@@ -1833,8 +1833,9 @@ html.light, body.light, #app.light, .light {
 /* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
 .ant-alert {
   border-radius: 12px !important;
-  padding: 16px 24px !important;
-  align-items: center !important;
+  padding: 12px 24px !important; /* FIX: Reduced vertical padding to perfectly center elements */
+  display: flex !important; /* FIX: Force flex layout to prevent overlapping */
+  align-items: center !important; /* FIX: Vertically center icon and close button */
   border: 1px solid var(--xsl-border) !important;
   background: var(--xsl-card) !important;
   backdrop-filter: blur(8px) !important;
@@ -1859,18 +1860,18 @@ html.light, body.light, #app.light, .light {
 /* 1. Fix Icon Spacing & Glow */
 .ant-alert-error .ant-alert-icon {
   color: #ef4444 !important;
-  font-size: 22px !important;
-  margin-right: 20px !important;
-  align-self: center !important;
+  font-size: 18px !important; /* FIX: Slightly smaller to match text height */
+  margin-right: 12px !important; /* FIX: Consistent spacing */
+  align-self: center !important; /* FIX: Keep icon perfectly centered */
   filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
 }
 
 /* 2. Fix Content Layout */
 .ant-alert-error .ant-alert-content {
-  flex: 1 !important;
+  flex: 1 !important; /* FIX: Takes up remaining space, pushing close button to the right */
   display: flex !important;
   flex-direction: column !important;
-  gap: 4px !important;
+  gap: 2px !important;
 }
 
 /* 3. Clear Text Colors */
@@ -1879,11 +1880,13 @@ html.light, body.light, #app.light, .light {
   font-weight: 600 !important;
   font-size: 14px !important;
   margin: 0 !important;
+  line-height: 1.4 !important; /* FIX: Better readability */
 }
 .ant-alert-error .ant-alert-description {
   color: #f87171 !important;
   font-size: 13px !important;
   margin: 0 !important;
+  line-height: 1.4 !important; /* FIX: Better readability */
 }
 
 /* 4. Fix Close Button */
@@ -1895,10 +1898,11 @@ html.light, body.light, #app.light, .light {
   font-size: 16px !important;
   color: #f87171 !important;
   padding: 8px !important;
-  margin-left: 16px !important;
+  margin-left: 16px !important; /* FIX: Space between text and close button */
   border-radius: 8px !important;
   background: transparent !important;
   transition: all 0.2s ease !important;
+  align-self: center !important; /* FIX: Keep close button perfectly centered */
 }
 .ant-alert-error .ant-alert-close-icon:hover {
   background: rgba(239, 68, 68, 0.2) !important;

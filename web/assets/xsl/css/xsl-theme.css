@@ -2027,7 +2027,7 @@ html.light, body.light, #app.light, .light {
 
 
 /* ===================================================================
-   TORRENT BLOCKER PAGE STYLES & RESPONSIVE FIXES
+   TORRENT BLOCKER PAGE STYLES & RESPONSIVE FIXES (UNIFIED)
    =================================================================== */
 
 /* ===== TORRENT CARD ===== */
@@ -2038,64 +2038,38 @@ html.light, body.light, #app.light, .light {
     overflow: hidden !important;
 }
 
-/* ===== COMING SOON SECTION ===== */
-.xsl-coming-soon {
-    text-align: center;
-    padding: 80px 24px;
-}
-.xsl-coming-soon-icon {
-    display: inline-block;
-    padding: 24px;
-    background: rgba(99, 102, 241, 0.05);
-    border-radius: 50%;
-    margin-bottom: 24px;
-}
-.xsl-coming-soon-title {
-    font-size: 24px !important;
-    font-weight: 700 !important;
-    margin-bottom: 12px !important;
-    color: var(--xsl-text) !important;
-}
-.xsl-coming-soon-desc {
-    color: var(--xsl-text-muted) !important;
-    max-width: 500px;
-    margin: 0 auto 24px !important;
-    font-size: 15px;
-}
-
-/* ===== NOT INSTALLED SECTION ===== */
+/* ===== COMING SOON / NOT INSTALLED SECTIONS ===== */
+.xsl-coming-soon,
 .xsl-not-installed {
     text-align: center;
     padding: 80px 24px;
 }
+.xsl-coming-soon-icon,
 .xsl-not-installed-icon {
     display: inline-block;
     padding: 24px;
-    background: rgba(239, 68, 68, 0.05);
     border-radius: 50%;
     margin-bottom: 24px;
 }
+.xsl-coming-soon-icon { background: rgba(99, 102, 241, 0.05); }
+.xsl-not-installed-icon { background: rgba(239, 68, 68, 0.05); }
+.xsl-coming-soon-title,
 .xsl-not-installed-title {
     font-size: 24px !important;
     font-weight: 700 !important;
     margin-bottom: 12px !important;
     color: var(--xsl-text) !important;
 }
+.xsl-coming-soon-desc,
 .xsl-not-installed-desc {
     color: var(--xsl-text-muted) !important;
-    margin-bottom: 32px !important;
-    font-size: 15px;
     max-width: 500px;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto 24px !important;
+    font-size: 15px;
 }
 
-/* ===== TORRENT CONTENT ===== */
-.xsl-torrent-content {
-    padding: 8px 4px;
-}
-
-/* ===== TORRENT TOOLBAR ===== */
+/* ===== TORRENT CONTENT & TOOLBAR ===== */
+.xsl-torrent-content { padding: 8px 4px; }
 .xsl-torrent-toolbar {
     margin-bottom: 24px;
     border-bottom: 1px solid var(--xsl-border);
@@ -2113,8 +2087,6 @@ html.light, body.light, #app.light, .light {
     color: var(--xsl-text) !important;
     white-space: nowrap;
 }
-
-/* ===== ADD FORM ===== */
 .xsl-torrent-add-form {
     display: flex;
     gap: 12px;
@@ -2122,20 +2094,29 @@ html.light, body.light, #app.light, .light {
     flex-wrap: nowrap;
 }
 
-/* ===== TABLE CELLS ===== */
+/* ===== TORRENT TABLE (FIT TO SCREEN - NO SCROLL) ===== */
+.xsl-torrent-table .ant-table-wrapper {
+    overflow-x: hidden !important; 
+}
+.xsl-torrent-table .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+    table-layout: auto !important;
+}
+
+/* Allow long domains to break into multiple lines */
 .xsl-entry-cell {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+    line-height: 1.3 !important;
 }
 .xsl-entry-text {
     font-weight: 600;
     color: var(--xsl-text) !important;
-    word-break: break-all;
-    overflow-wrap: anywhere;
+    white-space: normal !important;
+    word-break: break-all !important;
 }
-
-/* ===== BLOCKED TAG ===== */
 .xsl-blocked-tag {
     border-radius: 6px !important;
     text-transform: uppercase;
@@ -2146,19 +2127,13 @@ html.light, body.light, #app.light, .light {
     white-space: nowrap;
 }
 
-/* ===== TORRENT TABLE ===== */
-.xsl-torrent-table .ant-table-wrapper {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-}
-
 /* ===================================================================
-   TORRENT BLOCKER — RESPONSIVE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS
    =================================================================== */
 
-/* Tablet (<= 768px) */
+/* Tablet & Mobile (<= 768px) */
 @media (max-width: 768px) {
-    /* Toolbar: stack vertically */
+    /* Toolbar stacking */
     .xsl-torrent-toolbar {
         flex-direction: column;
         align-items: stretch;
@@ -2168,8 +2143,6 @@ html.light, body.light, #app.light, .light {
         font-size: 15px !important;
         text-align: center;
     }
-
-    /* Add form: full width, button text hidden */
     .xsl-torrent-add-form {
         width: 100%;
     }
@@ -2182,7 +2155,7 @@ html.light, body.light, #app.light, .light {
         padding: 0 16px !important;
     }
 
-    /* Coming soon / Not installed: reduce padding */
+    /* Section padding */
     .xsl-coming-soon,
     .xsl-not-installed {
         padding: 48px 16px;
@@ -2197,106 +2170,84 @@ html.light, body.light, #app.light, .light {
     }
 
     /* Table compact */
-    .xsl-torrent-table .ant-table {
-        min-width: 400px;
-    }
-    .ant-table-tbody > tr > td {
-        padding: 8px 4px !important;
-        font-size: 13px;
-    }
-    .ant-table-thead > tr > th {
-        padding: 8px 4px !important;
-        font-size: 11px;
+    .xsl-torrent-table .ant-table-thead > tr > th,
+    .xsl-torrent-table .ant-table-tbody > tr > td {
+        padding: 8px 6px !important;
     }
 
-    /* Entry text smaller */
-    .xsl-entry-text {
-        font-size: 13px;
+    /* Column widths to fit mobile screen */
+    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2),
+    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(2) {
+        width: 80px !important; /* Status column */
+        white-space: nowrap !important;
+        text-align: center !important;
     }
-    .xsl-blocked-tag {
-        font-size: 10px;
+    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(3),
+    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(3) {
+        width: 90px !important; /* Action column */
+        text-align: right !important;
+        white-space: nowrap !important;
     }
+
+    .xsl-entry-text { font-size: 12px !important; }
+    .xsl-blocked-tag { font-size: 10px !important; padding: 2px 6px !important; }
 }
 
 /* Small Phones (<= 480px) */
 @media (max-width: 480px) {
-    /* Add button: hide text, show only icon */
-    .add-btn-text {
-        display: none;
-    }
-    .remove-btn-text {
-        display: none;
-    }
-    .xsl-torrent-add-form .ant-btn {
-        padding: 0 12px !important;
-    }
+    /* Hide button text to save space */
+    .add-btn-text,
+    .remove-btn-text { display: none !important; }
+    .xsl-torrent-add-form .ant-btn { padding: 0 12px !important; }
 
-    /* Coming soon / Not installed: even more compact */
+    /* Section padding */
     .xsl-coming-soon,
-    .xsl-not-installed {
-        padding: 32px 12px;
-    }
+    .xsl-not-installed { padding: 32px 12px; }
     .xsl-coming-soon-icon,
-    .xsl-not-installed-icon {
-        padding: 16px;
-    }
+    .xsl-not-installed-icon { padding: 16px; }
     .xsl-coming-soon-icon iconify-icon,
-    .xsl-not-installed-icon iconify-icon {
-        width: 56 !important;
-    }
+    .xsl-not-installed-icon iconify-icon { width: 56 !important; }
     .xsl-coming-soon-title,
-    .xsl-not-installed-title {
-        font-size: 18px !important;
-    }
+    .xsl-not-installed-title { font-size: 18px !important; }
     .xsl-coming-soon-desc,
-    .xsl-not-installed-desc {
-        font-size: 12px;
-    }
+    .xsl-not-installed-desc { font-size: 12px; }
 
     /* Table ultra-compact */
-    .xsl-torrent-table .ant-table {
-        min-width: 350px;
-    }
-    .ant-table-tbody > tr > td {
+    .xsl-torrent-table .ant-table-thead > tr > th,
+    .xsl-torrent-table .ant-table-tbody > tr > td {
         padding: 6px 2px !important;
-        font-size: 12px;
     }
-    .ant-table-thead > tr > th {
-        padding: 6px 2px !important;
-        font-size: 10px;
-    }
-    .xsl-entry-text {
-        font-size: 12px;
-    }
-    .xsl-entry-cell iconify-icon {
-        width: 14 !important;
-    }
+    
+    /* Hide "Blocked" text, show only icon */
     .xsl-blocked-tag {
-        font-size: 9px;
-        padding: 2px 6px !important;
+        font-size: 0 !important;
+        padding: 4px !important;
+    }
+    .xsl-blocked-tag iconify-icon {
+        margin: 0 !important;
+        width: 14px !important;
+        height: 14px !important;
     }
 
-    /* Toolbar title smaller */
-    .xsl-torrent-toolbar-title {
-        font-size: 14px !important;
+    /* Shrink Action & Status columns to minimum */
+    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(3),
+    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(3) {
+        width: 50px !important;
     }
-    .xsl-torrent-toolbar-title iconify-icon {
-        width: 16 !important;
+    .xsl-torrent-table .ant-table-thead > tr > th:nth-child(2),
+    .xsl-torrent-table .ant-table-tbody > tr > td:nth-child(2) {
+        width: 40px !important;
     }
+
+    .xsl-entry-text { font-size: 12px; }
+    .xsl-entry-cell iconify-icon { width: 14 !important; }
+    .xsl-torrent-toolbar-title { font-size: 14px !important; }
+    .xsl-torrent-toolbar-title iconify-icon { width: 16 !important; }
 }
 
 /* Extra Small Phones (<= 360px) */
 @media (max-width: 360px) {
-    .xsl-torrent-add-form {
-        gap: 6px;
-    }
-    .xsl-torrent-add-form .ant-input {
-        font-size: 13px !important;
-    }
-    .ant-table-tbody > tr > td {
-        font-size: 11px;
-    }
-    .xsl-entry-text {
-        font-size: 11px;
-    }
+    .xsl-torrent-add-form { gap: 6px; }
+    .xsl-torrent-add-form .ant-input { font-size: 13px !important; }
+    .xsl-entry-text { font-size: 11px; }
 }

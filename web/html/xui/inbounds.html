@@ -233,7 +233,7 @@
             
             <a-table :columns="isMobile ? mobileColumns : columns" :row-key="dbInbound => dbInbound.id"
                 :data-source="searchedInbounds"
-                :scroll="isMobile ? { x: 500 } : { x: 1000 }"
+                :scroll="isMobile ? { x: '100%' } : { x: 1000 }"
                 :pagination=pagination(searchedInbounds)
                 :expand-icon-as-cell="false"
                 :expand-row-by-click="false"
@@ -294,7 +294,7 @@
                   </a-popover>
                   <a-popover title='{{ i18n "online" }}' :overlay-class-name="themeSwitcher.currentTheme">
                     <template slot="content"><p v-for="clientEmail in clientCount[dbInbound.id].online">[[ clientEmail ]]</p></template>
-                    <a-tag style="margin:0; padding: 0 2px;" color="blue" v-if="clientCount[dbInbound.id].online.length">[[ clientCount[dbInbound.id].online.length ]]</a-tag>
+                    <a-tag style="margin:0; padding: 0 2px;" color="green" v-if="clientCount[dbInbound.id].online.length">[[ clientCount[dbInbound.id].online.length ]]</a-tag>
                   </a-popover>
                 </template>
               </template>
@@ -340,7 +340,7 @@
                       </td></tr>
                       <tr><td>{{ i18n "pages.inbounds.port" }}</td><td><a-tag>[[ dbInbound.port ]]</a-tag></td></tr>
                       <tr v-if="clientCount[dbInbound.id]"><td>{{ i18n "clients" }}</td><td>
-                        <a-tag style="margin:0;" color="blue">[[ clientCount[dbInbound.id].clients ]]</a-tag>
+                        <a-tag style="margin:0;" color="green">[[ clientCount[dbInbound.id].clients ]]</a-tag>
                         <a-popover title='{{ i18n "disabled" }}' :overlay-class-name="themeSwitcher.currentTheme"><template slot="content"><p v-for="clientEmail in clientCount[dbInbound.id].deactive">[[ clientEmail ]]</p></template><a-tag style="margin:0; padding: 0 2px;" v-if="clientCount[dbInbound.id].deactive.length">[[ clientCount[dbInbound.id].deactive.length ]]</a-tag></a-popover>
                         <a-popover title='{{ i18n "depleted" }}' :overlay-class-name="themeSwitcher.currentTheme"><template slot="content"><p v-for="clientEmail in clientCount[dbInbound.id].depleted">[[ clientEmail ]]</p></template><a-tag style="margin:0; padding: 0 2px;" color="red" v-if="clientCount[dbInbound.id].depleted.length">[[ clientCount[dbInbound.id].depleted.length ]]</a-tag></a-popover>
                         <a-popover title='{{ i18n "depletingSoon" }}' :overlay-class-name="themeSwitcher.currentTheme"><template slot="content"><p v-for="clientEmail in clientCount[dbInbound.id].expiring">[[ clientEmail ]]</p></template><a-tag style="margin:0; padding: 0 2px;" color="orange" v-if="clientCount[dbInbound.id].expiring.length">[[ clientCount[dbInbound.id].expiring.length ]]</a-tag></a-popover>
@@ -441,31 +441,31 @@
     }];
 
     const mobileColumns = [{
-        title: "ID",
-        align: 'right',
-        dataIndex: "id",
-        width: 40,
-    }, {
-        title: '{{ i18n "pages.inbounds.operate" }}',
-        align: 'center',
-        width: 50,
-        scopedSlots: { customRender: 'action' },
-    }, {
-        title: '{{ i18n "pages.inbounds.remark" }}',
-        align: 'left',
-        width: 120,
-        dataIndex: "remark",
-    }, {
-        title: '{{ i18n "pages.inbounds.protocol" }}',
-        align: 'center',
-        width: 80,
-        scopedSlots: { customRender: 'protocol' },
-    }, {
-        title: '{{ i18n "pages.inbounds.traffic" }}',
-        align: 'center',
-        width: 100,
-        scopedSlots: { customRender: 'traffic' },
-    }];
+    title: "ID",
+    align: 'right',
+    dataIndex: "id",
+    width: '10%',
+}, {
+    title: '{{ i18n "pages.inbounds.operate" }}',
+    align: 'center',
+    width: '15%',
+    scopedSlots: { customRender: 'action' },
+}, {
+    title: '{{ i18n "pages.inbounds.remark" }}',
+    align: 'left',
+    width: '35%',
+    dataIndex: "remark",
+}, {
+    title: '{{ i18n "pages.inbounds.protocol" }}',
+    align: 'center',
+    width: '20%',
+    scopedSlots: { customRender: 'protocol' },
+}, {
+    title: '{{ i18n "pages.inbounds.traffic" }}',
+    align: 'center',
+    width: '20%',
+    scopedSlots: { customRender: 'traffic' },
+}];
 
     const innerColumns = [
         { title: '{{ i18n "pages.inbounds.operate" }}', width: 65, scopedSlots: { customRender: 'actions' } },

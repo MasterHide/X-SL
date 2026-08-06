@@ -8,7 +8,7 @@
     <a-layout-content>
       <a-spin :spinning="spinning" tip="Loading Dashboard...">
         <div class="xsl-dash-container">
-          
+
           <!-- Premium Header -->
           <div class="xsl-dash-header" data-aos="fade-down">
             <div>
@@ -23,21 +23,21 @@
           </div>
 
           <!-- Tabs Container -->
-          <a-card class="modern-card" style="background: var(--xsl-card); border: 1px solid var(--xsl-border); border-radius: 16px; overflow: hidden;" data-aos="fade-up">
+          <a-card class="modern-card xsl-torrent-card" data-aos="fade-up">
             <a-tabs default-active-key="2" class="xsl-settings-tabs">
-              
+
               <!-- Sub Page 1: Live Traffic Block -->
               <a-tab-pane key="1">
                 <span slot="tab">
                   <iconify-icon icon="mdi:radar" width="16" style="vertical-align: -2px; margin-right: 4px;"></iconify-icon>
                   Live Traffic Block
                 </span>
-                <div style="text-align: center; padding: 80px 24px;">
-                  <div style="display: inline-block; padding: 24px; background: rgba(99, 102, 241, 0.05); border-radius: 50%; margin-bottom: 24px;">
+                <div class="xsl-coming-soon">
+                  <div class="xsl-coming-soon-icon">
                     <iconify-icon icon="mdi:progress-clock" width="72" style="color: var(--xsl-primary);"></iconify-icon>
                   </div>
-                  <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--xsl-text);">Coming Soon</h2>
-                  <p style="color: var(--xsl-text-muted); max-width: 500px; margin: 0 auto 24px; font-size: 15px;">
+                  <h2 class="xsl-coming-soon-title">Coming Soon</h2>
+                  <p class="xsl-coming-soon-desc">
                     Real-time deep packet inspection and dynamic live blocking is currently under development. Stay tuned for this premium feature!
                   </p>
                   <a-tag color="processing" style="font-size: 14px; padding: 4px 16px; border-radius: 12px;">
@@ -52,14 +52,14 @@
                   <iconify-icon icon="mdi:shield-lock-outline" width="16" style="vertical-align: -2px; margin-right: 4px;"></iconify-icon>
                   Public Torrent Block
                 </span>
-                
+
                 <!-- Not Installed View -->
-                <div v-if="!status.installed && !spinning" style="text-align: center; padding: 80px 24px;">
-                  <div style="display: inline-block; padding: 24px; background: rgba(239, 68, 68, 0.05); border-radius: 50%; margin-bottom: 24px;">
+                <div v-if="!status.installed && !spinning" class="xsl-not-installed">
+                  <div class="xsl-not-installed-icon">
                     <iconify-icon icon="mdi:shield-off-outline" width="72" style="color: var(--xsl-danger);"></iconify-icon>
                   </div>
-                  <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--xsl-text);">Tool Not Installed</h2>
-                  <p style="color: var(--xsl-text-muted); margin-bottom: 32px; font-size: 15px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                  <h2 class="xsl-not-installed-title">Tool Not Installed</h2>
+                  <p class="xsl-not-installed-desc">
                     Install the backend tool to start blocking public torrent trackers, domains, and IPs using iptables and hosts sinkholing.
                   </p>
                   <a-button type="primary" shape="round" size="large" @click="install" :loading="installing">
@@ -70,50 +70,71 @@
                 </div>
 
                 <!-- Installed View -->
-                <div v-if="status.installed" style="padding: 8px 4px;">
+                <div v-if="status.installed" class="xsl-torrent-content">
+
                   <!-- Toolbar -->
-                  <div class="xsl-panel-header" style="margin-bottom: 24px; border-bottom: 1px solid var(--xsl-border); padding-bottom: 16px;">
-                    <h3 class="xsl-panel-title" style="margin: 0;">
-                      Blocked Entries 
+                  <div class="xsl-torrent-toolbar">
+                    <h3 class="xsl-torrent-toolbar-title">
+                      <iconify-icon icon="mdi:format-list-bulleted" width="20" style="vertical-align: -3px; margin-right: 6px; color: var(--xsl-primary);"></iconify-icon>
+                      Blocked Entries
                       <a-tag color="blue" style="margin-left: 8px; border-radius: 8px;">[[ status.trackers.length ]]</a-tag>
                     </h3>
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                      <a-input-search 
-                        placeholder="Enter domain or IP (e.g. 1337x.to)" 
-                        v-model="newEntry" 
-                        @search="addTracker" 
-                        style="width: 350px;" 
-                        enterButton="Add Block"
+                    <!-- FIX: Use separate input + button instead of a-input-search for reliability -->
+                    <div class="xsl-torrent-add-form">
+                      <a-input
+                        placeholder="Enter domain or IP (e.g. 1337x.to)"
+                        v-model="newEntry"
+                        @keyup.enter="addTracker"
                         size="large"
+                        allow-clear
+                        style="flex: 1; min-width: 0;"
                       >
                         <a-icon slot="prefix" type="plus" />
-                      </a-input-search>
+                      </a-input>
+                      <a-button
+                        type="primary"
+                        size="large"
+                        @click="addTracker"
+                        :loading="adding"
+                        :disabled="!newEntry || !newEntry.trim()"
+                      >
+                        <iconify-icon icon="mdi:plus" width="18"></iconify-icon>
+                        <span class="add-btn-text">Add Block</span>
+                      </a-button>
                     </div>
                   </div>
 
                   <!-- Premium Table -->
-                  <a-table 
-                    :columns="columns" 
-                    :data-source="tableData" 
-                    rowKey="entry" 
+                  <a-table
+                    :columns="columns"
+                    :data-source="tableData"
+                    rowKey="entry"
                     :pagination="{ pageSize: 10, hideOnSinglePage: true }"
-                    class="xsl-settings-collapse"
+                    :scroll="{ x: 450 }"
+                    class="xsl-torrent-table"
                   >
                     <template slot="entry" slot-scope="text, record">
-                      <div style="display: flex; align-items: center; gap: 8px;">
-                        <iconify-icon icon="mdi:earth" width="18" style="color: var(--xsl-text-muted);"></iconify-icon>
-                        <span style="font-weight: 600; color: var(--xsl-text);">[[ text ]]</span>
+                      <div class="xsl-entry-cell">
+                        <iconify-icon icon="mdi:earth" width="18" style="color: var(--xsl-text-muted); flex-shrink: 0;"></iconify-icon>
+                        <span class="xsl-entry-text">[[ text ]]</span>
                       </div>
                     </template>
                     <template slot="status" slot-scope="text, record">
-                      <a-tag color="success" style="border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px; font-weight: 600; margin: 0;">
+                      <a-tag color="success" class="xsl-blocked-tag">
                         <iconify-icon icon="mdi:check-circle-outline" width="12" style="margin-right: 2px;"></iconify-icon>
                         Blocked
                       </a-tag>
                     </template>
                     <template slot="action" slot-scope="text, record">
-                      <a-button type="danger" size="small" shape="round" @click="removeTracker(record.entry)">
-                        <iconify-icon icon="mdi:delete-outline" width="16"></iconify-icon> Remove
+                      <a-button
+                        type="danger"
+                        size="small"
+                        shape="round"
+                        @click="removeTracker(record.entry)"
+                        :loading="removing === record.entry"
+                      >
+                        <iconify-icon icon="mdi:delete-outline" width="16"></iconify-icon>
+                        <span class="remove-btn-text">Remove</span>
                       </a-button>
                     </template>
                   </a-table>
@@ -142,6 +163,8 @@
       spinning: false,
       installing: false,
       uninstalling: false,
+      adding: false,
+      removing: null,
       status: { installed: false, trackers: [] },
       newEntry: '',
       columns: [
@@ -158,19 +181,19 @@
     methods: {
       async getStatus() {
         const msg = await HttpUtil.post('/panel/torrent/status');
-        if (msg.success) { 
-          this.status = msg.obj; 
+        if (msg.success) {
+          this.status = msg.obj;
         }
       },
       async install() {
         this.installing = true;
         const msg = await HttpUtil.post('/panel/torrent/install');
         this.installing = false;
-        if (msg.success) { 
-          app.$message.success('Torrent Blocker installed successfully'); 
-          await this.getStatus(); 
-        } else { 
-          app.$message.error(msg.msg || 'Installation failed'); 
+        if (msg.success) {
+          app.$message.success('Torrent Blocker installed successfully');
+          await this.getStatus();
+        } else {
+          app.$message.error(msg.msg || 'Installation failed');
         }
       },
       async uninstall() {
@@ -184,33 +207,40 @@
             this.uninstalling = true;
             const msg = await HttpUtil.post('/panel/torrent/uninstall');
             this.uninstalling = false;
-            if (msg.success) { 
-              app.$message.success('Uninstalled successfully'); 
-              await this.getStatus(); 
-            } else { 
-              app.$message.error(msg.msg || 'Uninstall failed'); 
+            if (msg.success) {
+              app.$message.success('Uninstalled successfully');
+              await this.getStatus();
+            } else {
+              app.$message.error(msg.msg || 'Uninstall failed');
             }
           }
         });
       },
       async addTracker() {
-        if (!this.newEntry) return;
-        const msg = await HttpUtil.post('/panel/torrent/add', { entry: this.newEntry });
-        if (msg.success) { 
-          app.$message.success('Tracker blocked successfully'); 
-          this.newEntry = ''; 
-          await this.getStatus(); 
-        } else { 
-          app.$message.error(msg.msg || 'Failed to add tracker'); 
+        if (!this.newEntry || !this.newEntry.trim()) {
+          app.$message.warning('Please enter a domain or IP address');
+          return;
+        }
+        this.adding = true;
+        const msg = await HttpUtil.post('/panel/torrent/add', { entry: this.newEntry.trim() });
+        this.adding = false;
+        if (msg.success) {
+          app.$message.success(msg.msg || 'Tracker blocked successfully');
+          this.newEntry = '';
+          await this.getStatus();
+        } else {
+          app.$message.error(msg.msg || 'Failed to add tracker');
         }
       },
       async removeTracker(entry) {
+        this.removing = entry;
         const msg = await HttpUtil.post('/panel/torrent/remove', { entry: entry });
-        if (msg.success) { 
-          app.$message.success('Tracker removed'); 
-          await this.getStatus(); 
-        } else { 
-          app.$message.error(msg.msg || 'Failed to remove tracker'); 
+        this.removing = null;
+        if (msg.success) {
+          app.$message.success(msg.msg || 'Tracker removed');
+          await this.getStatus();
+        } else {
+          app.$message.error(msg.msg || 'Failed to remove tracker');
         }
       }
     },

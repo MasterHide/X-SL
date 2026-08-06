@@ -346,6 +346,9 @@ body {
   .xsl-panel-grid {
     grid-template-columns: 1fr !important;
   }
+  .xsl-panel {
+    height: auto !important; /* FIX: Removes huge gap between panels on mobile */
+  }
 }
 .xsl-panel {
   background: var(--xsl-card) !important;
@@ -1021,9 +1024,7 @@ html.light, body.light, #app.light, .light {
     margin-bottom: 24px !important;
   }
 
-
-/* ===== FIX: NOTIFICATION HIDDEN BEHIND MOBILE BUTTON ===== */
-@media (max-width: 768px) {
+  /* ===== FIX: NOTIFICATION HIDDEN BEHIND MOBILE BUTTON ===== */
   /* 1. Push the notification down below the floating menu button */
   .ant-alert {
     margin-top: 60px !important;
@@ -1033,8 +1034,6 @@ html.light, body.light, #app.light, .light {
   .xsl-dash-header {
     margin-top: 0 !important;
   }
-}
-
   
   /* 3. Force Title & Subtitle to be centered */
   .xsl-dash-header > div:first-child {
@@ -1053,17 +1052,17 @@ html.light, body.light, #app.light, .light {
     width: 100% !important;
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center !important; /* Centers the buttons */
+    justify-content: center !important;
     gap: 8px !important;
   }
 
   /* 5. Make buttons take up exactly half width (2 per row) and center them */
   .xsl-dash-actions .ant-btn {
-    flex: 1 1 40% !important; /* Allows 2 buttons per row with space */
+    flex: 1 1 40% !important;
     max-width: 45% !important;
     padding: 0 10px !important;
     font-size: 13px !important;
-    justify-content: center !important; /* Centers text+icon inside button */
+    justify-content: center !important;
   }
 
   /* 6. Force Stat Cards into a 2x2 Grid (Saves vertical space) */
@@ -1073,7 +1072,7 @@ html.light, body.light, #app.light, .light {
     margin-bottom: 24px !important;
   }
   .xsl-stat-card {
-    padding: 16px !important; /* Reduce inner padding */
+    padding: 16px !important;
   }
   .xsl-stat-icon {
     width: 36px !important;
@@ -1082,7 +1081,7 @@ html.light, body.light, #app.light, .light {
     margin-bottom: 8px !important;
   }
   .xsl-stat-value {
-    font-size: 20px !important; /* Smaller numbers */
+    font-size: 20px !important;
   }
   .xsl-stat-label {
     font-size: 11px !important;
@@ -1090,14 +1089,14 @@ html.light, body.light, #app.light, .light {
 
   /* 7. Shrink the Circular Progress Rings on Mobile */
   .circular-progress {
-    transform: scale(0.85);
-    margin: -8px 0 !important; /* Fixes spacing caused by scale */
+    width: 100px !important; /* FIX: Explicit size prevents layout gaps */
+    height: 100px !important;
   }
   .progress-text {
     font-size: 18px !important;
   }
 
-    /* 8. Stack the bottom panels vertically and reduce padding */
+  /* 8. Stack the bottom panels vertically and reduce padding */
   .xsl-panel-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
@@ -1131,7 +1130,6 @@ html.light, body.light, #app.light, .light {
     flex: 1 1 45% !important;
   }
 } 
-
 
 /* ===== INBOUNDS LAYOUT & RESPONSIVE FIXES ===== */
 
@@ -1174,8 +1172,6 @@ html.light, body.light, #app.light, .light {
   table-layout: fixed !important; /* FIX: Forces columns to respect screen width */
 }
 
-
-
 /* 4. Adjust Mobile Table Padding */
 @media (max-width: 768px) {
   .ant-table-tbody > tr > td {
@@ -1190,7 +1186,6 @@ html.light, body.light, #app.light, .light {
   }
 }
 
-
 /* ===== MOBILE RESPONSIVE FIXES (MATCHING ORIGINAL X-UI) ===== */
 @media (max-width: 768px) {
   /* 1. Force 2x2 Grid for Stat Cards */
@@ -1202,7 +1197,7 @@ html.light, body.light, #app.light, .light {
     padding: 16px !important;
   }
   .xsl-stat-value {
-    font-size: 20px !important; /* Smaller numbers to fit */
+    font-size: 20px !important;
   }
   .xsl-stat-label {
     font-size: 11px !important;
@@ -1217,17 +1212,21 @@ html.light, body.light, #app.light, .light {
   /* 2. Compact Table Padding (Crucial for mobile fit) */
   .ant-table-tbody > tr > td,
   .ant-table-thead > tr > th {
-    padding: 8px 8px !important; /* Reduces cell size significantly */
+    padding: 8px 8px !important;
   }
+  .ant-table {
+    min-width: 100% !important; /* FIX: Removed 400px scroll drag */
+    width: 100% !important;
   }
+}
 
-  /* ===== INBOUNDS MOBILE RESPONSIVE FIX (TARGETED) ===== */
+/* ===== INBOUNDS MOBILE RESPONSIVE FIX (TARGETED) ===== */
 @media (max-width: 768px) {
   
   /* 1. Fix Top Header (Title + Buttons) */
   .xsl-dash-header {
     flex-direction: column !important;
-    align-items: stretch !important; /* Makes full width */
+    align-items: stretch !important;
     text-align: center !important;
     gap: 16px !important;
   }
@@ -1237,18 +1236,18 @@ html.light, body.light, #app.light, .light {
     flex-wrap: wrap !important;
   }
   .xsl-dash-actions .ant-btn {
-    flex: 1 1 45% !important; /* 2 buttons per row */
+    flex: 1 1 45% !important;
     max-width: 48% !important;
   }
 
   /* 2. Fix Stat Cards (Force 2x2 Grid) */
   .xsl-stat-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* 2 columns */
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px !important;
   }
   .xsl-stat-card {
-    padding: 16px !important; /* Compact padding */
+    padding: 16px !important;
   }
   .xsl-stat-icon {
     width: 36px !important;
@@ -1257,7 +1256,7 @@ html.light, body.light, #app.light, .light {
     margin-bottom: 8px !important;
   }
   .xsl-stat-value {
-    font-size: 20px !important; /* Smaller text */
+    font-size: 20px !important;
   }
   .xsl-stat-label {
     font-size: 11px !important;
@@ -1302,7 +1301,7 @@ html.light, body.light, #app.light, .light {
   /* 1. Prevent Toggle Switch from stretching full width */
   .xsl-inbound-toolbar .ant-switch {
     width: auto !important;
-    margin-right: auto !important; /* Keep it left aligned */
+    margin-right: auto !important;
   }
 
   /* 2. Fix Filters (Radio Buttons) to wrap */
@@ -1314,7 +1313,7 @@ html.light, body.light, #app.light, .light {
     margin-top: 8px !important;
   }
   .xsl-inbound-toolbar .ant-radio-button-wrapper {
-    flex: 1 1 30% !important; /* 3 buttons per row roughly */
+    flex: 1 1 30% !important;
     text-align: center !important;
     padding: 0 8px !important;
     white-space: nowrap !important;
@@ -1345,7 +1344,7 @@ html.light, body.light, #app.light, .light {
   }
   .ant-table-expanded-row .ant-table-thead > tr > th,
   .ant-table-expanded-row .ant-table-tbody > tr > td {
-    padding: 8px 4px !important; /* Very compact */
+    padding: 8px 4px !important;
     font-size: 12px !important;
   }
   /* Icons inside expanded table */
@@ -1364,7 +1363,6 @@ html.light, body.light, #app.light, .light {
     gap: 12px !important;
   }
 }
-
 
 /* ===== INBOUNDS TOOLBAR CLEAN MOBILE LAYOUT ===== */
 
@@ -1417,7 +1415,7 @@ html.light, body.light, #app.light, .light {
     justify-content: center !important;
   }
   .xsl-filter-group .ant-radio-button-wrapper {
-    flex: 1 1 30% !important; /* 3 buttons per row */
+    flex: 1 1 30% !important;
     text-align: center !important;
     padding: 0 8px !important;
     height: 32px !important;
@@ -1462,8 +1460,6 @@ html.light, body.light, #app.light, .light {
   }
 }
 
-
-
 /* ===== EXPANDED CLIENT TABLE MOBILE FIX ===== */
 @media (max-width: 768px) {
   
@@ -1477,7 +1473,7 @@ html.light, body.light, #app.light, .light {
   /* 2. Fix Action Icons in Expanded Table */
   .ant-table-expanded-row .ant-table-tbody > tr > td .anticon {
     font-size: 18px !important;
-    margin-right: 8px !important; /* Add space between icons */
+    margin-right: 8px !important;
   }
   
   /* 3. Fix Traffic Tags and Progress Bars */
@@ -1507,7 +1503,6 @@ html.light, body.light, #app.light, .light {
     white-space: nowrap !important;
   }
 }
-
 
 /* ===== EXPANDED CLIENT TABLE MOBILE FIX (NO SCROLL) ===== */
 @media (max-width: 768px) {
@@ -1619,9 +1614,7 @@ html.light, body.light, #app.light, .light {
     min-width: 100% !important;
     width: 100% !important;
   }
-
-
-
+}
 
 /* ===== PREMIUM PROTOCOL TAGS (PC & MOBILE) ===== */
 
@@ -1721,10 +1714,7 @@ html.light, body.light, #app.light, .light {
   line-height: 18px !important;
   display: inline-block !important;
   margin: 2px 4px 2px 0 !important;
-  }
-
-
-
+}
 
 /* ===== PREMIUM QR MODAL (CANVAS FIX) ===== */
 
@@ -1756,7 +1746,7 @@ html.light, body.light, #app.light, .light {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  pointer-events: none; /* Let the marquee handle it if needed */
+  pointer-events: none;
 }
 
 /* QR Canvas Box (White Background) */
@@ -1799,7 +1789,6 @@ html.light, body.light, #app.light, .light {
   }
 }
 
-
 /* ===== EXPANDED CLIENT TABLE PREMIUM REDESIGN ===== */
 
 /* 1. Fix Hover Color (Indigo Slate Tint instead of Gray) */
@@ -1811,7 +1800,7 @@ html.light, body.light, #app.light, .light {
 
 /* 2. Expanded Table PC Styling */
 .ant-table-expanded-row {
-  background: var(--xsl-bg) !important; /* Slightly darker than main card */
+  background: var(--xsl-bg) !important;
 }
 .ant-table-expanded-row > td {
   padding: 16px 8px !important;
@@ -1833,13 +1822,12 @@ html.light, body.light, #app.light, .light {
   border-bottom: 1px solid var(--xsl-border) !important;
 }
 
-
 /* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
 .ant-alert {
   border-radius: 12px !important;
-  padding: 12px 24px !important; /* FIX: Reduced padding to perfectly center icon */
-  align-items: center !important;
-  display: flex !important; /* FIX: Force flex to align icon with text */
+  padding: 16px 24px !important; 
+  align-items: flex-start !important; /* FIX: Align icon with text */
+  display: flex !important; /* FIX: Force flex */
   border: 1px solid var(--xsl-border) !important;
   background: var(--xsl-card) !important;
   backdrop-filter: blur(8px) !important;
@@ -1867,8 +1855,8 @@ html.light, body.light, #app.light, .light {
   color: #ef4444 !important;
   font-size: 18px !important;
   margin-right: 12px !important;
-  align-self: center !important;
-  margin-top: 0 !important; /* FIX: Remove top offset */
+  align-self: flex-start !important; /* FIX */
+  margin-top: 2px !important; /* FIX: Perfect alignment with text */
   filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
 }
 
@@ -1942,7 +1930,6 @@ html.light, body.light, #app.light, .light {
   .xsl-settings-item:has(.ant-setting-textarea) { flex-direction: column; }
 }
 
-
 /* ===== FIX: SETTINGS PAGE MOBILE OVERLAP ===== */
 @media (max-width: 768px) {
   /* Push the entire settings content down to clear the floating mobile menu button */
@@ -1950,8 +1937,6 @@ html.light, body.light, #app.light, .light {
     padding-top: 70px !important; 
   }
 }
-
-
 
 /* ===== FIX: SETTINGS PAGE TAB & LIST GAP (MOBILE ONLY) ===== */
 @media (max-width: 768px) {
@@ -1975,7 +1960,6 @@ html.light, body.light, #app.light, .light {
   }
 }
 
-
 /* Settings List Layout (If not already in your CSS) */
 .xsl-settings-list { display: flex; flex-direction: column; }
 .xsl-settings-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--xsl-border); gap: 24px; }
@@ -1990,10 +1974,9 @@ html.light, body.light, #app.light, .light {
   .xsl-settings-control { flex: 1; width: 100%; justify-content: flex-start; }
 }
 
-
 /* ===== SIDEBAR LOGO ONLY (MUCH BIGGER & RESPONSIVE) ===== */
 .xsl-sider-header {
-  height: 90px !important; /* Taller header for a massive logo */
+  height: 90px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important; 
@@ -2004,9 +1987,9 @@ html.light, body.light, #app.light, .light {
 }
 
 .xsl-logo-img {
-  height: 120px !important; /* Much bigger logo */
+  height: 120px !important;
   width: auto !important;
-  max-width: 250px !important; /* Allows it to be wider on PC */
+  max-width: 250px !important;
   object-fit: contain !important;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   transition: all 0.2s ease;
@@ -2018,20 +2001,19 @@ html.light, body.light, #app.light, .light {
 }
 .ant-layout-sider-collapsed .xsl-logo-img {
   height: 40px !important;
-  max-width: 50px !important; /* Fits perfectly inside the 80px collapsed sidebar */
+  max-width: 50px !important;
 }
 
 /* Mobile Drawer Header matches */
 #xsl-sider-drawer .xsl-sider-header {
-  justify-content: flex-start !important; /* Left align in mobile drawer */
+  justify-content: flex-start !important;
   padding-left: 24px !important;
-  height: 80px !important; /* Slightly smaller for mobile screens */
+  height: 80px !important;
 }
 #xsl-sider-drawer .xsl-logo-img {
-  height: 100px !important; /* Slightly smaller for mobile screens */
+  height: 100px !important;
   max-width: 200px !important;
 }
-
 
 /* ===================================================================
    TORRENT BLOCKER PAGE STYLES & RESPONSIVE FIXES (UNIFIED)

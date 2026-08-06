@@ -1106,6 +1106,7 @@ html.light, body.light, #app.light, .light {
     padding: 16px !important;
     opacity: 1 !important;
     display: block !important;
+    height: auto !important; /* FIX: Removes huge gap between panels on mobile */
   }
   .xsl-info-list {
     gap: 12px !important;
@@ -1162,13 +1163,15 @@ html.light, body.light, #app.light, .light {
   gap: 8px;
 }
 
-/* 3. Ensure Table is Scrollable and Clean on Mobile */
+/* 3. Ensure Table fits perfectly and DOES NOT drag */
 .ant-table-wrapper {
-  overflow-x: auto !important;
+  overflow-x: hidden !important;
   -webkit-overflow-scrolling: touch;
 }
 .ant-table {
-  min-width: 600px; /* Prevents columns from squishing too much */
+  min-width: 100% !important;
+  width: 100% !important;
+  table-layout: fixed !important; /* FIX: Forces columns to respect screen width */
 }
 
 
@@ -1216,10 +1219,7 @@ html.light, body.light, #app.light, .light {
   .ant-table-thead > tr > th {
     padding: 8px 8px !important; /* Reduces cell size significantly */
   }
-  .ant-table {
-    min-width: 400px; /* Allows smooth horizontal scroll without breaking layout */
   }
-  }  /* <--- ADD THIS CLOSING BRACKET HERE */
 
   /* ===== INBOUNDS MOBILE RESPONSIVE FIX (TARGETED) ===== */
 @media (max-width: 768px) {
@@ -1286,11 +1286,13 @@ html.light, body.light, #app.light, .light {
   
   /* 4. Ensure Table Scrolls Smoothly */
   .ant-table-wrapper {
-    overflow-x: auto !important;
+    overflow-x: hidden !important; /* FIX: Prevents dragging */
     -webkit-overflow-scrolling: touch;
   }
   .ant-table {
-    min-width: 500px !important; /* Prevents extreme squishing */
+    min-width: 100% !important; /* FIX: Prevents extreme squishing */
+    width: 100% !important;
+    table-layout: fixed !important;
   }
 }
 
@@ -1338,6 +1340,8 @@ html.light, body.light, #app.light, .light {
   /* 4. Expanded Client Table Fixes */
   .ant-table-expanded-row .ant-table {
     min-width: 100% !important;
+    width: 100% !important;
+    table-layout: fixed !important;
   }
   .ant-table-expanded-row .ant-table-thead > tr > th,
   .ant-table-expanded-row .ant-table-tbody > tr > td {
@@ -1351,7 +1355,7 @@ html.light, body.light, #app.light, .light {
 
   /* 5. Ensure Main Table Scrolls */
   .ant-table-wrapper {
-    overflow-x: auto !important;
+    overflow-x: hidden !important;
   }
   
   /* 6. Stat Cards 2x2 Grid (Re-affirm) */
@@ -1448,7 +1452,7 @@ html.light, body.light, #app.light, .light {
   
   /* Ensure Table Scrolls */
   .ant-table-wrapper {
-    overflow-x: auto !important;
+    overflow-x: hidden !important;
   }
   
   /* Stat Cards 2x2 Grid */
@@ -1493,7 +1497,7 @@ html.light, body.light, #app.light, .light {
 
   /* 4. Ensure Main Table Scrolls Smoothly */
   .ant-table-wrapper {
-    overflow-x: auto !important;
+    overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
   }
   
@@ -1521,7 +1525,7 @@ html.light, body.light, #app.light, .light {
     width: 100% !important;
     table-layout: fixed !important;
   }
-   }  /* <--- ADD THIS CLOSING BRACKET HERE */
+  
   /* 3. Ultra-Compact Padding */
   .ant-table-expanded-row .ant-table-tbody > tr > td,
   .ant-table-expanded-row .ant-table-thead > tr > th {
@@ -1833,8 +1837,9 @@ html.light, body.light, #app.light, .light {
 /* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
 .ant-alert {
   border-radius: 12px !important;
-  padding: 16px 24px !important;
+  padding: 12px 24px !important; /* FIX: Reduced padding to perfectly center icon */
   align-items: center !important;
+  display: flex !important; /* FIX: Force flex to align icon with text */
   border: 1px solid var(--xsl-border) !important;
   background: var(--xsl-card) !important;
   backdrop-filter: blur(8px) !important;
@@ -1857,11 +1862,13 @@ html.light, body.light, #app.light, .light {
 }
 
 /* 1. Fix Icon Spacing & Glow */
-.ant-alert-error .ant-alert-icon {
+.ant-alert-error .ant-alert-icon,
+.ant-alert .ant-alert-icon {
   color: #ef4444 !important;
-  font-size: 22px !important;
-  margin-right: 20px !important;
+  font-size: 18px !important;
+  margin-right: 12px !important;
   align-self: center !important;
+  margin-top: 0 !important; /* FIX: Remove top offset */
   filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
 }
 
@@ -2149,50 +2156,6 @@ html.light, body.light, #app.light, .light {
     font-weight: 600;
     margin: 0;
     white-space: nowrap;
-}
-
-/* ===================================================================
-   INBOUNDS TABLE - MOBILE FIT & GAP FIX
-   =================================================================== */
-@media (max-width: 768px) {
-    /* Remove huge gaps between TLS area and Info area */
-    .xsl-panel {
-        padding: 12px !important;
-    }
-    .xsl-panel-header {
-        margin-bottom: 12px !important;
-    }
-    .ant-table-wrapper {
-        margin-top: 0 !important;
-        overflow-x: hidden !important;
-    }
-    .ant-table {
-        min-width: 100% !important;
-        width: 100% !important;
-        table-layout: fixed !important;
-    }
-    .ant-table-thead > tr > th,
-    .ant-table-tbody > tr > td {
-        white-space: normal !important;
-        word-break: break-all !important;
-        padding: 8px 4px !important;
-        font-size: 12px !important;
-    }
-}
-
-/* ===================================================================
-   FIX: NOTIFICATION ICON ALIGNMENT
-   =================================================================== */
-.ant-alert {
-    align-items: center !important;
-    display: flex !important;
-}
-.ant-alert-icon {
-    align-self: center !important;
-    margin-top: 0 !important;
-}
-.ant-alert-message {
-    margin: 0 !important;
 }
 
 /* ===================================================================

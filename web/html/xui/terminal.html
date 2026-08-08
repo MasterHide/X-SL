@@ -95,26 +95,53 @@
     let sessionInterval = null;
     let timeLeft = 600;
 
+    // Dynamically find the correct URLs based on current path (fixes webBasePath issues)
+    const currentPath = window.location.pathname; // e.g. /basepath/panel/terminal/
+    const authUrl = currentPath.replace(/\/terminal\/$/, '/terminal/auth');
+    
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    const wsBase = currentPath.replace(/\/terminal\/$/, '/terminal/ws');
+    const wsUrl = `${wsProtocol}${window.location.host}${wsBase}?token=`;
+
     document.getElementById('unlock-btn').addEventListener('click', async () => {
         const password = document.getElementById('password-input').value;
         const errorEl = document.getElementById('error-msg');
         errorEl.innerText = '';
 
-        const res = await fetch('/panel/terminal/auth', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
-        });
+        try {
+            const res = await fetch(authUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
 
-        if (!res.ok) {
-            errorEl.innerText = 'Invalid password. Try again.';
-            // Add delay/lock logic here if needed
-            return;
+            if (!res.ok) {
+                // Try to parse the backend error message if it exists
+                try {
+                    const errData = await res.json();
+                    errorEl.innerText = errData.error || 'Invalid password or server error.';
+                } catch (e) {
+                    errorEl.innerText = 'Invalid password or server error.';
+                }
+                return;
+            }
+
+            // Safely parse the success JSON
+            let data;
+            try {
+                data = await res.json();
+            } catch (e) {
+                errorEl.innerText = 'Server returned an empty response. Did you rebuild the Go binary?';
+                return;
+            }
+
+            timeLeft = data.expires;
+            initTerminal(data.token);
+            
+        } catch (err) {
+            errorEl.innerText = 'Network error: Could not connect to server.';
+            console.error(err);
         }
-
-        const data = await res.json();
-        timeLeft = data.expires;
-        initTerminal(data.token);
     });
 
     function initTerminal(token) {
@@ -132,13 +159,10 @@
         term.open(document.getElementById('terminal-wrapper'));
         fitAddon.fit();
 
-        const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-        ws = new WebSocket(`${wsProtocol}${window.location.host}/panel/terminal/ws?token=${token}`);
+        ws = new WebSocket(`${wsUrl}${token}`);
 
         ws.onopen = () => {
             term.writeln("Connected to VPS Shell. Session expires in 10 minutes.");
-            // Send initial resize
-            ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows }));
         };
 
         ws.onmessage = (event) => {
@@ -148,6 +172,11 @@
         ws.onclose = () => {
             term.writeln("\r\n\x1b[31mSession expired or disconnected.\x1b[0m");
             clearInterval(sessionInterval);
+        };
+
+        ws.onerror = (error) => {
+            term.writeln("\r\n\x1b[31mWebSocket connection error.\x1b[0m");
+            console.error("WebSocket Error:", error);
         };
 
         term.onData((data) => {
@@ -180,7 +209,7 @@
 
     function closeSession() {
         if (ws) ws.close();
-        window.location.href = '/panel/inbounds'; // Redirect back to safety
+        restartSession();
     }
 
     // Handle window resize
@@ -188,5 +217,3 @@
         if (fitAddon) fitAddon.fit();
     });
 </script>
-</body>
-</html>

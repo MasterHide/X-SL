@@ -43,7 +43,7 @@
           </a-alert>
 
           <!-- Header -->
-                    <div class="xsl-dash-header" data-aos="fade-down">
+                              <div class="xsl-dash-header">
               <div>
                   <h1>Server Dashboard</h1>
                   <p>Real-time system metrics and Xray status</p>
@@ -73,8 +73,8 @@
               <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="50">
                   <div class="xsl-stat-icon" style="background: rgba(142, 63, 222, 0.1); color: #8E3FDE;"><iconify-icon icon="mdi:cpu-64-bit"></iconify-icon></div>
                   <div class="xsl-stat-label">CPU Usage</div>
-                  <div class="circular-progress" style="margin: 10px auto; position: relative; width: 120px; height: 120px;">
-                    <svg class="progress-ring" width="120" height="120">
+                  <div class="circular-progress" style="margin: 10px auto; position: relative;">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
                       <circle class="progress-ring-background" stroke="rgba(142, 63, 222, 0.1)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" />
                       <circle class="progress-ring-circle" stroke="#8E3FDE" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" :style="`stroke-dasharray: 326.7; stroke-dashoffset: ${326.7 - (326.7 * status.cpu.percent / 100)}`" />
                     </svg>
@@ -89,8 +89,8 @@
               <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="100">
                   <div class="xsl-stat-icon" style="background: rgba(60, 137, 232, 0.1); color: #3c89e8;"><iconify-icon icon="mdi:memory"></iconify-icon></div>
                   <div class="xsl-stat-label">Memory</div>
-                  <div class="circular-progress" style="margin: 10px auto; position: relative; width: 120px; height: 120px;">
-                    <svg class="progress-ring" width="120" height="120">
+                  <div class="circular-progress" style="margin: 10px auto; position: relative;">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
                       <circle class="progress-ring-background" stroke="rgba(60, 137, 232, 0.1)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" />
                       <circle class="progress-ring-circle" stroke="#3c89e8" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" :style="`stroke-dasharray: 326.7; stroke-dashoffset: ${326.7 - (326.7 * status.mem.percent / 100)}`" />
                     </svg>
@@ -105,8 +105,8 @@
               <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="150">
                   <div class="xsl-stat-icon" style="background: rgba(243, 123, 36, 0.1); color: #f37b24;"><iconify-icon icon="mdi:swap-horizontal"></iconify-icon></div>
                   <div class="xsl-stat-label">Swap</div>
-                  <div class="circular-progress" style="margin: 10px auto; position: relative; width: 120px; height: 120px;">
-                    <svg class="progress-ring" width="120" height="120">
+                  <div class="circular-progress" style="margin: 10px auto; position: relative;">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
                       <circle class="progress-ring-background" stroke="rgba(243, 123, 36, 0.1)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" />
                       <circle class="progress-ring-circle" stroke="#f37b24" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" :style="`stroke-dasharray: 326.7; stroke-dashoffset: ${326.7 - (326.7 * status.swap.percent / 100)}`" />
                     </svg>
@@ -121,8 +121,8 @@
               <div class="xsl-stat-card" data-aos="fade-up" data-aos-delay="200">
                   <div class="xsl-stat-icon" style="background: rgba(207, 60, 60, 0.1); color: #cf3c3c;"><iconify-icon icon="mdi:harddisk"></iconify-icon></div>
                   <div class="xsl-stat-label">Disk Storage</div>
-                  <div class="circular-progress" style="margin: 10px auto; position: relative; width: 120px; height: 120px;">
-                    <svg class="progress-ring" width="120" height="120">
+                  <div class="circular-progress" style="margin: 10px auto; position: relative;">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
                       <circle class="progress-ring-background" stroke="rgba(207, 60, 60, 0.1)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" />
                       <circle class="progress-ring-circle" stroke="#cf3c3c" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" :style="`stroke-dasharray: 326.7; stroke-dashoffset: ${326.7 - (326.7 * status.disk.percent / 100)}`" />
                     </svg>

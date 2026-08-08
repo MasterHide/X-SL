@@ -242,178 +242,132 @@ body {
 }
 
 /* ===== 4. PREMIUM DASHBOARD LAYOUT ===== */
-.xsl-dash-container {
-  padding: 24px;
-  max-width: 1600px;
-  margin: 0 auto;
-}
-.xsl-dash-header {
-  margin-bottom: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.xsl-dash-header h1 {
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  margin: 0 0 8px 0 !important;
-  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.xsl-dash-header p {
-  margin: 0 !important;
-  color: var(--xsl-text-muted) !important;
-  font-size: 14px;
-}
-.xsl-dash-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+.xsl-dash-container { padding: 24px; max-width: 1600px; margin: 0 auto; }
+.xsl-dash-header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.xsl-dash-header h1 { font-size: 28px !important; font-weight: 700 !important; margin: 0 0 8px 0 !important; background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.xsl-dash-header p { margin: 0 !important; color: var(--xsl-text-muted) !important; font-size: 14px; }
+.xsl-dash-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* Stat Cards Grid */
-.xsl-stat-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
-  gap: 24px !important;
-  margin-bottom: 32px !important;
-}
-.xsl-stat-card {
-  background: var(--xsl-card) !important;
-  border: 1px solid var(--xsl-border) !important;
-  border-radius: 20px !important;
-  padding: 24px !important;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-.xsl-stat-card:hover {
-  transform: translateY(-5px) !important;
-  border-color: rgba(99, 102, 241, 0.3) !important;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
-}
-.xsl-stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--xsl-primary), var(--xsl-primary-hover));
-  opacity: 0.8;
-}
-.xsl-stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 24px;
-  margin-bottom: 16px;
-  background: rgba(99, 102, 241, 0.1);
-  color: var(--xsl-primary);
-}
-.xsl-stat-value {
-  font-size: 32px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
-  margin-bottom: 4px !important;
-  line-height: 1 !important;
-  color: var(--xsl-text) !important;
-}
-.xsl-stat-label {
-  color: var(--xsl-text-muted) !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+.xsl-stat-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important; gap: 24px !important; margin-bottom: 32px !important; }
+.xsl-stat-card { background: var(--xsl-card) !important; border: 1px solid var(--xsl-border) !important; border-radius: 20px !important; padding: 24px !important; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+.xsl-stat-card:hover { transform: translateY(-5px) !important; border-color: rgba(99, 102, 241, 0.3) !important; box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important; }
+.xsl-stat-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--xsl-primary), var(--xsl-primary-hover)); opacity: 0.8; }
+.xsl-stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px; margin-bottom: 16px; background: rgba(99, 102, 241, 0.1); color: var(--xsl-primary); }
+.xsl-stat-value { font-size: 32px !important; font-weight: 800 !important; letter-spacing: -0.03em !important; margin-bottom: 4px !important; line-height: 1 !important; color: var(--xsl-text) !important; }
+.xsl-stat-label { color: var(--xsl-text-muted) !important; font-size: 13px !important; font-weight: 500 !important; text-transform: uppercase; letter-spacing: 0.05em; }
+
 .xsl-stat-progress {
   margin-top: 16px !important;
 }
 
 /* Dashboard Panels */
-.xsl-panel-grid {
-  display: grid !important;
-  grid-template-columns: 2fr 1fr !important;
-  gap: 24px !important;
-}
-@media (max-width: 992px) {
-  .xsl-panel-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
+.xsl-panel-grid { display: grid !important; grid-template-columns: 2fr 1fr !important; gap: 24px !important; }
 .xsl-panel {
-  background: var(--xsl-card) !important;
-  border: 1px solid var(--xsl-border) !important;
-  border-radius: 20px !important;
-  padding: 24px !important;
-  height: 100%;
+    background: var(--xsl-card) !important;
+    border: 1px solid var(--xsl-border) !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    height: fit-content;
 }
-.xsl-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.xsl-panel-title {
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
-  color: var(--xsl-text) !important;
-}
+.xsl-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.xsl-panel-title { font-size: 16px !important; font-weight: 600 !important; margin: 0 !important; color: var(--xsl-text) !important; }
 
 /* System Info List */
-.xsl-info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.xsl-info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--xsl-border);
-}
-.xsl-info-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-.xsl-info-label {
-  color: var(--xsl-text-muted) !important;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.xsl-info-value {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--xsl-text) !important;
-}
+.xsl-info-list { display: flex; flex-direction: column; gap: 16px; }
+.xsl-info-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--xsl-border); }
+.xsl-info-item:last-child { border-bottom: none; padding-bottom: 0; }
+.xsl-info-label { color: var(--xsl-text-muted) !important; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.xsl-info-value { font-weight: 600; font-size: 14px; color: var(--xsl-text) !important; }
 
 /* SVG Progress Rings */
-.circular-progress {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  position: relative !important;
+.circular-progress { display: flex !important; justify-content: center !important; align-items: center !important; position: relative !important; width: 110px !important; height: 110px !important; margin: 10px auto !important; }
+.progress-ring { width: 100% !important; height: 100% !important; transform: rotate(-90deg) !important; }
+.progress-text { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; font-size: 20px !important; font-weight: 700 !important; }
+
+
+
+/* ===== DASHBOARD MOBILE FIXES (FIT CARDS & REMOVE GAPS) ===== */
+
+/* Tablet & Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* 1. Remove huge gaps between Network and System panels */
+  
+  .xsl-panel {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 16px !important;
+  }
+  .xsl-info-list {
+    gap: 12px !important;
+  }
+  .xsl-info-item {
+    padding-bottom: 12px !important;
+  }
+
+  /* Shrink rings slightly for tablets/medium phones */
+  .circular-progress {
+    width: 90px !important;
+    height: 90px !important;
+    margin: 6px auto !important;
+  }
+  .progress-text {
+    font-size: 16px !important;
+  }
 }
-.progress-ring {
-  transform: rotate(-90deg) !important;
+
+
+/* ADD HERE */
+
+@media (max-width:768px) {
+
+    .xsl-dash-container,
+    .xsl-stat-grid {
+        height:auto !important;
+        min-height:0 !important;
+        overflow:visible !important;
+    }
+
 }
-.progress-text {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  font-size: 20px !important;
-  font-weight: 700 !important;
+
+/* Very Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  /* 2. Make Stat Cards very small to fit perfectly in 2x2 grid */
+  .xsl-stat-grid {
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .xsl-stat-card {
+    padding: 12px !important;
+  }
+  .xsl-stat-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+  }
+  .xsl-stat-value {
+    font-size: 18px !important;
+  }
+  .xsl-stat-label {
+    font-size: 10px !important;
+  }
+
+  /* 3. Shrink the Circular Progress Rings for tiny screens */
+  .circular-progress {
+    width: 72px !important; /* Perfect size to fit 2x2 grid without clipping */
+    height: 72px !important;
+    margin: 4px auto !important;
+  }
+  .progress-text {
+    font-size: 14px !important;
+  }
+  
+  /* 4. Shrink the text below the rings (Cores, RAM size, etc.) */
+  .xsl-stat-card div[style*="text-align: center"] {
+    font-size: 10px !important;
+    margin-top: 4px !important;
+  }
 }
 
 /* ===== 5. CONTRAST ENFORCEMENT (Text Visibility) ===== */
@@ -1098,10 +1052,7 @@ html.light, body.light, #app.light, .light {
   }
 
     /* 8. Stack the bottom panels vertically and reduce padding */
-  .xsl-panel-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
+  
   .xsl-panel {
     padding: 16px !important;
     opacity: 1 !important;
@@ -1112,9 +1063,7 @@ html.light, body.light, #app.light, .light {
     opacity: 1 !important;
     display: flex !important;
   }
-  .xsl-info-item {
-    padding-bottom: 12px !important;
-  }
+  
   
   /* 9. Make top app header smaller on mobile */
   .ant-layout-header {
@@ -1505,116 +1454,7 @@ html.light, body.light, #app.light, .light {
 }
 
 
-/* ===== EXPANDED CLIENT TABLE MOBILE FIX (NO SCROLL) ===== */
-@media (max-width: 768px) {
-  
-  /* 1. Make expanded table fit within viewport */
-  .ant-table-expanded-row .ant-table-wrapper {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-  
-  /* 2. Compact Inner Table */
-  .ant-table-expanded-row .ant-table {
-    min-width: 100% !important;
-    width: 100% !important;
-    table-layout: fixed !important;
-  }
-   }  /* <--- ADD THIS CLOSING BRACKET HERE */
-  /* 3. Ultra-Compact Padding */
-  .ant-table-expanded-row .ant-table-tbody > tr > td,
-  .ant-table-expanded-row .ant-table-thead > tr > th {
-    padding: 6px 4px !important;
-    font-size: 11px !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-  }
-  
-  /* 4. Fix Client Email Column */
-  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(2) {
-    max-width: 120px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-  
-  /* 5. Fix Traffic Column */
-  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(3) {
-    max-width: 100px !important;
-  }
-  .ant-table-expanded-row .tr-table-box {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
-    align-items: center !important;
-  }
-  .ant-table-expanded-row .tr-table-rt,
-  .ant-table-expanded-row .tr-table-lt {
-    flex-basis: auto !important;
-    min-width: auto !important;
-    font-size: 10px !important;
-  }
-  .ant-table-expanded-row .tr-table-bar {
-    flex-basis: 100% !important;
-    min-width: 60px !important;
-    width: 100% !important;
-  }
-  
-  /* 6. Fix Expiry Column */
-  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(4) {
-    max-width: 80px !important;
-    text-align: center !important;
-  }
-  
-  /* 7. Action Menu (3-dots) */
-  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(1) {
-    width: 40px !important;
-    padding: 6px 2px !important;
-  }
-  .ant-table-expanded-row .anticon-ellipsis {
-    font-size: 20px !important;
-  }
-  
-  /* 8. Fix Tags */
-  .ant-table-expanded-row .ant-tag {
-    margin: 1px !important;
-    padding: 1px 4px !important;
-    font-size: 10px !important;
-    line-height: 16px !important;
-    border-radius: 4px !important;
-  }
-  
-  /* 9. Fix Progress Bars */
-  .ant-table-expanded-row .ant-progress {
-    height: 4px !important;
-  }
-  .ant-table-expanded-row .ant-progress-inner {
-    height: 4px !important;
-  }
-  .ant-table-expanded-row .ant-progress-bg {
-    height: 4px !important;
-  }
-  
-  /* 10. Remove header text on mobile to save space */
-  .ant-table-expanded-row .ant-table-thead > tr > th {
-    font-size: 0 !important;
-    padding: 4px !important;
-  }
-  .ant-table-expanded-row .ant-table-thead > tr > th::after {
-    content: "•••";
-    font-size: 10px;
-    color: var(--xsl-text-muted);
-  }
-  
-  /* 11. Ensure main table doesn't scroll either */
-  .ant-table-wrapper {
-    overflow-x: hidden !important;
-  }
-  .ant-table {
-    min-width: 100% !important;
-    width: 100% !important;
-  }
+
 
 
 
@@ -1796,118 +1636,123 @@ html.light, body.light, #app.light, .light {
 }
 
 
-/* ===== EXPANDED CLIENT TABLE PREMIUM REDESIGN ===== */
-
-/* 1. Fix Hover Color (Indigo Slate Tint instead of Gray) */
-.ant-table-tbody > tr:hover > td,
-.ant-table-expanded-row .ant-table-tbody > tr:hover > td {
-  background: rgba(99, 102, 241, 0.08) !important; 
-  transition: background 0.2s ease !important;
-}
-
-/* 2. Expanded Table PC Styling */
-.ant-table-expanded-row {
-  background: var(--xsl-bg) !important; /* Slightly darker than main card */
-}
-.ant-table-expanded-row > td {
-  padding: 16px 8px !important;
-}
-.ant-table-expanded-row .ant-table-wrapper {
-  margin: 8px 0 16px 0 !important;
-  border: 1px solid var(--xsl-border) !important;
-  border-radius: 12px !important;
-  overflow: hidden;
-}
-.ant-table-expanded-row .ant-table-thead > tr > th {
-  background: var(--xsl-bg-secondary) !important;
-  font-size: 11px !important;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.ant-table-expanded-row .ant-table-tbody > tr > td {
-  background: var(--xsl-card) !important;
-  border-bottom: 1px solid var(--xsl-border) !important;
-}
-
 
 /* ===== PREMIUM SECURITY ALERT (FIXED & RESPONSIVE) ===== */
 .ant-alert {
-  border-radius: 12px !important;
-  padding: 12px 24px !important; /* FIX: Reduced vertical padding to perfectly center elements */
-  display: flex !important; /* FIX: Force flex layout to prevent overlapping */
-  align-items: center !important; /* FIX: Vertically center icon and close button */
+  position: relative !important;
+  display: block !important;
+  border-radius: 10px !important;
+  padding: 16px 40px 16px 44px !important; /* Top, Right (for close btn), Bottom, Left (for icon) */
   border: 1px solid var(--xsl-border) !important;
   background: var(--xsl-card) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
   transition: all 0.3s ease !important;
-  margin-bottom: 24px !important;
+  margin-bottom: 16px !important;
+  line-height: 1.5 !important;
+  overflow: hidden !important;
 }
 
-/* Specific Error/Security Alert Styling */
+/* Red Alert (Dashboard) */
 .ant-alert-error {
   background: rgba(239, 68, 68, 0.08) !important;
   border: 1px solid rgba(239, 68, 68, 0.25) !important;
 }
-
-/* Hover Effect */
-.ant-alert-error:hover {
-  border-color: rgba(239, 68, 68, 0.5) !important;
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15) !important;
-  transform: translateY(-2px) !important;
-}
-
-/* 1. Fix Icon Spacing & Glow */
 .ant-alert-error .ant-alert-icon {
   color: #ef4444 !important;
-  font-size: 18px !important; /* FIX: Slightly smaller to match text height */
-  margin-right: 12px !important; /* FIX: Consistent spacing */
-  align-self: center !important; /* FIX: Keep icon perfectly centered */
-  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
 }
 
-/* 2. Fix Content Layout */
-.ant-alert-error .ant-alert-content {
-  flex: 1 !important; /* FIX: Takes up remaining space, pushing close button to the right */
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
+/* Yellow Alert (Xray Config) */
+.ant-alert-warning {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+.ant-alert-warning .ant-alert-icon {
+  color: #f59e0b !important;
 }
 
-/* 3. Clear Text Colors */
-.ant-alert-error .ant-alert-message {
-  color: #fca5a5 !important;
+/* 1. Fix Icon to the Left Center */
+.ant-alert .ant-alert-icon {
+  position: absolute !important;
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+
+/* 2. Content takes full middle space */
+.ant-alert .ant-alert-content {
+  display: block !important;
+  width: 100% !important;
+  word-break: break-word !important;
+}
+
+/* 3. Proper Gap Between Paragraphs */
+.ant-alert .ant-alert-message {
+  color: var(--xsl-text) !important;
   font-weight: 600 !important;
   font-size: 14px !important;
-  margin: 0 !important;
-  line-height: 1.4 !important; /* FIX: Better readability */
+  margin: 0 0 6px 0 !important; /* Gap between Title and Description */
+  line-height: 1.4 !important;
+  display: block !important;
 }
-.ant-alert-error .ant-alert-description {
-  color: #f87171 !important;
+.ant-alert .ant-alert-description {
+  color: var(--xsl-text-muted) !important;
   font-size: 13px !important;
   margin: 0 !important;
-  line-height: 1.4 !important; /* FIX: Better readability */
+  line-height: 1.4 !important;
+  display: block !important;
 }
 
-/* 4. Fix Close Button */
-.ant-alert-error .ant-alert-close-icon {
-  position: relative !important;
+/* 4. Close Icon in Top-Right Corner Inside Alert */
+.ant-alert .ant-alert-close-icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 12px !important;
   z-index: 100 !important;
   pointer-events: auto !important;
   cursor: pointer !important;
-  font-size: 16px !important;
-  color: #f87171 !important;
-  padding: 8px !important;
-  margin-left: 16px !important; /* FIX: Space between text and close button */
-  border-radius: 8px !important;
+  font-size: 14px !important;
+  color: var(--xsl-text-muted) !important;
+  padding: 4px !important;
+  border-radius: 6px !important;
   background: transparent !important;
   transition: all 0.2s ease !important;
-  align-self: center !important; /* FIX: Keep close button perfectly centered */
 }
-.ant-alert-error .ant-alert-close-icon:hover {
-  background: rgba(239, 68, 68, 0.2) !important;
+
+.ant-alert .ant-alert-close-icon:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
   color: #ffffff !important;
 }
+
+/* ===== ALERT MOBILE RESPONSIVE (VERY SMALL & CLEAN) ===== */
+@media (max-width: 768px) {
+  .ant-alert {
+    padding: 12px 32px 12px 32px !important; /* Reduced padding for mobile */
+    margin-bottom: 12px !important;
+  }
+  .ant-alert .ant-alert-icon {
+    left: 10px !important;
+    font-size: 14px !important; /* Smaller icon */
+  }
+  /* Very small text to fit screen */
+  .ant-alert .ant-alert-message {
+    font-size: 12px !important; 
+    margin-bottom: 4px !important;
+  }
+  .ant-alert .ant-alert-description {
+    font-size: 11px !important; /* Very small description */
+  }
+  .ant-alert .ant-alert-close-icon {
+    right: 8px !important;
+    top: 8px !important;
+    font-size: 12px !important; /* Smaller close button */
+  }
+}
+
+
+
 
 /* ===== PREMIUM SETTINGS PAGE ===== */
 .xsl-settings-list { display: flex; flex-direction: column; }
@@ -2185,21 +2030,6 @@ html.light, body.light, #app.light, .light {
 }
 
 /* ===================================================================
-   FIX: NOTIFICATION ICON ALIGNMENT
-   =================================================================== */
-.ant-alert {
-    align-items: center !important;
-    display: flex !important;
-}
-.ant-alert-icon {
-    align-self: center !important;
-    margin-top: 0 !important;
-}
-.ant-alert-message {
-    margin: 0 !important;
-}
-
-/* ===================================================================
    RESPONSIVE BREAKPOINTS (MOBILE SPACE OPTIMIZED)
    =================================================================== */
 
@@ -2391,4 +2221,801 @@ html.light, body.light, #app.light, .light {
     .xsl-torrent-add-form { gap: 6px; }
     .xsl-torrent-add-form .ant-input { font-size: 13px !important; }
     .xsl-entry-text { font-size: 11px; }
+}
+
+/* ===== MOBILE FIX: CENTER CARDS & FIT PROGRESS RINGS ===== */
+
+/* Tablet & Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* Center all contents inside the card */
+  .xsl-stat-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  
+  /* Shrink ring to fit safely on tablets */
+  .xsl-stat-card .circular-progress {
+    width: 100px !important; 
+    height: 100px !important;
+    margin: 8px auto !important;
+  }
+  .xsl-stat-card .progress-ring {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* Very Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  /* Shrink ring further to fit 2x2 grid perfectly */
+  .xsl-stat-card .circular-progress {
+    width: 80px !important; 
+    height: 80px !important;
+    margin: 4px auto !important;
+  }
+  .progress-text {
+    font-size: 16px !important; /* Smaller text to fit inside the 80px ring */
+  }
+}
+
+
+/* ===================================================================
+   BULLETPROOF MOBILE STAT CARDS (2x2 GRID & PERFECT FIT)
+   =================================================================== */
+
+/* Tablet & Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* 1. Force exactly 2 columns, always */
+  .xsl-stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* 2. Allow cards to shrink below their content size (Crucial fix) */
+  .xsl-stat-card {
+    min-width: 0 !important; 
+    padding: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    overflow: hidden !important;
+  }
+
+  /* 3. Shrink Icon and Title */
+  .xsl-stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+  .xsl-stat-label {
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* 4. Shrink the Progress Ring and center it */
+  .xsl-stat-card .circular-progress {
+width:clamp(60px,18vw,80px) !important;
+height:clamp(60px,18vw,80px) !important;
+}
+  .xsl-stat-card .progress-ring {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .xsl-stat-card .progress-text {
+    font-size: 16px !important; /* Fits perfectly inside the 80px ring */
+  }
+
+  /* 5. Shrink the text below the ring (Cores, RAM size, etc.) */
+  .xsl-stat-card div[style*="text-align: center"] {
+    font-size: 10px !important;
+    margin-top: 0 !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+  }
+}
+
+/* Very Small Phones (<= 380px) */
+@media (max-width: 380px) {
+  /* Shrink ring just a bit more so it never breaks on tiny phones */
+  .xsl-stat-card .circular-progress {
+    width: 70px !important;
+    height: 70px !important;
+  }
+  .xsl-stat-card .progress-text {
+    font-size: 14px !important;
+  }
+  .xsl-stat-card {
+    padding: 10px !important;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE THICK PROGRESS RING ONLY
+   Does not change card placement/layout
+========================================================= */
+
+.xsl-stat-card .progress-ring circle {
+    stroke-width: 10 !important;
+}
+
+
+/* Keep ring scaling with existing circle size */
+.xsl-stat-card .progress-ring {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* Small screens - slightly thinner to avoid crowding */
+@media (max-width: 380px) {
+
+    .xsl-stat-card .progress-ring circle {
+        stroke-width: 8 !important;
+    }
+
+}
+
+
+/* Larger screens */
+@media (min-width: 769px) {
+
+    .xsl-stat-card .progress-ring circle {
+        stroke-width: 10 !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE ONLY - THICK PROGRESS RING
+   Keeps current card placement unchanged
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .xsl-stat-card .progress-ring circle {
+        stroke-width: 10 !important;
+    }
+
+}
+
+
+/* Very small mobile devices */
+@media (max-width: 380px) {
+
+    .xsl-stat-card .progress-ring circle {
+        stroke-width: 8 !important;
+    }
+
+}
+
+
+/* ===================================================================
+   FIX: MOBILE PANEL OVERFLOW (NETWORK & SYSTEM INFO)
+   =================================================================== */
+@media (max-width:768px){
+
+    .xsl-panel-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        align-items: start !important;
+        align-content: start !important;
+    }
+  
+  /* 2. Constrain panels and prevent them from expanding the screen */
+  .xsl-panel {
+    width: 100% !important;
+    min-width: 0 !important; /* Crucial for grid items to shrink correctly */
+    padding: 16px !important;
+    height: auto !important; /* Prevents vertical stretching gaps */
+  }
+  
+  /* 3. Allow info items to wrap text instead of pushing off-screen */
+  .xsl-info-list {
+    width: 100% !important;
+  }
+  
+  .xsl-info-item {
+    flex-wrap: wrap !important; /* Allows label/value to stack if needed */
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    gap: 8px !important;
+  }
+  
+  /* 4. Ensure long IP addresses or text strings wrap cleanly */
+  .xsl-info-label, .xsl-info-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    word-break: break-word !important;
+  }
+  
+  /* 5. FIX: Ensure Quick Links (tags) wrap properly and stay visible */
+  .xsl-info-value {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 4px !important; /* Adds a tiny space between wrapped tags */
+  }
+}
+
+
+/* ===== EXPANDED CLIENT TABLE PREMIUM REDESIGN ===== */
+.ant-table-tbody > tr:hover > td,
+.ant-table-expanded-row .ant-table-tbody > tr:hover > td {
+  background: rgba(99, 102, 241, 0.08) !important; 
+  transition: background 0.2s ease !important;
+}
+
+/* Expanded Table PC Styling */
+.ant-table-expanded-row {
+  background: var(--xsl-bg) !important;
+}
+.ant-table-expanded-row > td {
+  padding: 0 !important; /* ZERO padding to eliminate all space */
+  border-bottom: none !important;
+}
+.ant-table-expanded-row .ant-table-wrapper {
+  margin: 0 !important; /* ZERO margin to pull it completely flush */
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+.ant-table-expanded-row .ant-table {
+  background: var(--xsl-bg) !important;
+}
+.ant-table-expanded-row .ant-table-thead > tr > th {
+  background: var(--xsl-bg-secondary) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--xsl-border) !important;
+}
+.ant-table-expanded-row .ant-table-tbody > tr > td {
+  background: var(--xsl-bg) !important;
+  border-bottom: 1px solid var(--xsl-border) !important;
+}
+
+/* ===== EXPANDED CLIENT TABLE MOBILE FIX (ZERO GAP) ===== */
+@media (max-width: 768px) {
+  /* Force zero padding and zero margin on mobile */
+  .ant-table-expanded-row > td {
+    padding: 0 !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-wrapper {
+    overflow-x: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
+  .ant-table-expanded-row .ant-table {
+    min-width: 100% !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(2) {
+    max-width: 120px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(3) {
+    max-width: 100px !important;
+  }
+  .ant-table-expanded-row .tr-table-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    align-items: center !important;
+  }
+  .ant-table-expanded-row .tr-table-rt,
+  .ant-table-expanded-row .tr-table-lt {
+    flex-basis: auto !important;
+    min-width: auto !important;
+    font-size: 10px !important;
+  }
+  .ant-table-expanded-row .tr-table-bar {
+    flex-basis: 100% !important;
+    min-width: 60px !important;
+    width: 100% !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(4) {
+    max-width: 80px !important;
+    text-align: center !important;
+  }
+  
+  .ant-table-expanded-row .ant-table-tbody > tr > td:nth-child(1) {
+    width: 40px !important;
+    padding: 6px 2px !important;
+  }
+  .ant-table-expanded-row .anticon-ellipsis {
+    font-size: 20px !important;
+  }
+  
+  .ant-table-expanded-row .ant-tag {
+    margin: 1px !important;
+    padding: 1px 4px !important;
+    font-size: 10px !important;
+    line-height: 16px !important;
+    border-radius: 4px !important;
+  }
+  
+  .ant-table-expanded-row .ant-progress { height: 4px !important; }
+  .ant-table-expanded-row .ant-progress-inner { height: 4px !important; }
+  .ant-table-expanded-row .ant-progress-bg { height: 4px !important; }
+  
+  .ant-table-expanded-row .ant-table-thead > tr > th {
+    font-size: 10px !important;
+    padding: 4px !important;
+  }
+}
+
+
+
+/* ===================================================================
+   ULTIMATE FIX: ZERO GAP ON EXPANDED CLIENT TABLE (PC & MOBILE)
+   =================================================================== */
+
+/* 1. Remove padding from the expanded cell itself */
+.ant-table-expanded-row > td {
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+
+/* 2. Remove margins and borders from the inner table wrapper */
+.ant-table-expanded-row .ant-table-wrapper {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 3. Remove any extra margin from the inner table */
+.ant-table-expanded-row .ant-table {
+  margin: 0 !important;
+  background: var(--xsl-bg) !important;
+}
+
+/* 4. Add a single clean line to separate the parent row from the client table */
+.ant-table-expanded-row .ant-table-thead > tr > th {
+  border-top: 1px solid var(--xsl-border) !important;
+  background: var(--xsl-bg-secondary) !important;
+}
+
+
+/* ===================================================================
+   ULTIMATE MOBILE FIX: DESTROY EXPANDED TABLE PADDING COMPLETELY
+   =================================================================== */
+@media (max-width: 768px) {
+  /* Force 0 padding on the expanded cell and any fixed wrappers */
+  .ant-table-expanded-row > td,
+  .ant-table-expanded-row .ant-table-expanded-row-fixed {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Force 0 margin on the inner table wrapper */
+  .ant-table-expanded-row .ant-table-wrapper {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Ensure the table itself has no extra spacing */
+  .ant-table-expanded-row .ant-table {
+    margin: 0 !important;
+  }
+}
+
+
+
+/* ===================================================================
+   FIX: AREA 1 — INBOUNDS PAGE GAP REDUCTION (DESKTOP & MOBILE)
+   =================================================================== */
+
+/* 1. Panel Header: Row on desktop (title left, toolbar right) */
+.xsl-panel-header {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+/* 2. Toolbar: keep inline on desktop, right-aligned */
+.xsl-inbound-toolbar {
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+/* 3. Remove extra gap between stat cards and panel */
+.xsl-stat-grid {
+  margin-bottom: 16px !important;
+}
+
+/* 4. Remove extra table margin-top (kills the 16px gap) */
+.ant-table-wrapper {
+  margin-top: 0 !important;
+}
+
+/* 5. Override the inline style="margin-top: 10px" on the table */
+.xsl-panel .ant-table {
+  margin-top: 0 !important;
+}
+
+/* 6. Reduce panel padding */
+.xsl-panel {
+  padding: 20px !important;
+}
+
+/* 7. Slightly reduce dashboard header bottom gap */
+.xsl-dash-header {
+  margin-bottom: 20px !important;
+}
+
+/* ===== MOBILE FIXES (<= 768px) ===== */
+@media (max-width: 768px) {
+  /* Stack panel header vertically on mobile */
+  .xsl-panel-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Toolbar stacks vertically on mobile */
+  .xsl-inbound-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Tighter stat grid gap */
+  .xsl-stat-grid {
+    margin-bottom: 12px !important;
+  }
+
+  /* Tighter panel padding on mobile */
+  .xsl-panel {
+    padding: 12px !important;
+  }
+
+  /* Dashboard header more compact */
+  .xsl-dash-header {
+    margin-bottom: 16px !important;
+  }
+}
+
+
+/* ===================================================================
+   FIX: INBOUND TABLE HEADER, WRAPPER, & TAGS MOBILE FIT
+   =================================================================== */
+@media (max-width: 768px) {
+  /* 1. Force the table wrapper to strictly respect screen width */
+  .ant-table-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important; /* Allows clean scrolling if content is too wide */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 2. Force table to fit 100% width */
+  .ant-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important; /* Crucial: forces columns to respect widths */
+  }
+
+  /* 3. Shrink Table Headers and allow wrapping */
+  .ant-table-thead > tr > th {
+    font-size: 10px !important; /* Smaller text */
+    white-space: normal !important; /* Allows text to wrap to next line */
+    word-break: break-word !important;
+    padding: 8px 4px !important; /* Tighter padding to save space */
+    text-align: center !important; /* Center headers for cleaner look */
+  }
+
+  /* 4. Shrink Table Body Cells and allow wrapping */
+  .ant-table-tbody > tr > td {
+    font-size: 11px !important;
+    white-space: normal !important; /* Allows long remarks/protocols to wrap */
+    word-break: break-word !important;
+    padding: 8px 4px !important;
+  }
+  
+  /* 5. Ensure columns defined in HTML (10%, 15%, 35%, etc.) are respected */
+  .ant-table-thead > tr > th, 
+  .ant-table-tbody > tr > td {
+    min-width: 0 !important; /* Allows grid columns to shrink below content size */
+  }
+
+  /* 6. Shrink Protocol, Network, and Security Tags on Mobile */
+  .ant-table-tbody .tag-protocol,
+  .ant-table-tbody .tag-network,
+  .ant-table-tbody .tag-security {
+    font-size: 9px !important; /* Much smaller text */
+    padding: 1px 4px !important; /* Tighter padding inside the tag */
+    margin: 1px 2px 1px 0 !important; /* Tighter margin between tags */
+    line-height: 14px !important; /* Shorter height */
+    display: inline-flex !important; /* Allows them to sit neatly side-by-side */
+    align-items: center !important;
+    white-space: nowrap !important; /* Prevents the tag itself from breaking weirdly */
+  }
+}
+
+
+/* ===================================================================
+   FINAL FIX: NATURAL CARD GROWTH & PREVENT CLIPPING
+   =================================================================== */
+@media (max-width: 768px) {
+  /* 1. Remove the forced 100vh height that was clipping the bottom */
+  .xsl-dash-container {
+    min-height: auto !important; 
+    display: block !important; /* Revert from flex to normal block layout */
+  }
+
+  /* 2. Let the merged card grow naturally based on content */
+  .xsl-panel-grid {
+    flex-grow: 0 !important; /* Do not force stretch */
+    height: auto !important;
+    padding-bottom: 16px !important; /* Normal bottom padding */
+    overflow: visible !important; /* Ensure nothing is clipped */
+  }
+
+  /* 3. Fix the main layout containers to allow scrolling if content is long */
+  #content-layout, 
+  .ant-layout-content {
+    height: auto !important;
+    min-height: 100vh !important; /* Allows the background to fill screen, but allows scrolling */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+}
+
+
+/* ===================================================================
+   FINAL FIX: MOBILE AND BACKUP GAP FIX (WORKING ONE )
+   =================================================================== */
+
+
+/*mobile dashboards, I would disable AOS layout effects */
+
+@media(max-width:768px){
+
+[data-aos] {
+    opacity:1 !important;
+    transform:none !important;
+    visibility:visible !important;
+}
+
+.aos-init,
+.aos-animate {
+    transform:none !important;
+}
+
+}
+ 
+/*cond fix: remove hidden empty containers*/
+
+@media(max-width:768px){
+
+.xsl-panel:empty,
+.xsl-panel-grid:empty,
+.xsl-stat-grid:empty {
+    display:none !important;
+}
+
+
+.xsl-info-item{
+    min-height:0 !important;
+    height:auto !important;
+    padding-top:6px !important;
+    padding-bottom:6px !important;
+}
+
+}
+
+
+/* Backup Area Gap Reduce */
+
+@media (max-width:768px){
+
+#backup-modal .ant-modal-body {
+    padding:12px 12px 7px !important;
+}
+
+/* remove only unwanted wrapper spacing */
+#backup-modal .ant-modal-body > div:first-child {
+    margin-top:0 !important;
+    padding-top:0 !important;
+}
+
+/* keep alert separated from header */
+#backup-modal .ant-alert {
+    margin-top:4px !important;
+}
+
+}
+
+
+
+/* ===================================================================
+   FIX: SETTINGS PAGE MOBILE OVERLAP (CORRECTED - NO GLOBAL GAPS)
+   =================================================================== */
+@media (max-width: 768px) {
+  /* 1. Remove the global 70px padding that was causing gaps on the Inbounds page */
+  #content-layout .ant-spin-container {
+    padding-top: 0px !important; 
+  }
+  
+  /* 2. Safely re-apply the 70px gap ONLY to the Settings page tabs */
+  .ant-tabs-tabpane .ant-spin-container,
+  .xsl-settings-tabs .ant-spin-container {
+    padding-top: 70px !important; 
+  }
+}
+
+
+/* ===================================================================
+   FIX: INBOUND & CLIENT LIST EMPTY GAP ON MOBILE (ULTIMATE FIX)
+   =================================================================== */
+@media (max-width: 768px) {
+  
+  /* 1. Ensure the Inbound list area starts below the floating menu button cleanly */
+  .xsl-dash-container {
+    padding-top: 60px !important; /* Safe uniform space for floating button */
+  }
+
+  /* 2. Eliminate ALL margins and paddings on expanded rows (Client List Area) */
+  .ant-table-expanded-row,
+  .ant-table-expanded-row > td,
+  .ant-table-expanded-row-fixed {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-bottom: none !important;
+  }
+
+  /* 3. Remove default margins from the inner client table wrapper */
+  .ant-table-expanded-row .ant-table-wrapper,
+  .ant-table-expanded-row .ant-table {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 4. Fix extra bottom gaps in main inbound list rows */
+  .ant-table-tbody > tr > td {
+    padding-bottom: 8px !important;
+  }
+  
+  /* 5. Fix empty state gaps (when there are no clients in an inbound) */
+  .ant-empty-normal {
+    margin: 16px 0 !important;
+  }
+
+  /* 6. Remove unwanted card body padding if clients use card layout */
+  .ant-table-expanded-row .ant-card-body {
+    padding: 12px !important;
+  }
+}
+
+
+
+
+/* ===================================================================
+   FIX: SHRINK TRAFFIC TAG TO FIT MOBILE SCREEN
+   =================================================================== */
+@media (max-width: 768px) {
+  /* 1. Make the tag shrink and fit perfectly inside the cell */
+  .ant-table-tbody .ant-tag-purple,
+  .ant-table-expanded-row .ant-tag-purple {
+    max-width: 100% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* Center the content */
+    
+    /* Shrink text and padding to save space */
+    font-size: 10px !important; 
+    padding: 1px 4px !important;
+    line-height: 1.4 !important;
+    
+    /* Allow text to break or wrap if it still doesn't fit */
+    white-space: normal !important; 
+    word-break: break-word !important;
+    overflow: hidden !important;
+  }
+
+  /* 2. Shrink the infinity SVG icon so it doesn't take up too much space */
+  .ant-table-tbody .ant-tag-purple svg,
+  .ant-table-expanded-row .ant-tag-purple svg {
+    width: 10px !important;
+    height: 8px !important;
+    flex-shrink: 0 !important;
+    margin-left: 2px !important;
+  }
+
+  /* 3. Ultra-compact the table cell padding so the tag has room to shrink */
+  .ant-table-tbody > tr > td,
+  .ant-table-expanded-row .ant-table-tbody > tr > td {
+    padding: 4px 2px !important; 
+  }
+}
+
+/* For extremely small phones (<= 380px), shrink even more */
+@media (max-width: 380px) {
+  .ant-table-tbody .ant-tag-purple,
+  .ant-table-expanded-row .ant-tag-purple {
+    font-size: 9px !important; /* Tiny text to guarantee it fits */
+    padding: 0px 2px !important;
+  }
+  .ant-table-tbody .ant-tag-purple svg,
+  .ant-table-expanded-row .ant-tag-purple svg {
+    width: 8px !important;
+    height: 6px !important;
+  }
+}
+
+
+
+
+/* ===================================================================
+   FIX: SHRINK & CENTER THE "SOLUTION" ICON BUTTON ON MOBILE
+   =================================================================== */
+@media (max-width: 768px) {
+  
+  /* 1. Target the button */
+  .ant-btn.ant-btn-round.ant-btn-sm:has(.anticon-solution) {
+    height: 25px !important;       
+    min-width: 24px !important;    /* Allows button to stretch to fit the 30px icon */
+    padding: 0 4px !important;      /* Replaces invalid 'padding: 1' - gives horizontal breathing room */
+    font-size: 12px !important;     
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;     /* Prevents vertical misalignment */
+  }
+
+  /* 2. Target the <i> icon wrapper to force perfect centering */
+  .ant-btn.ant-btn-round.ant-btn-sm .anticon-solution {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 0 !important;     /* Kills extra vertical space from Ant Design */
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 3. Shrink and center the SVG icon */
+  .ant-btn.ant-btn-round.ant-btn-sm .anticon-solution svg {
+    width: 30px !important;
+    height: 15px !important;
+    font-size: 12px !important;
+    display: block !important;     /* 'block' makes margin: auto work perfectly */
+    margin: 0 auto !important;     /* Forces exact horizontal centering */
+  }
 }

@@ -261,6 +261,34 @@ reset_user() {
     confirm_restart
 }
 
+set_terminal_password() {
+    echo -e "\n${yellow}=== Web Terminal Remote Access Setup ===${plain}"
+    echo -e "Please create a password to securely access the VPS terminal from the web panel."
+    echo -e "${yellow}Requirements: Minimum 8 characters.${plain}"
+    
+    while true; do
+        read -rp "Enter Web Terminal Password: " config_term_pass
+        if [[ ${#config_term_pass} -ge 8 ]]; then
+            read -rp "Confirm Web Terminal Password: " config_term_pass2
+            if [[ "${config_term_pass}" == "${config_term_pass2}" ]]; then
+                /usr/local/x-ui/x-ui setting -setTerminalPass "${config_term_pass}" >/dev/null 2>&1
+                if [[ $? == 0 ]]; then
+                    echo -e "${green}Web Terminal Password set successfully!${plain}"
+                    break
+                else
+                    echo -e "${red}Failed to set Web Terminal Password in database.${plain}"
+                    break
+                fi
+            else
+                echo -e "${red}Passwords do not match. Please try again.${plain}"
+            fi
+        else
+            echo -e "${red}Password must be at least 8 characters!${plain}"
+        fi
+    done
+    before_show_menu
+}
+
 gen_random_string() {
     local length="$1"
     local random_string=$(LC_ALL=C tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$length" | head -n 1)
@@ -1721,6 +1749,7 @@ ${red}25.${plain} Run Speed Test (Ookla)
 ${purple}26.${plain} Block-publictorrent-iptables
 ${purple}27.${plain} Automated Server Boot System
 ${purple}28.${plain} Traffic-X (Check client usage)
+${purple}29.${plain} Reset Web Terminal Password
 ──────────────────────────────────────────────
 "
     
@@ -1825,8 +1854,12 @@ ${purple}28.${plain} Traffic-X (Check client usage)
         echo "Installing Traffic-X"
         bash <(curl -s https://raw.githubusercontent.com/Tyga-x/Traffic-X/main/Traffic-X.sh)
         ;;
+        
+    29)
+        check_install && set_terminal_password
+        ;;
     *)
-        LOGE "Please enter the correct number [0-28]"
+        LOGE "Please enter the correct number [0-29]"
         ;;
     esac
 }

@@ -18,6 +18,7 @@ import (
 	"x-ui/web/service"
 
 	"github.com/op/go-logging"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func runWebServer() {
@@ -401,6 +402,7 @@ func main() {
 	var show bool
 	var getCert bool
 	var remove_secret bool
+	var setTerminalPass string
 	settingCmd.BoolVar(&reset, "reset", false, "Reset all settings")
 	settingCmd.BoolVar(&show, "show", false, "Display current settings")
 	settingCmd.BoolVar(&remove_secret, "remove_secret", false, "Remove secret key")
@@ -417,6 +419,7 @@ func main() {
 	settingCmd.StringVar(&tgbotRuntime, "tgbotRuntime", "", "Set cron time for Telegram bot notifications")
 	settingCmd.StringVar(&tgbotchatid, "tgbotchatid", "", "Set chat ID for Telegram bot notifications")
 	settingCmd.BoolVar(&enabletgbot, "enabletgbot", false, "Enable notifications via Telegram bot")
+	settingCmd.StringVar(&setTerminalPass, "setTerminalPass", "", "Set web terminal remote access password")
 
 	oldUsage := flag.Usage
 	flag.Usage = func() {
@@ -470,6 +473,9 @@ func main() {
 		if remove_secret {
 			removeSecret()
 		}
+		if setTerminalPass != "" { // <--- ADD THIS BLOCK
+			setTerminalPassword(setTerminalPass)
+		}
 		if enabletgbot {
 			updateTgbotEnableSts(enabletgbot)
 		}
@@ -491,4 +497,30 @@ func main() {
 		fmt.Println()
 		settingCmd.Usage()
 	}
+}
+
+func setTerminalPassword(password string) {
+	err := database.InitDB(config.GetDBPath())
+	if err != nil {
+		fmt.Println("Database initialization failed:", err)
+		return
+	}
+
+	settingService := service.SettingService{}
+
+	// Hash the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println("Error hashing terminal password:", err)
+		return
+	}
+
+	// Save to database
+	err = settingService.SetTerminalPasswordHash(string(hashedPassword))
+	if err != nil {
+		fmt.Println("Error saving terminal password:", err)
+		return
+	}
+
+	fmt.Println("Terminal password set successfully!")
 }

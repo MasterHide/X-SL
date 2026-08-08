@@ -7,34 +7,78 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css">
     <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    
+    
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f1f5f9; --primary: #6366f1; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding: 24px; font-family: system-ui, sans-serif; }
-        .xsl-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 1000px; margin: 0 auto; }
-        .header-card h1 { font-size: 24px; margin: 0 0 8px 0; }
-        .header-card p { color: #94a3b8; margin: 0 0 16px 0; }
-        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .status-item { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; }
-        .status-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
-        .status-value { font-size: 16px; font-weight: bold; color: #10b981; }
-        
-        #lock-screen { text-align: center; padding: 40px 0; }
-        #password-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; width: 100%; max-width: 300px; margin-top: 16px; box-sizing: border-box; }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-top: 16px; font-weight: bold; transition: 0.2s; }
-        .btn:hover { filter: brightness(1.2); }
-        
-        #terminal-container { display: none; }
-        #terminal-wrapper { background: #000; padding: 12px; border-radius: 12px; height: 400px; }
-        .term-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .term-timer { color: #f59e0b; font-family: monospace; }
-        .term-actions button { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-left: 8px; font-size: 12px; }
+    :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f1f5f9; --primary: #6366f1; }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); margin: 0; padding: 24px; font-family: system-ui, sans-serif; }
+    .xsl-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 1000px; margin: 0 auto; }
+    .header-card h1 { font-size: 24px; margin: 0 0 8px 0; }
+    .header-card p { color: #94a3b8; margin: 0 0 16px 0; }
+    .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .status-item { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; }
+    .status-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+    .status-value { font-size: 16px; font-weight: bold; color: #10b981; }
+    
+    #lock-screen { text-align: center; padding: 40px 0; }
+    #password-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; width: 100%; max-width: 300px; margin-top: 16px; box-sizing: border-box; }
+    .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-top: 16px; font-weight: bold; transition: 0.2s; }
+    .btn:hover { filter: brightness(1.2); }
+    
+    #terminal-container { display: none; }
+    
+    /* Terminal Wrapper - Uses dynamic viewport height to fill screen */
+    #terminal-wrapper {
+        background: #000;
+        padding: 12px;
+        border-radius: 12px;
+        height: 60vh; /* 60% of screen height on desktop */
+        min-height: 400px;
+        width: 100%;
+    }
+    .term-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .term-timer { color: #f59e0b; font-family: monospace; font-size: 14px; }
+    .term-actions button { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-left: 8px; font-size: 12px; }
 
-        @media (max-width: 768px) {
-            .term-actions button { width: 100%; margin: 4px 0; }
-            .term-header { flex-direction: column; align-items: stretch; }
-            #terminal-wrapper { height: 300px; }
+    /* Mobile Responsive Tweaks */
+    @media (max-width: 768px) {
+        body { padding: 12px; }
+        .xsl-panel { padding: 16px; border-radius: 12px; }
+        .status-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .status-item { padding: 8px; }
+        .status-label { font-size: 10px; }
+        .status-value { font-size: 13px; }
+        
+        .header-card h1 { font-size: 20px; }
+        .header-card p { font-size: 13px; }
+        
+        /* Make terminal take up much more screen space on mobile */
+        #terminal-wrapper {
+            height: 65vh; /* Fills 65% of mobile screen */
+            min-height: 350px;
+            padding: 8px;
+            border-radius: 8px;
         }
-    </style>
+        
+        /* Stack buttons vertically on mobile */
+        .term-actions button {
+            width: 100%;
+            margin: 4px 0;
+            padding: 10px;
+            font-size: 14px;
+        }
+        .term-timer { font-size: 12px; width: 100%; text-align: center; margin-bottom: 8px; }
+    }
+    
+    /* Extra small phones (iPhone SE, etc.) */
+    @media (max-width: 380px) {
+        #terminal-wrapper {
+            height: 70vh; /* Even taller on tiny screens */
+            padding: 4px;
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -150,19 +194,28 @@
         document.getElementById('session-status').innerText = 'Active';
         document.getElementById('session-status').style.color = '#10b981';
 
+        // Detect mobile to shrink font size slightly so text fits
+        const isMobile = window.innerWidth <= 768;
+
         term = new Terminal({
             cursorBlink: true,
-            fontSize: 14
+            fontSize: isMobile ? 12 : 14, // 12px on mobile, 14px on desktop
+            fontFamily: 'monospace'
         });
+        
         fitAddon = new FitAddon.FitAddon();
         term.loadAddon(fitAddon);
         term.open(document.getElementById('terminal-wrapper'));
-        fitAddon.fit();
+        
+        // Small delay to ensure container is fully rendered before fitting
+        setTimeout(() => fitAddon.fit(), 100);
 
         ws = new WebSocket(`${wsUrl}${token}`);
 
         ws.onopen = () => {
             term.writeln("Connected to VPS Shell. Session expires in 10 minutes.");
+            // Send initial resize command to backend PTY
+            ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows }));
         };
 
         ws.onmessage = (event) => {
@@ -212,8 +265,12 @@
         restartSession();
     }
 
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        if (fitAddon) fitAddon.fit();
-    });
+    // Handle window resize and mobile rotation smoothly
+    function fitTerminal() {
+        if (fitAddon) {
+            fitAddon.fit();
+        }
+    }
+    window.addEventListener('resize', fitTerminal);
+    window.addEventListener('orientationchange', () => setTimeout(fitTerminal, 200));
 </script>

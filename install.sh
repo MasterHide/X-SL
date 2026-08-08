@@ -196,7 +196,33 @@ config_after_install() {
         fi
     fi
 
-    /usr/local/x-ui/x-ui migrate
+        /usr/local/x-ui/x-ui migrate
+
+    # === Web Terminal Password Setup ===
+    echo -e "\n${yellow}=== Web Terminal Remote Access Setup ===${plain}"
+    echo -e "Please create a password to securely access the VPS terminal from the web panel."
+    echo -e "${yellow}Requirements: Minimum 8 characters.${plain}"
+    
+    while true; do
+        read -rp "Enter Web Terminal Password: " config_term_pass
+        if [[ ${#config_term_pass} -ge 8 ]]; then
+            read -rp "Confirm Web Terminal Password: " config_term_pass2
+            if [[ "${config_term_pass}" == "${config_term_pass2}" ]]; then
+                /usr/local/x-ui/x-ui setting -setTerminalPass "${config_term_pass}" >/dev/null 2>&1
+                if [[ $? == 0 ]]; then
+                    echo -e "${green}Web Terminal Password set successfully!${plain}"
+                    break
+                else
+                    echo -e "${red}Failed to set Web Terminal Password in database.${plain}"
+                    break
+                fi
+            else
+                echo -e "${red}Passwords do not match. Please try again.${plain}"
+            fi
+        else
+            echo -e "${red}Password must be at least 8 characters!${plain}"
+        fi
+    done
 }
 
 install_x-ui() {

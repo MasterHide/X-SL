@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Setup - Remote Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css">
+    <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f1f5f9; --primary: #6366f1; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding: 24px; font-family: system-ui, sans-serif; }
+        .xsl-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 1000px; margin: 0 auto; }
+        .header-card h1 { font-size: 24px; margin: 0 0 8px 0; }
+        .header-card p { color: #94a3b8; margin: 0 0 16px 0; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .status-item { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; }
+        .status-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+        .status-value { font-size: 16px; font-weight: bold; color: #10b981; }
+        
+        #lock-screen { text-align: center; padding: 40px 0; }
+        #password-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; width: 100%; max-width: 300px; margin-top: 16px; box-sizing: border-box; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-top: 16px; font-weight: bold; transition: 0.2s; }
+        .btn:hover { filter: brightness(1.2); }
+        
+        #terminal-container { display: none; }
+        #terminal-wrapper { background: #000; padding: 12px; border-radius: 12px; height: 400px; }
+        .term-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .term-timer { color: #f59e0b; font-family: monospace; }
+        .term-actions button { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-left: 8px; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .term-actions button { width: 100%; margin: 4px 0; }
+            .term-header { flex-direction: column; align-items: stretch; }
+            #terminal-wrapper { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="xsl-panel">
+    <div class="header-card">
+        <h1>Remote VPS Terminal</h1>
+        <p>Securely manage your VPS directly from the panel without SSH.</p>
+    </div>
+
+    <div class="status-grid">
+        <div class="status-item">
+            <div class="status-label">Server</div>
+            <div class="status-value">Online</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">Connection</div>
+            <div class="status-value">Protected</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">Session</div>
+            <div class="status-value" id="session-status">Locked</div>
+        </div>
+    </div>
+
+    <!-- LOCK SCREEN -->
+    <div id="lock-screen">
+        <h2>🔐 Secure Terminal Access</h2>
+        <p>Enter your remote terminal password</p>
+        <input type="password" id="password-input" placeholder="Password">
+        <br>
+        <button class="btn" id="unlock-btn">Unlock Terminal</button>
+        <div id="error-msg" style="color: #ef4444; margin-top: 12px;"></div>
+    </div>
+
+    <!-- TERMINAL AREA -->
+    <div id="terminal-container">
+        <div class="term-header">
+            <div>
+                <strong>Remote Terminal</strong><br>
+                <small>Server: <span id="server-ip"></span></small>
+            </div>
+            <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                <span class="term-timer">Session: <span id="timer">10:00</span> remaining</span>
+                <div class="term-actions">
+                    <button onclick="restartSession()">Restart</button>
+                    <button onclick="closeSession()">Close</button>
+                </div>
+            </div>
+        </div>
+        <div id="terminal-wrapper"></div>
+    </div>
+</div>
+
+<script>
+    let ws = null;
+    let term = null;
+    let fitAddon = null;
+    let sessionInterval = null;
+    let timeLeft = 600;
+
+    document.getElementById('unlock-btn').addEventListener('click', async () => {
+        const password = document.getElementById('password-input').value;
+        const errorEl = document.getElementById('error-msg');
+        errorEl.innerText = '';
+
+        const res = await fetch('/panel/terminal/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        if (!res.ok) {
+            errorEl.innerText = 'Invalid password. Try again.';
+            // Add delay/lock logic here if needed
+            return;
+        }
+
+        const data = await res.json();
+        timeLeft = data.expires;
+        initTerminal(data.token);
+    });
+
+    function initTerminal(token) {
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('terminal-container').style.display = 'block';
+        document.getElementById('session-status').innerText = 'Active';
+        document.getElementById('session-status').style.color = '#10b981';
+
+        term = new Terminal({
+            cursorBlink: true,
+            fontSize: 14
+        });
+        fitAddon = new FitAddon.FitAddon();
+        term.loadAddon(fitAddon);
+        term.open(document.getElementById('terminal-wrapper'));
+        fitAddon.fit();
+
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        ws = new WebSocket(`${wsProtocol}${window.location.host}/panel/terminal/ws?token=${token}`);
+
+        ws.onopen = () => {
+            term.writeln("Connected to VPS Shell. Session expires in 10 minutes.");
+            // Send initial resize
+            ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows }));
+        };
+
+        ws.onmessage = (event) => {
+            term.write(event.data);
+        };
+
+        ws.onclose = () => {
+            term.writeln("\r\n\x1b[31mSession expired or disconnected.\x1b[0m");
+            clearInterval(sessionInterval);
+        };
+
+        term.onData((data) => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(data);
+            }
+        });
+
+        // Start 10 min timer
+        sessionInterval = setInterval(() => {
+            timeLeft--;
+            let mins = Math.floor(timeLeft / 60);
+            let secs = timeLeft % 60;
+            document.getElementById('timer').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(sessionInterval);
+                closeSession();
+            }
+        }, 1000);
+    }
+
+    function restartSession() {
+        if (ws) ws.close();
+        document.getElementById('terminal-container').style.display = 'none';
+        document.getElementById('lock-screen').style.display = 'block';
+        document.getElementById('session-status').innerText = 'Locked';
+        document.getElementById('password-input').value = '';
+    }
+
+    function closeSession() {
+        if (ws) ws.close();
+        window.location.href = '/panel/inbounds'; // Redirect back to safety
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (fitAddon) fitAddon.fit();
+    });
+</script>
+</body>
+</html>

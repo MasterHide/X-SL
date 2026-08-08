@@ -496,6 +496,14 @@ func (s *SettingService) SetWarp(data string) error {
 	return s.setString("warp", data)
 }
 
+func (s *SettingService) GetTerminalPasswordHash() (string, error) {
+	return s.getString("webTerminalHash")
+}
+
+func (s *SettingService) SetTerminalPasswordHash(hash string) error {
+	return s.setString("webTerminalHash", hash)
+}
+
 func (s *SettingService) GetIpLimitEnable() (bool, error) {
 	accessLogPath, err := xray.GetAccessLogPath()
 	if err != nil {

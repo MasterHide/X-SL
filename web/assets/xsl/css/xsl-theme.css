@@ -3019,3 +3019,97 @@ height:clamp(60px,18vw,80px) !important;
     margin: 0 auto !important;     /* Forces exact horizontal centering */
   }
 }
+
+
+/* ===================================================================
+   1. FIX: SETTINGS ALERT CLOSE BUTTON (SCOPED)
+   =================================================================== */
+.ant-alert[style*="display: none"] {
+    display: none !important;
+}
+
+
+/* ===================================================================
+   2. FIX: SHRINK MOBILE FLOATING MENU BUTTON & ICON
+   =================================================================== */
+#xsl-mobile-trigger {
+    width: 36px !important; /* Fixed from 1px so it is visible */
+    height: 36px !important;
+    top: 8px !important;
+    left: 9px !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+}
+#xsl-mobile-trigger iconify-icon {
+    width: 20px !important;
+    height: 23px !important;
+    font-size: 18px !important;
+}
+
+
+/* ===================================================================
+   3. FIX: SETTINGS PAGE MOBILE OVERLAP & REDUCE CARD GAP
+   =================================================================== */
+@media (max-width: 768px) {
+    .xsl-dash-container,
+    #content-layout .ant-spin-nested-loading,
+    #content-layout .ant-spin-container {
+        padding-top: 10px !important; 
+    }
+}
+
+
+/* ===================================================================
+   4. FIX: SHRINK CARD, CENTER BUTTONS, & REMOVE GAPS
+   =================================================================== */
+
+/* Shrink the card padding so it fits the screen nicely */
+.ant-card:has(.ant-btn-primary) > .ant-card-body {
+    padding: 10px 16px !important;
+}
+
+/* Shrink the card itself slightly */
+.ant-card:has(.ant-btn-primary) {
+    border-radius: 16px !important;
+    margin-bottom: 1px !important;
+}
+
+/* Center the Save and Restart buttons, and remove empty gaps */
+.ant-card:has(.ant-btn-primary) .ant-card-body > .ant-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    margin: 0 !important;
+}
+
+/* Remove the Ant Design grid column padding completely */
+.ant-card:has(.ant-btn-primary) .ant-col {
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+}
+
+/* Shrink the warning alert and center it below the buttons */
+.ant-card:has(.ant-btn-primary) .ant-alert {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 6px 30px !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+}
+
+/* Shrink the alert text so it fits perfectly on mobile */
+.ant-card:has(.ant-btn-primary) .ant-alert-message {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+}
+
+/* Mobile Specific Shrinking */
+@media (max-width: 768px) {
+    .ant-card:has(.ant-btn-primary) > .ant-card-body {
+        padding: 10px 12px !important; /* Cleaned up the 40px which was too big */
+    }
+}

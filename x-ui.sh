@@ -1040,43 +1040,35 @@ ssl_cert_issue_main() {
         fi
         ssl_cert_issue_main
         ;;
-        5)
-        echo "Available domains:"
-        echo "-----------------------------------"
-        find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
-        echo "-----------------------------------"
-        read -p "Please choose a domain to set the panel paths: " domain
+    5)
+        local domains=$(find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+        if [ -z "$domains" ]; then
+            echo "No certificates found."
+        else
+            echo "Available domains:"
+            echo "$domains"
+            read -p "Please choose a domain to set the panel paths: " domain
 
-        webCertFile="/root/cert/${domain}/fullchain.pem"
-        webKeyFile="/root/cert/${domain}/privkey.pem"
+            if echo "$domains" | grep -qw "$domain"; then
+                local webCertFile="/root/cert/${domain}/fullchain.pem"
+                local webKeyFile="/root/cert/${domain}/privkey.pem"
 
-        # Fallback to acme.sh ECC directory if /root/cert/ files are missing
-        if [[ ! -f "${webCertFile}" || ! -f "${webKeyFile}" ]]; then
-            echo -e "${yellow}Files missing in /root/cert/. Checking acme.sh ECC folder...${plain}"
-            altCert="/root/.acme.sh/${domain}_ecc/fullchain.cer"
-            altKey="/root/.acme.sh/${domain}_ecc/${domain}.key"
-            if [[ -f "${altCert}" && -f "${altKey}" ]]; then
-                # Copy them into /root/cert/ so the panel can use them
-                mkdir -p "/root/cert/${domain}"
-                cp -f "${altCert}" "${webCertFile}"
-                cp -f "${altKey}"  "${webKeyFile}"
-                chmod 755 /root/cert/${domain}/*
-                echo -e "${green}Copied cert files from acme.sh into /root/cert/${domain}/${plain}"
+                if [[ -f "${webCertFile}" && -f "${webKeyFile}" ]]; then
+                    /usr/local/x-ui/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+                    echo "Panel paths set for domain: $domain"
+                    echo "  - Certificate File: $webCertFile"
+                    echo "  - Private Key File: $webKeyFile"
+                    restart
+                else
+                    echo "Certificate or private key not found for domain: $domain."
+                fi
             else
-                echo -e "${red}No certificate files found for ${domain} anywhere.${plain}"
-                echo -e "Try running Option 3 (Force Renew) first."
-                ssl_cert_issue_main
-                return
+                echo "Invalid domain entered."
             fi
         fi
-
-        /usr/local/x-ui/x-ui cert -webCert "${webCertFile}" -webCertKey "${webKeyFile}"
-        echo -e "${green}Panel paths set for domain: $domain${plain}"
-        echo -e "  Certificate File: ${webCertFile}"
-        echo -e "  Private Key File: ${webKeyFile}"
-        restart
         ssl_cert_issue_main
         ;;
+
     *)
         echo -e "${red}Invalid option. Please select a valid number.${plain}\n"
         ssl_cert_issue_main
